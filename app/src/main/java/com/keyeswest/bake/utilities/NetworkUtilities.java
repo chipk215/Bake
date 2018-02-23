@@ -27,7 +27,7 @@ public class NetworkUtilities {
      * @return The contents of the HTTP response.
      * @throws IOException Related to network and stream reading
      */
-    public static String getResponseFromHttpsUrl(URL url) throws IOException {
+    public  String getResponseFromHttpsUrl(URL url) throws IOException {
         HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
         try {
             InputStream in = urlConnection.getInputStream();
@@ -47,7 +47,7 @@ public class NetworkUtilities {
     }
 
 
-    public static boolean isNetworkAvailable(Context context){
+    public  boolean isNetworkAvailable(Context context){
         ConnectivityManager connectivityManager =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 

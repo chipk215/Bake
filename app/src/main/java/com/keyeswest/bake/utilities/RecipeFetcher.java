@@ -4,10 +4,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+
 
 import com.keyeswest.bake.Loaders.RecipeLoader;
+
 
 /**
  * Handles fetching the network recipe resource json file
@@ -25,36 +25,53 @@ public class RecipeFetcher implements LoaderManager.LoaderCallbacks<String>{
 
     private RecipeJsonResults mRecipeCallback;
 
+
+    //Implementing NetworkUtilities as a lazily loaded property for testing.
+    // Don't know how to do dependency injection in Android yet
+    private NetworkUtilities mNetworkUtilities;
+
+    public NetworkUtilities getNetworkUtilities() {
+        if (mNetworkUtilities == null){
+            mNetworkUtilities =  new NetworkUtilities();
+        }
+        return mNetworkUtilities;
+    }
+
+
+    public void setNetworkUtilities(NetworkUtilities networkUtilities) {
+        mNetworkUtilities = networkUtilities;
+    }
+
+
+
     public interface RecipeJsonResults {
         void handleRecipeJSON(String recipeJson);
+        void networkUnavailable();
     }
 
     public RecipeFetcher(Context context, RecipeJsonResults callback){
         mContext = context;
         mRecipeCallback = callback;
+
     }
+
 
 
     @Override
     public Loader<String> onCreateLoader(int id, Bundle args) {
 
-        // verify the callback is not null
-        if (mRecipeCallback == null){
-            return null;
-        }
-
         return new RecipeLoader(mContext, args);
     }
 
     @Override
-    public void onLoadFinished(Loader<String> loader, String data) {
+    public void onLoadFinished(Loader<String> loader, String result) {
         // turn off loading indicator
 
-        if (data == null){
+        if (result == null){
             // show error message
         }else{
 
-            mRecipeCallback.handleRecipeJSON(data);
+            mRecipeCallback.handleRecipeJSON(result);
         }
     }
 
@@ -64,7 +81,19 @@ public class RecipeFetcher implements LoaderManager.LoaderCallbacks<String>{
     }
 
 
-    public void fetchRecipes(LoaderManager loaderManager){
+    public void fetchRecipes(LoaderManager loaderManager) throws IllegalArgumentException{
+
+        // verify the callback is not null
+        if (mRecipeCallback == null){
+            throw new IllegalArgumentException("Callback method not provided");
+        }
+
+        // check network availability
+        if (! getNetworkUtilities().isNetworkAvailable(mContext) ){
+            mRecipeCallback.networkUnavailable();
+            return;
+        }
+
         Bundle queryBundle = new Bundle();
         queryBundle.putString(RecipeLoader.RECIPE_URL_EXTRA, RECIPE_URL);
 
@@ -76,7 +105,6 @@ public class RecipeFetcher implements LoaderManager.LoaderCallbacks<String>{
         } else{
             loaderManager.restartLoader(RECIPE_LOADER, queryBundle, this);
         }
-
 
     }
 

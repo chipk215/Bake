@@ -44,7 +44,7 @@ public class RecipeLoader extends AsyncTaskLoader<String> {
 
         try{
             URL recipeUrl = new URL(recipeUrlString);
-            String jsonRecipes = NetworkUtilities.getResponseFromHttpsUrl(recipeUrl);
+            String jsonRecipes = new NetworkUtilities().getResponseFromHttpsUrl(recipeUrl);
             return jsonRecipes;
         }catch (IOException ioe){
             ioe.printStackTrace();

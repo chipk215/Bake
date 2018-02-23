@@ -1,10 +1,11 @@
 package com.keyeswest.bake;
 
 import android.support.test.InstrumentationRegistry;
-import static android.support.test.InstrumentationRegistry.getTargetContext;
+
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.keyeswest.bake.utilities.NetworkUtilities;
 import com.keyeswest.bake.utilities.RecipeFetcher;
 
 import junit.framework.Assert;
@@ -15,6 +16,11 @@ import org.junit.runner.RunWith;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
 public class RecipeFetcherTest {
@@ -46,6 +52,11 @@ public class RecipeFetcherTest {
 
                         signal.countDown();
                     }
+
+                    @Override
+                    public void networkUnavailable() {
+
+                    }
                 });
 
         fetcher.fetchRecipes(mActivityTestRule.getActivity().getSupportLoaderManager());
@@ -54,6 +65,53 @@ public class RecipeFetcherTest {
         boolean result = signal.await(30, TimeUnit.SECONDS);
         Assert.assertTrue("Signal timed out waiting for network response",result);
 
-
     }
+
+    /**
+     * Verifies that the correct callback method is invoked if the wireless network is not
+     * available.
+     *
+     * Mock NetworkUtilities in RecipeFetcher to accommodate test.
+     * @throws Throwable
+     */
+    @Test
+    public void getRecipesNoNetworkTest() throws Throwable{
+
+        final CountDownLatch signal = new CountDownLatch(1);
+
+        // create mock of NetworkUtilities to effect no network response
+        NetworkUtilities networkUtilitiesMock = mock(NetworkUtilities.class);
+        when(networkUtilitiesMock.isNetworkAvailable(InstrumentationRegistry
+                .getTargetContext())).thenReturn(false);
+
+        RecipeFetcher fetcher = new RecipeFetcher(InstrumentationRegistry.getTargetContext(),
+                new RecipeFetcher.RecipeJsonResults() {
+                    @Override
+                    public void handleRecipeJSON(String recipeJson) {
+                        // Should not get this invocation
+                        fail("No json response expected");
+
+                        signal.countDown();
+                    }
+
+                    @Override
+                    public void networkUnavailable() {
+                        // we should get this callback
+                        assertTrue(true);
+                        signal.countDown();
+
+                    }
+                });
+
+        //inject the mock
+        fetcher.setNetworkUtilities(networkUtilitiesMock);
+
+        // execute the fetch
+        fetcher.fetchRecipes(mActivityTestRule.getActivity().getSupportLoaderManager());
+
+        boolean result = signal.await(30, TimeUnit.SECONDS);
+        Assert.assertTrue("Signal timed out waiting for network response",result);
+    }
+
+
 }
