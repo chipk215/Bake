@@ -6,7 +6,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
 
-import com.keyeswest.bake.Loaders.RecipeLoader;
+import com.keyeswest.bake.loaders.RecipeLoader;
 
 
 /**
@@ -18,7 +18,7 @@ public class RecipeFetcher implements LoaderManager.LoaderCallbacks<String>{
 
     private static final int RECIPE_LOADER = 214;
 
-    private static final String RECIPE_URL =
+    public static final String RECIPE_URL =
             "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
 
     private Context mContext;
