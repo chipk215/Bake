@@ -55,11 +55,9 @@ public class JsonUnitTests {
         assertEquals(mNumberRecipes, recipes.length);
         for (int i=0; i< mNumberRecipes; i++){
             assertEquals(mRecipeNames[i], recipes[i].getName());
-            assertEquals(mIngredientCounts[i], recipes[i].getIngredients().length);
-            assertEquals(mStepCounts[i], recipes[i].getSteps().length);
+            assertEquals(mIngredientCounts[i], recipes[i].getIngredients().size());
+            assertEquals(mStepCounts[i], recipes[i].getSteps().size());
         }
-
-
 
 
     }

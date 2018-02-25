@@ -3,10 +3,12 @@ package com.keyeswest.bake.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Recipe {
 
     @SerializedName("ingredients")
-    private Ingredient[] mIngredients;
+    private List<Ingredient> mIngredients;
 
     @SerializedName("id")
     private String mId;
@@ -21,14 +23,14 @@ public class Recipe {
     private String mImage;
 
     @SerializedName("steps")
-    private Step[] steps;
+    private List<Step> steps;
 
-    public Ingredient[] getIngredients ()
+    public List<Ingredient> getIngredients ()
     {
         return mIngredients;
     }
 
-    public void setIngredients (Ingredient[] ingredients)
+    public void setIngredients (List<Ingredient> ingredients)
     {
         this.mIngredients = ingredients;
     }
@@ -73,12 +75,12 @@ public class Recipe {
         this.mImage = image;
     }
 
-    public Step[] getSteps ()
+    public List<Step> getSteps ()
     {
         return steps;
     }
 
-    public void setSteps (Step[] steps)
+    public void setSteps (List<Step> steps)
     {
         this.steps = steps;
     }
@@ -86,6 +88,6 @@ public class Recipe {
     @Override
     public String toString()
     {
-        return "Recipe [mIngredients = "+ mIngredients +", mId = "+ mId +", mServings = "+ mServings +", mName = "+ mName +", mImage = "+ mImage +", steps = "+steps+"]";
+        return "Recipe Ingredients = "+ mIngredients +", mId = "+ mId +", mServings = "+ mServings +", mName = "+ mName +", mImage = "+ mImage +", steps = "+steps+"]";
     }
 }
