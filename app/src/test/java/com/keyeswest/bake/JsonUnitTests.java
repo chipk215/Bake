@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.keyeswest.bake.models.Recipe;
 
 import org.junit.Before;
-
 import org.junit.Test;
 
 import java.io.IOException;
@@ -36,7 +35,6 @@ public class JsonUnitTests {
         ClassLoader classLoader = getClass().getClassLoader();
         URL resource = classLoader.getResource("recipe.json");
         assertTrue(resource.getPath().endsWith("recipe.json"));
-        // File file = new File(resource.getPath());
 
         byte[] encoded = Files.readAllBytes(Paths.get(resource.getPath()));
         mRecipeJsonString = new String(encoded, StandardCharsets.UTF_8 );
@@ -58,7 +56,5 @@ public class JsonUnitTests {
             assertEquals(mIngredientCounts[i], recipes[i].getIngredients().size());
             assertEquals(mStepCounts[i], recipes[i].getSteps().size());
         }
-
-
     }
 }
