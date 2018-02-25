@@ -10,10 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_margin="6dp"
+        android:layout_margin="@dimen/recipe_card_layout_margin"
         android:elevation="3dp"
-        android:padding="4dp"
-        card_view:cardCornerRadius="4dp"
+        android:padding="@dimen/recipe_card_padding"
+        card_view:cardCornerRadius="@dimen/cardview_default_radius"
         card_view:contentPadding="8dp">
 
         <TextView
