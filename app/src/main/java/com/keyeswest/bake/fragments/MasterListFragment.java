@@ -5,7 +5,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
+
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,17 +40,26 @@ public class MasterListFragment extends Fragment {
 
 
         mRecipeRecyclerView = rootView.findViewById(R.id.recipe_recycler_view);
-        mRecipeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        int columns = getResources().getInteger(R.integer.recipe_grid_columns);
+        mRecipeRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),columns));
 
 
         List<Recipe> recipes = new ArrayList<>();
         Recipe r1 = new Recipe();
-        r1.setName("This is a very long recipe name, what happens? ");
+        r1.setName("Nutella Pie");
         recipes.add(r1);
 
         Recipe r2 = new Recipe();
-        r2.setName("Recipe 2");
+        r2.setName("Brownies");
         recipes.add(r2);
+
+        Recipe r3 = new Recipe();
+        r3.setName("Cheese Cake");
+        recipes.add(r3);
+
+        Recipe r4 = new Recipe();
+        r4.setName("ABCDEFGHIJKLM");
+        recipes.add(r4);
 
 
 

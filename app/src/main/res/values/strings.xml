@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Udacity Baker</string>
-    <string name="difficulty">Difficulty: </string>
+    <string name="difficulty">Difficulty</string>
     <!-- https://thediyfoodie.com/difficulty-levels/-->
     <string name="easy">Easy</string>
     <string name="average">Average</string>

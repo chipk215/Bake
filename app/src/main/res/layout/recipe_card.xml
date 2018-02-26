@@ -30,6 +30,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/app_name"
+                android:textAlignment="viewStart"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 card_view:layout_constraintEnd_toStartOf="@+id/guideline"
@@ -42,21 +43,20 @@
                 android:id="@+id/difficulty_lbl_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/difficulty"
                 android:textStyle="italic"
                 card_view:layout_constraintBaseline_toBaselineOf="@+id/recipe_name_tv"
-                card_view:layout_constraintStart_toStartOf="@+id/guideline" />
+                card_view:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
                 android:id="@+id/difficulty_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/average"
                 android:textSize="12sp"
-                card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintStart_toStartOf="@+id/difficulty_lbl_tv"
                 card_view:layout_constraintTop_toBottomOf="@+id/difficulty_lbl_tv" />
 
@@ -85,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                card_view:layout_constraintGuide_begin="190dp" />
+                card_view:layout_constraintGuide_begin="220dp" />
 
             <TextView
                 android:id="@+id/ingredient_count_tv"
