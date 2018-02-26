@@ -40,7 +40,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
         holder.ingredientCount.setText(Integer.toString(recipe.getIngredients().size()));
         holder.stepCount.setText(Integer.toString(recipe.getSteps().size()));
         holder.difficulty.setText(recipe.getComplexity(holder.itemView.getContext()));
-
+        holder.servings.setText(Integer.toString(recipe.getServings()));
 
     }
 
@@ -54,6 +54,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
         @BindView(R.id.ingredient_count_tv)TextView ingredientCount;
         @BindView(R.id.step_count_tv)TextView stepCount;
         @BindView(R.id.difficulty_tv)TextView difficulty;
+        @BindView(R.id.servings_tv)TextView servings;
 
         public RecipeHolder(View itemView) {
             super(itemView);

@@ -9,7 +9,7 @@
     <android.support.v7.widget.CardView
         android:id="@+id/recipe_card_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="142dp"
         android:layout_gravity="center"
         android:layout_margin="@dimen/recipe_card_layout_margin"
         android:elevation="2dp"
@@ -103,6 +103,25 @@
                 android:layout_marginStart="4dp"
                 card_view:layout_constraintBaseline_toBaselineOf="@+id/step_label_tv"
                 card_view:layout_constraintStart_toEndOf="@+id/step_label_tv"
+                tools:text="6" />
+
+            <TextView
+                android:id="@+id/serving_label_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/servings"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toBottomOf="@+id/step_label_tv" />
+
+            <TextView
+                android:id="@+id/servings_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                card_view:layout_constraintBaseline_toBaselineOf="@+id/serving_label_tv"
+                card_view:layout_constraintStart_toEndOf="@+id/serving_label_tv"
                 tools:text="6" />
 
 

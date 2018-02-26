@@ -21,7 +21,7 @@ public class Recipe {
     private String mId;
 
     @SerializedName("servings")
-    private String mServings;
+    private int mServings;
 
     @SerializedName("name")
     private String mName;
@@ -52,12 +52,12 @@ public class Recipe {
         this.mId = id;
     }
 
-    public String getServings ()
+    public int getServings ()
     {
         return mServings;
     }
 
-    public void setServings (String servings)
+    public void setServings (int servings)
     {
         this.mServings = servings;
     }

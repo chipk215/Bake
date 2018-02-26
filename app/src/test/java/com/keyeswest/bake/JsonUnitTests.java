@@ -28,6 +28,9 @@ public class JsonUnitTests {
     //note recipe 3 Yellow Cake does not have a step 7
     private final int[] mStepCounts = {7, 10, 13, 13};
 
+    private final int[] mServingCounts = {8, 8, 8, 8};
+
+
     private final int mNumberRecipes = 4;
 
     @Before
@@ -55,6 +58,7 @@ public class JsonUnitTests {
             assertEquals(mRecipeNames[i], recipes[i].getName());
             assertEquals(mIngredientCounts[i], recipes[i].getIngredients().size());
             assertEquals(mStepCounts[i], recipes[i].getSteps().size());
+            assertEquals(mServingCounts[i], recipes[i].getServings());
         }
     }
 }
