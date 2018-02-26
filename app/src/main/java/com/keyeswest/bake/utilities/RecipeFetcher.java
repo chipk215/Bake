@@ -7,6 +7,10 @@ import android.support.v4.content.Loader;
 
 
 import com.keyeswest.bake.loaders.RecipeLoader;
+import com.keyeswest.bake.models.Recipe;
+import com.keyeswest.bake.tasks.RecipeJsonDeserializer;
+
+import java.util.List;
 
 
 /**
@@ -23,7 +27,7 @@ public class RecipeFetcher implements LoaderManager.LoaderCallbacks<String>{
 
     private Context mContext;
 
-    private RecipeJsonResults mRecipeCallback;
+    private RecipeResults mRecipeCallback;
 
 
     //Implementing NetworkUtilities as a lazily loaded property for testing.
@@ -44,12 +48,12 @@ public class RecipeFetcher implements LoaderManager.LoaderCallbacks<String>{
 
 
 
-    public interface RecipeJsonResults {
-        void handleRecipeJSON(String recipeJson);
+    public interface RecipeResults {
+        void handleRecipes(List<Recipe> recipeList);
         void networkUnavailable();
     }
 
-    public RecipeFetcher(Context context, RecipeJsonResults callback){
+    public RecipeFetcher(Context context, RecipeResults callback){
         mContext = context;
         mRecipeCallback = callback;
 
@@ -64,14 +68,22 @@ public class RecipeFetcher implements LoaderManager.LoaderCallbacks<String>{
     }
 
     @Override
-    public void onLoadFinished(Loader<String> loader, String result) {
+    public void onLoadFinished(Loader<String> loader, String jsonResult) {
         // turn off loading indicator
 
-        if (result == null){
+        if (jsonResult == null){
             // show error message
         }else{
 
-            mRecipeCallback.handleRecipeJSON(result);
+            RecipeJsonDeserializer  deserializer = new RecipeJsonDeserializer(new RecipeJsonDeserializer.RecipeResultsCallback() {
+                @Override
+                public void recipeResult(List<Recipe> recipeList) {
+                    mRecipeCallback.handleRecipes(recipeList);
+                }
+            });
+
+            deserializer.execute(jsonResult);
+
         }
     }
 

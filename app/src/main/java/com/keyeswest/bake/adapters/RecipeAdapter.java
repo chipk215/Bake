@@ -37,6 +37,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
     public void onBindViewHolder(RecipeHolder holder, int position) {
         Recipe recipe = mRecipes.get(position);
         holder.name.setText(recipe.getName());
+        holder.ingredientCount.setText(Integer.toString(recipe.getIngredients().size()));
+        holder.stepCount.setText(Integer.toString(recipe.getSteps().size()));
+        holder.difficulty.setText(recipe.getComplexity(holder.itemView.getContext()));
+
 
     }
 
@@ -47,6 +51,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
 
     static class RecipeHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.recipe_name_tv) TextView name;
+        @BindView(R.id.ingredient_count_tv)TextView ingredientCount;
+        @BindView(R.id.step_count_tv)TextView stepCount;
+        @BindView(R.id.difficulty_tv)TextView difficulty;
 
         public RecipeHolder(View itemView) {
             super(itemView);

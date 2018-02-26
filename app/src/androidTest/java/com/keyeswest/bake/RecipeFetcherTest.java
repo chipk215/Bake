@@ -5,6 +5,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.keyeswest.bake.models.Recipe;
 import com.keyeswest.bake.utilities.NetworkUtilities;
 import com.keyeswest.bake.utilities.RecipeFetcher;
 
@@ -14,16 +15,27 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
 public class RecipeFetcherTest {
+
+    private final String[] mRecipeNames = {"Nutella Pie", "Brownies", "Yellow Cake", "Cheesecake"};
+
+    private final int[] mIngredientCounts = {9, 10, 10, 9};
+
+    //note recipe 3 Yellow Cake does not have a step 7
+    private final int[] mStepCounts = {7, 10, 13, 13};
+
+    private final int mNumberRecipes = 4;
 
     /**
      * The ActivityTestRule is a rule provided by Android used for functional testing of a single
@@ -42,13 +54,13 @@ public class RecipeFetcherTest {
         final CountDownLatch signal = new CountDownLatch(1);
 
         RecipeFetcher fetcher = new RecipeFetcher(InstrumentationRegistry.getTargetContext(),
-                new RecipeFetcher.RecipeJsonResults() {
+                new RecipeFetcher.RecipeResults() {
                     @Override
-                    public void handleRecipeJSON(String recipeJson) {
+                    public void handleRecipes(List<Recipe> recipeList) {
                         String fetchFailed = "Failed to fetch recipes";
-                        Assert.assertNotNull(fetchFailed, recipeJson);
-                        String contentFailed = "Failed to find expected content";
-                        Assert.assertTrue(contentFailed,recipeJson.contains("Nutella Pie"));
+                        Assert.assertNotNull(fetchFailed, recipeList);
+                        checkRecipes(recipeList);
+
 
                         signal.countDown();
                     }
@@ -85,9 +97,9 @@ public class RecipeFetcherTest {
                 .getTargetContext())).thenReturn(false);
 
         RecipeFetcher fetcher = new RecipeFetcher(InstrumentationRegistry.getTargetContext(),
-                new RecipeFetcher.RecipeJsonResults() {
+                new RecipeFetcher.RecipeResults() {
                     @Override
-                    public void handleRecipeJSON(String recipeJson) {
+                    public void handleRecipes(List<Recipe> recipeList) {
                         // Should not get this invocation
                         fail("No json response expected");
 
@@ -111,6 +123,20 @@ public class RecipeFetcherTest {
 
         boolean result = signal.await(30, TimeUnit.SECONDS);
         Assert.assertTrue("Signal timed out waiting for network response",result);
+    }
+
+
+    private void checkRecipes(List<Recipe> recipeList){
+
+        String contentFailed = "Failed to find expected content";
+        Assert.assertTrue(contentFailed,
+                recipeList.get(0).getName().contains("Nutella Pie"));
+        assertEquals(mNumberRecipes, recipeList.size());
+        for (int i=0; i< mNumberRecipes; i++){
+            assertEquals(mRecipeNames[i], recipeList.get(i).getName());
+            assertEquals(mIngredientCounts[i], recipeList.get(i).getIngredients().size());
+            assertEquals(mStepCounts[i], recipeList.get(i).getSteps().size());
+        }
     }
 
 

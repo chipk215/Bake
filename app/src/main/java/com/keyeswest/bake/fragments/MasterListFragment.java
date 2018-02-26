@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.keyeswest.bake.R;
 import com.keyeswest.bake.adapters.RecipeAdapter;
 import com.keyeswest.bake.models.Recipe;
+import com.keyeswest.bake.utilities.RecipeFetcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +32,35 @@ public class MasterListFragment extends Fragment {
 
     private Unbinder mUnbinder;
 
+    private RecipeFetcher mRecipeFetcher;
+
+    private List<Recipe> mRecipeList;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+
+        mRecipeFetcher = new RecipeFetcher(getContext(), new RecipeFetcher.RecipeResults() {
+            @Override
+            public void handleRecipes(List<Recipe> recipeList) {
+                mRecipeList = recipeList;
+                mRecipeAdapter = new RecipeAdapter(recipeList);
+                if (isAdded()){
+                    mRecipeRecyclerView.setAdapter(mRecipeAdapter);
+                }
+
+            }
+
+            @Override
+            public void networkUnavailable() {
+
+            }
+        });
     }
 
     @Nullable
@@ -49,29 +76,7 @@ public class MasterListFragment extends Fragment {
         int columns = getResources().getInteger(R.integer.recipe_grid_columns);
         mRecipeRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),columns));
 
-
-        List<Recipe> recipes = new ArrayList<>();
-        Recipe r1 = new Recipe();
-        r1.setName("Nutella Pie");
-        recipes.add(r1);
-
-        Recipe r2 = new Recipe();
-        r2.setName("Brownies");
-        recipes.add(r2);
-
-        Recipe r3 = new Recipe();
-        r3.setName("Cheese Cake");
-        recipes.add(r3);
-
-        Recipe r4 = new Recipe();
-        r4.setName("ABCDEFGHIJKLM");
-        recipes.add(r4);
-
-
-
-        if (isAdded()){
-            mRecipeRecyclerView.setAdapter(new RecipeAdapter(recipes));
-        }
+        mRecipeFetcher.fetchRecipes(getActivity().getSupportLoaderManager());
 
         return rootView;
     }

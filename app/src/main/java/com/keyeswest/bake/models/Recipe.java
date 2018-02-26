@@ -1,11 +1,18 @@
 package com.keyeswest.bake.models;
 
 
+import android.content.Context;
+
 import com.google.gson.annotations.SerializedName;
+import com.keyeswest.bake.R;
 
 import java.util.List;
 
 public class Recipe {
+
+    private static final int EASY_THRESHOLD = 15;
+    private static final int AVERAGE_THRESHOLD = 25;
+
 
     @SerializedName("ingredients")
     private List<Ingredient> mIngredients;
@@ -23,7 +30,7 @@ public class Recipe {
     private String mImage;
 
     @SerializedName("steps")
-    private List<Step> steps;
+    private List<Step> mSteps;
 
     public List<Ingredient> getIngredients ()
     {
@@ -77,17 +84,29 @@ public class Recipe {
 
     public List<Step> getSteps ()
     {
-        return steps;
+        return mSteps;
     }
 
     public void setSteps (List<Step> steps)
     {
-        this.steps = steps;
+        this.mSteps = steps;
+    }
+
+    public String getComplexity(Context context){
+         int sum = mSteps.size() + mIngredients.size();
+          if (sum < EASY_THRESHOLD){
+              return context.getResources().getString(R.string.easy);
+          } else if(sum < AVERAGE_THRESHOLD){
+              return context.getResources().getString(R.string.average);
+          }
+
+          return context.getResources().getString(R.string.difficult);
+
     }
 
     @Override
     public String toString()
     {
-        return "Recipe Ingredients = "+ mIngredients +", mId = "+ mId +", mServings = "+ mServings +", mName = "+ mName +", mImage = "+ mImage +", steps = "+steps+"]";
+        return "Recipe Ingredients = "+ mIngredients +", mId = "+ mId +", mServings = "+ mServings +", mName = "+ mName +", mImage = "+ mImage +", mSteps = "+ mSteps +"]";
     }
 }
