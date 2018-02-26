@@ -17,7 +17,6 @@ import com.keyeswest.bake.adapters.RecipeAdapter;
 import com.keyeswest.bake.models.Recipe;
 import com.keyeswest.bake.utilities.RecipeFetcher;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;

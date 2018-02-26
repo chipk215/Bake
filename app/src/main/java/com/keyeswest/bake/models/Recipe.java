@@ -14,6 +14,7 @@ public class Recipe {
     private static final int AVERAGE_THRESHOLD = 25;
 
 
+
     @SerializedName("ingredients")
     private List<Ingredient> mIngredients;
 
