@@ -19,11 +19,17 @@ import com.keyeswest.bake.models.Recipe;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 public class MasterListFragment extends Fragment {
 
-    private RecyclerView mRecipeRecyclerView;
+    @BindView(R.id.recipe_recycler_view)  RecyclerView mRecipeRecyclerView;
 
     private RecipeAdapter mRecipeAdapter;
+
+    private Unbinder mUnbinder;
 
     @Override
     public void onAttach(Context context) {
@@ -37,9 +43,9 @@ public class MasterListFragment extends Fragment {
 
         final View rootView = inflater.inflate(R.layout.fragment_master_list,
                 container, false);
+        mUnbinder = ButterKnife.bind(this, rootView);
 
 
-        mRecipeRecyclerView = rootView.findViewById(R.id.recipe_recycler_view);
         int columns = getResources().getInteger(R.integer.recipe_grid_columns);
         mRecipeRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),columns));
 
@@ -68,5 +74,12 @@ public class MasterListFragment extends Fragment {
         }
 
         return rootView;
+    }
+
+
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 }

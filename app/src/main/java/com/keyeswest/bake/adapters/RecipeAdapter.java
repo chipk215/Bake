@@ -12,6 +12,9 @@ import com.keyeswest.bake.models.Recipe;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHolder> {
 
     private final List<Recipe> mRecipes;
@@ -43,11 +46,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
     }
 
     static class RecipeHolder extends RecyclerView.ViewHolder{
-        public TextView name;
+        @BindView(R.id.recipe_name_tv) TextView name;
 
         public RecipeHolder(View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.recipe_name_tv);
+            ButterKnife.bind(this, itemView);
+         //   name = itemView.findViewById(R.id.recipe_name_tv);
 
         }
     }
