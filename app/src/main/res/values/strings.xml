@@ -1,11 +1,17 @@
 <resources>
-    <string name="app_name">Udacity Baker</string>
-    <string name="difficulty">Difficulty</string>
 
-    <string name="easy">Easy</string>
+    <string name="app_name">Udacity Baker</string>
+
+    <!-- Error View Strings -->
+    <string name="download_error">Oh no! Unable to fetch recipe data.</string>
+    <string name="btn_retry">Retry</string>
+    <string name="check_network">Check WiFi settings.</string>
+
+    <!-- Recipe and fragment master list -->
     <string name="average">Average</string>
     <string name="difficult">Difficult</string>
-
+    <string name="difficulty">Difficulty</string>
+    <string name="easy">Easy</string>
     <string name="ingredient_count">Ingredient Count: </string>
     <string name="prep_steps">Preparation Steps: </string>
     <string name="servings">Servings: </string>

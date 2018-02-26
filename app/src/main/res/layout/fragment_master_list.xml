@@ -11,5 +11,10 @@
         android:layout_height="match_parent"
         />
 
+    <!-- Attribution http://blog.iamsuleiman.com/android-pagination-error-handling/ -->
+    <include
+        layout="@layout/error_layout"
+        />
+
 
 </FrameLayout>
