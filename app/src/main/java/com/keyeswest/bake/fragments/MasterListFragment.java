@@ -44,7 +44,7 @@ public class MasterListFragment extends Fragment {
 
         List<Recipe> recipes = new ArrayList<>();
         Recipe r1 = new Recipe();
-        r1.setName("Recipe 1");
+        r1.setName("This is a very long recipe name, what happens? ");
         recipes.add(r1);
 
         Recipe r2 = new Recipe();

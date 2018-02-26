@@ -47,7 +47,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
 
         public RecipeHolder(View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.card_name_tv);
+            name = itemView.findViewById(R.id.recipe_name_tv);
 
         }
     }
