@@ -2,9 +2,6 @@ package com.keyeswest.bake.adapters;
 
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
-import android.graphics.drawable.Drawable;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 
@@ -14,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.keyeswest.bake.R;
-import com.keyeswest.bake.databinding.RecipeCardBinding;
+
 import com.keyeswest.bake.models.Recipe;
 
 import java.util.List;
@@ -63,7 +60,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
         public RecipeHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
-
 
         }
 
