@@ -4,6 +4,8 @@
 
     <string name="thumbnail">Recipe Image</string>
 
+    <string name="recipe_json" translatable="false">recipe.json</string>
+
     <!-- Error View Strings -->
     <string name="download_error">Oh no! Unable to fetch recipe data.</string>
     <string name="btn_retry">Retry</string>

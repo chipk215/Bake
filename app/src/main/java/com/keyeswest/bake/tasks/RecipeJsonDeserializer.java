@@ -1,43 +1,75 @@
 package com.keyeswest.bake.tasks;
 
 
+import android.content.Context;
+import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.gson.Gson;
+import com.keyeswest.bake.R;
 import com.keyeswest.bake.models.Recipe;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class RecipeJsonDeserializer extends AsyncTask<String, Void, List<Recipe>> {
+public class RecipeJsonDeserializer extends AsyncTask<Void, Void, List<Recipe>> {
+    private final static String TAG = "RecipeJsonDeserializer";
+
 
     private List<Recipe> recipes;
     final private RecipeResultsCallback mCallback;
+    final private Context mContext;
 
     public interface RecipeResultsCallback{
         void recipeResult(List<Recipe> recipeList);
     }
 
-    public RecipeJsonDeserializer(RecipeResultsCallback callback) {
+    public RecipeJsonDeserializer(Context context, RecipeResultsCallback callback) {
 
         mCallback = callback;
         recipes = new ArrayList<>();
+        mContext = context;
     }
 
     @Override
-    protected List<Recipe> doInBackground(String... strings) {
-        if ((strings.length == 1) && (strings[0] != null)){
-            Gson gson = new Gson();
-            Recipe[] recipeArray = gson.fromJson(strings[0], Recipe[].class);
+    protected List<Recipe> doInBackground(Void... parameters) {
 
+        String jsonData = readJsonFromAssets();
+        if (jsonData != null){
+            Gson gson = new Gson();
+            Recipe[] recipeArray = gson.fromJson(jsonData, Recipe[].class);
             recipes = Arrays.asList(recipeArray);
         }
+
         return recipes;
     }
+
 
     @Override
     protected void onPostExecute(List<Recipe> recipeList){
         mCallback.recipeResult(recipeList);
+    }
+
+    private String readJsonFromAssets() {
+
+        try{
+            AssetManager manager = mContext.getAssets();
+
+            InputStream inputStream = manager.open(mContext.getString(R.string.recipe_json));
+            int size = inputStream.available();
+            byte[] buffer = new byte[size];
+            inputStream.read(buffer);
+            inputStream.close();
+            return new String(buffer, "UTF-8");
+        }catch(IOException ioe){
+            Log.e(TAG, "Failed to read recipe.json file from assets. " + ioe);
+            return null;
+        }
+
     }
 }

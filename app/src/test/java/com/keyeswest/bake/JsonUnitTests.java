@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -41,6 +42,8 @@ public class JsonUnitTests {
 
         byte[] encoded = Files.readAllBytes(Paths.get(resource.getPath()));
         mRecipeJsonString = new String(encoded, StandardCharsets.UTF_8 );
+
+
     }
 
     @Test
