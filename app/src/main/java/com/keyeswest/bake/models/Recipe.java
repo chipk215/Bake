@@ -2,6 +2,7 @@ package com.keyeswest.bake.models;
 
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 
 import com.google.gson.annotations.SerializedName;
 import com.keyeswest.bake.R;
@@ -19,7 +20,7 @@ public class Recipe {
     private List<Ingredient> mIngredients;
 
     @SerializedName("id")
-    private String mId;
+    private int mId;
 
     @SerializedName("servings")
     private int mServings;
@@ -33,6 +34,20 @@ public class Recipe {
     @SerializedName("steps")
     private List<Step> mSteps;
 
+    public Drawable getThumbnail(Context context) {
+        switch(mId){
+            case 1: return  context.getResources().getDrawable(R.drawable.nutella);
+            case 2: return  context.getResources().getDrawable(R.drawable.brownie);
+            case 3: return  context.getResources().getDrawable(R.drawable.yellowcake);
+            case 4: return  context.getResources().getDrawable(R.drawable.cheesecake);
+            default:
+                 return context.getResources().getDrawable(R.drawable.baking);
+
+        }
+    }
+
+    private Drawable thumbnail;
+
     public List<Ingredient> getIngredients ()
     {
         return mIngredients;
@@ -43,12 +58,12 @@ public class Recipe {
         this.mIngredients = ingredients;
     }
 
-    public String getId ()
+    public int getId ()
     {
         return mId;
     }
 
-    public void setId (String id)
+    public void setId (int id)
     {
         this.mId = id;
     }
