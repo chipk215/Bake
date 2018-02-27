@@ -3,17 +3,21 @@ package com.keyeswest.bake.models;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
 import com.keyeswest.bake.R;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
 
 public class Recipe {
+    private static final String TAG="Recipe";
 
     private static final int EASY_THRESHOLD = 15;
     private static final int AVERAGE_THRESHOLD = 25;
-
 
 
     @SerializedName("ingredients")
@@ -28,21 +32,28 @@ public class Recipe {
     @SerializedName("name")
     private String mName;
 
-    @SerializedName("image")
-    private String mImage;
 
     @SerializedName("steps")
     private List<Step> mSteps;
 
-    public Drawable getThumbnail(Context context) {
-        switch(mId){
-            case 1: return  context.getResources().getDrawable(R.drawable.nutella);
-            case 2: return  context.getResources().getDrawable(R.drawable.brownie);
-            case 3: return  context.getResources().getDrawable(R.drawable.yellowcake);
-            case 4: return  context.getResources().getDrawable(R.drawable.cheesecake);
-            default:
-                 return context.getResources().getDrawable(R.drawable.baking);
 
+    @SerializedName("image")
+    private String mRecipeImageUriString;
+
+
+    public Drawable getDrawableRecipeImage(Context context){
+        Drawable result;
+        try{
+            Uri uri = Uri.parse(mRecipeImageUriString);
+            InputStream inputStream =
+                    context.getContentResolver().openInputStream(uri);
+            result = Drawable.createFromStream(inputStream, uri.toString());
+            return result;
+
+        }catch(FileNotFoundException fne){
+            Log.e(TAG, "Error accessing Recipe Image Drawable" + fne);
+            result = context.getResources().getDrawable(R.drawable.baking);
+            return result;
         }
     }
 
@@ -88,16 +99,6 @@ public class Recipe {
         this.mName = name;
     }
 
-    public String getImage ()
-    {
-        return mImage;
-    }
-
-    public void setImage (String image)
-    {
-        this.mImage = image;
-    }
-
     public List<Step> getSteps ()
     {
         return mSteps;
@@ -106,6 +107,14 @@ public class Recipe {
     public void setSteps (List<Step> steps)
     {
         this.mSteps = steps;
+    }
+
+    public String getRecipeImageUriString() {
+        return mRecipeImageUriString;
+    }
+
+    public void setRecipeImageUriString(String recipeImageUriString) {
+        mRecipeImageUriString = recipeImageUriString;
     }
 
     public String getComplexity(Context context){
@@ -123,6 +132,8 @@ public class Recipe {
     @Override
     public String toString()
     {
-        return "Recipe Ingredients = "+ mIngredients +", mId = "+ mId +", mServings = "+ mServings +", mName = "+ mName +", mImage = "+ mImage +", mSteps = "+ mSteps +"]";
+        return "Recipe Ingredients = "+ mIngredients +", mId = "+ mId +", mServings = "
+                + mServings +", mName = "+ mName +", mImage = "+ mRecipeImageUriString
+                +", mSteps = "+ mSteps +"]";
     }
 }

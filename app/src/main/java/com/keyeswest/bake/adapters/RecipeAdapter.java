@@ -68,7 +68,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
         }
 
         public void bind(Recipe recipe){
-            mImageView.setImageDrawable(recipe.getThumbnail(this.itemView.getContext()));
+            mImageView.setImageDrawable(recipe.getDrawableRecipeImage(this.itemView.getContext()));
             mRecipeNameTextView.setText(recipe.getName());
             mRecipeNameTextView.bringToFront();
 

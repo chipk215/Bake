@@ -24,6 +24,13 @@ public class JsonUnitTests {
 
     private final String[] mRecipeNames = {"Nutella Pie", "Brownies", "Yellow Cake", "Cheesecake"};
 
+    private final String[] mImageURLS = {
+            "android.resource://com.keyeswest.bake/drawable/nutella",
+            "android.resource://com.keyeswest.bake/drawable/brownie",
+            "android.resource://com.keyeswest.bake/drawable/yellowcake",
+            "android.resource://com.keyeswest.bake/drawable/cheesecake"
+    };
+
     private final int[] mIngredientCounts = {9, 10, 10, 9};
 
     //note recipe 3 Yellow Cake does not have a step 7
@@ -62,6 +69,8 @@ public class JsonUnitTests {
             assertEquals(mIngredientCounts[i], recipes[i].getIngredients().size());
             assertEquals(mStepCounts[i], recipes[i].getSteps().size());
             assertEquals(mServingCounts[i], recipes[i].getServings());
+            assertEquals(mImageURLS[i], recipes[i].getRecipeImageUriString());
+
         }
     }
 }
