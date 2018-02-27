@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.keyeswest.bake.R;
 import com.keyeswest.bake.databinding.RecipeCardBinding;
@@ -36,10 +37,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
 
         mContext = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        RecipeCardBinding binding =
-                DataBindingUtil.inflate(inflater, R.layout.recipe_card, parent, false);
+        View view = inflater.inflate(R.layout.recipe_card, parent, false);
 
-        return new RecipeHolder(binding);
+
+        return new RecipeHolder(view);
     }
 
 
@@ -56,20 +57,20 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
     }
 
     static class RecipeHolder extends RecyclerView.ViewHolder{
+        @BindView(R.id.recipe_image_view)ImageView mImageView;
+        @BindView(R.id.recipe_name_tv)TextView mRecipeNameTextView;
 
-        private final RecipeCardBinding binding;
-
-        public RecipeHolder(RecipeCardBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
+        public RecipeHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this,itemView);
 
 
         }
 
         public void bind(Recipe recipe){
-            binding.setRecipe(recipe);
-            binding.executePendingBindings();
-
+            mImageView.setImageDrawable(recipe.getThumbnail(this.itemView.getContext()));
+            mRecipeNameTextView.setText(recipe.getName());
+            mRecipeNameTextView.bringToFront();
 
         }
     }
