@@ -42,6 +42,9 @@ public class Recipe implements Parcelable{
     @SerializedName("image")
     private String mRecipeImageUriString;
 
+    @SerializedName("description")
+    private String mDescription;
+
 
     public static final Parcelable.Creator<Recipe> CREATOR
             = new Parcelable.Creator<Recipe>() {
@@ -62,6 +65,7 @@ public class Recipe implements Parcelable{
         mName = in.readString();
         in.readTypedList(mSteps, Step.CREATOR);
         mRecipeImageUriString = in.readString();
+        mDescription = in.readString();
 
     }
 
@@ -142,6 +146,15 @@ public class Recipe implements Parcelable{
         mRecipeImageUriString = recipeImageUriString;
     }
 
+
+    public String getDescription() {
+        return mDescription;
+    }
+
+    public void setDescription(String description) {
+        mDescription = description;
+    }
+
     public String getComplexity(Context context){
          int sum = mSteps.size() + mIngredients.size();
           if (sum < EASY_THRESHOLD){
@@ -175,5 +188,6 @@ public class Recipe implements Parcelable{
         dest.writeString(mName);
         dest.writeTypedList(mSteps);
         dest.writeString(mRecipeImageUriString);
+        dest.writeString(mDescription);
     }
 }

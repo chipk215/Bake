@@ -2,6 +2,7 @@
   {
     "id": 1,
     "name": "Nutella Pie",
+    "description": "I had a graham cracker crust and a jar of Nutella® to use up, and this recipe was born. This pie takes literally 5 minutes to make and is similar to a fluffy chocolate mousse pie, but with a flavor twist. Enjoy!",
     "ingredients": [
       {
         "quantity": 2,
@@ -36,7 +37,7 @@
       {
         "quantity": 500,
         "measure": "G",
-        "ingredient": "Mascapone Cheese(room temperature)"
+        "ingredient": "Mascarpone Cheese(room temperature)"
       },
       {
         "quantity": 1,
@@ -106,6 +107,7 @@
   {
     "id": 2,
     "name": "Brownies",
+    "description":"Better than box-mix by a thousand miles, these easy homemade brownies from scratch are made in one bowl and are supremely chocolaty, fudgy, and delicious. This the ultimate moist, chewy brownie recipe — completely from scratch.",
     "ingredients": [
       {
         "quantity": 350,
@@ -236,6 +238,7 @@
   {
     "id": 3,
     "name": "Yellow Cake",
+    "description": "Everyone needs a good scratch yellow cake recipe in their recipe box. This no-fail recipe is quick to prepare and easy to make—with a few steps and basic pantry ingredients, you can have it in the oven in just 20 minutes.",
     "ingredients": [
       {
         "quantity": 400,
@@ -387,6 +390,7 @@
   {
     "id": 4,
     "name": "Cheesecake",
+    "description" : "Simple classic cheesecake in a graham cracker crust, dense and delicious.",
     "ingredients": [
       {
         "quantity": 2,
