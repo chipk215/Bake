@@ -52,6 +52,9 @@ public class MasterListFragment extends Fragment {
 
     @BindView(R.id.recipe_recycler_view)  RecyclerView mRecipeRecyclerView;
 
+    // Mandatory empty constructor
+    public MasterListFragment() {}
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -96,8 +99,6 @@ public class MasterListFragment extends Fragment {
                         });
 
         deserializer.execute();
-
-
 
         return rootView;
     }

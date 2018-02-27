@@ -42,9 +42,11 @@ public class Recipe implements Parcelable{
     @SerializedName("image")
     private String mRecipeImageUriString;
 
+
+    //Attribution: Recipe descriptions were copied from similar recipes on the web. Just to
+    // provide content for this assignment.
     @SerializedName("description")
     private String mDescription;
-
 
     public static final Parcelable.Creator<Recipe> CREATOR
             = new Parcelable.Creator<Recipe>() {
