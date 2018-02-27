@@ -1,12 +1,15 @@
 package com.keyeswest.bake.models;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class Step {
+public class Step implements Parcelable{
 
     @SerializedName("id")
-    private String mId;
+    private int mId;
 
     @SerializedName("shortDescription")
     private String mShortDescription;
@@ -20,12 +23,30 @@ public class Step {
     @SerializedName("thumbnailURL")
     private String mThumbnailURL;
 
-    public String getId ()
+    public static final Parcelable.Creator<Step> CREATOR = new Parcelable.Creator<Step>(){
+        public Step createFromParcel(Parcel in) {
+            return new Step(in);
+        }
+
+        public Step[] newArray(int size){
+            return new Step[size];
+        }
+    };
+
+    private Step(Parcel in){
+        mId = in.readInt();
+        mShortDescription = in.readString();
+        mDescription = in.readString();
+        mVideoURL = in.readString();
+        mThumbnailURL = in.readString();
+    }
+
+    public int getId ()
     {
         return mId;
     }
 
-    public void setId (String id)
+    public void setId (int id)
     {
         this.mId = id;
     }
@@ -73,6 +94,23 @@ public class Step {
     @Override
     public String toString()
     {
-        return "Step [mId = "+ mId +", mShortDescription = "+ mShortDescription +", mDescription = "+ mDescription +", mVideoURL = "+ mVideoURL +", mThumbnailURL = "+ mThumbnailURL +"]";
+        return "Step [mId = "+ mId +", mShortDescription = "+ mShortDescription
+                +", mDescription = "+ mDescription +", mVideoURL = "+ mVideoURL
+                +", mThumbnailURL = "+ mThumbnailURL +"]";
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+       dest.writeInt(mId);
+       dest.writeString(mShortDescription);
+       dest.writeString(mDescription);
+       dest.writeString(mVideoURL);
+       dest.writeString(mThumbnailURL);
+
     }
 }

@@ -21,11 +21,19 @@ import butterknife.ButterKnife;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHolder> {
 
+    public interface OnItemClickListener{
+        void onItemClick(Recipe recipe);
+    }
+
+    private final OnItemClickListener mListener;
+
     private final List<Recipe> mRecipes;
 
-    public RecipeAdapter(List<Recipe> recipes){
+    public RecipeAdapter(List<Recipe> recipes, OnItemClickListener listener){
         mRecipes = recipes;
+        mListener = listener;
     }
+
 
     Context mContext;
 
@@ -44,7 +52,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
     @Override
     public void onBindViewHolder(RecipeHolder holder, int position) {
         Recipe recipe = mRecipes.get(position);
-        holder.bind(recipe);
+        holder.bind(recipe, mListener);
 
     }
 
@@ -63,10 +71,17 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
 
         }
 
-        public void bind(Recipe recipe){
+        public void bind(final Recipe recipe, final OnItemClickListener listener){
             mImageView.setImageDrawable(recipe.getDrawableRecipeImage(this.itemView.getContext()));
             mRecipeNameTextView.setText(recipe.getName());
             mRecipeNameTextView.bringToFront();
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(recipe);
+                }
+            });
 
         }
     }
