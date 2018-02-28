@@ -33,6 +33,8 @@ public class Step implements Parcelable{
         }
     };
 
+    public Step(){}
+
     private Step(Parcel in){
         mId = in.readInt();
         mShortDescription = in.readString();

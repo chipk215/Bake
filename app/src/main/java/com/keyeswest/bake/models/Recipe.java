@@ -61,6 +61,8 @@ public class Recipe implements Parcelable{
         }
     };
 
+    public Recipe(){}
+
     private Recipe(Parcel in){
 
         mIngredients = new ArrayList<>();

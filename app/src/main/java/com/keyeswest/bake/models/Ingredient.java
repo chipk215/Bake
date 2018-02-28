@@ -15,7 +15,7 @@ public class Ingredient implements Parcelable{
     private String mIngredientName;
 
     @SerializedName("quantity")
-    private String mQuantity;
+    private float mQuantity;
 
     public static final Parcelable.Creator<Ingredient> CREATOR
             = new Parcelable.Creator<Ingredient>(){
@@ -31,10 +31,12 @@ public class Ingredient implements Parcelable{
         }
     };
 
+    public Ingredient(){}
+
     private Ingredient(Parcel in){
         mIngredientName = in.readString();
         mMeasure = in.readString();
-        mQuantity = in.readString();
+        mQuantity = in.readFloat();
 
     }
 
@@ -58,12 +60,12 @@ public class Ingredient implements Parcelable{
         this.mIngredientName = ingredientName;
     }
 
-    public String getQuantity ()
+    public float getQuantity ()
     {
         return mQuantity;
     }
 
-    public void setQuantity (String quantity)
+    public void setQuantity (float quantity)
     {
         this.mQuantity = quantity;
     }
@@ -83,6 +85,6 @@ public class Ingredient implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mIngredientName);
         dest.writeString(mMeasure);
-        dest.writeString(mQuantity);
+        dest.writeFloat(mQuantity);
     }
 }
