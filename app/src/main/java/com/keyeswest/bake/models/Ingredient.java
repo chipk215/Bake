@@ -32,8 +32,8 @@ public class Ingredient implements Parcelable{
     };
 
     private Ingredient(Parcel in){
-        mMeasure = in.readString();
         mIngredientName = in.readString();
+        mMeasure = in.readString();
         mQuantity = in.readString();
 
     }

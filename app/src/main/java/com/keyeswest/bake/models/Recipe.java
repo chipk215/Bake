@@ -13,6 +13,7 @@ import com.keyeswest.bake.R;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Recipe implements Parcelable{
@@ -61,13 +62,23 @@ public class Recipe implements Parcelable{
     };
 
     private Recipe(Parcel in){
+
+        mIngredients = new ArrayList<>();
         in.readTypedList(mIngredients, Ingredient.CREATOR);
+
         mId = in.readInt();
+
         mServings = in.readInt();
+
         mName = in.readString();
+
+        mSteps = new ArrayList<>();
         in.readTypedList(mSteps, Step.CREATOR);
+
         mRecipeImageUriString = in.readString();
+
         mDescription = in.readString();
+
 
     }
 

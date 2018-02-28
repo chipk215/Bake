@@ -1,6 +1,7 @@
 package com.keyeswest.bake;
 
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +18,6 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
     }
 
 
@@ -26,8 +26,8 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
     protected void onStop(){
 
         super.onStop();
-
     }
+
 
     @Override
     public void onRecipeSelected(Bundle recipeBundle) {
@@ -37,6 +37,9 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
         }else{
             Log.e(TAG, "Error, no recipe returned");
         }
+
+        Intent intent = RecipeDetailActivity.newIntent(this, recipe);
+        startActivity(intent);
 
     }
 }
