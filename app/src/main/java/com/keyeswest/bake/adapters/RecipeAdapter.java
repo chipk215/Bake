@@ -7,10 +7,6 @@ import android.view.LayoutInflater;
 
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.keyeswest.bake.R;
 
 import com.keyeswest.bake.databinding.RecipeCardBinding;
 import com.keyeswest.bake.models.Recipe;
@@ -18,8 +14,7 @@ import com.keyeswest.bake.models.RecipeViewModel;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHolder> {
 
@@ -66,13 +61,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
 
     static class RecipeHolder extends RecyclerView.ViewHolder{
         private final RecipeCardBinding binding;
-        @BindView(R.id.recipe_image_view)ImageView mImageView;
-        @BindView(R.id.recipe_name_tv)TextView mRecipeNameTextView;
 
         public RecipeHolder(RecipeCardBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-            ButterKnife.bind(this,itemView);
+
 
         }
 
@@ -81,7 +74,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
 
             binding.setRecipe(viewModel);
             binding.executePendingBindings();
-            mRecipeNameTextView.bringToFront();
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

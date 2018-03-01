@@ -9,5 +9,6 @@
     <dimen name="recipe_card_corner_radius">4dp</dimen>
     <dimen name="recipe_card_padding">4dp</dimen>
     <dimen name="recipe_card_layout_margin">6dp</dimen>
+    <dimen name="recipe_card_text_elevation">20dp</dimen>
     <integer name="recipe_grid_columns">1</integer>
 </resources>
