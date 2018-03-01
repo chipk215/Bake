@@ -20,4 +20,37 @@
     <string name="prep_steps">Preparation Steps: </string>
 
     <string name="servings">Servings: </string>
+
+    <!-- Ingredient Measures  -->
+
+    <plurals name="gram_plural">
+        <item quantity="one">gram</item>
+        <item quantity="other">grams</item>
+    </plurals>
+
+    <plurals name="cup_plural">
+        <item quantity="one">cup</item>
+        <item quantity="other">cups</item>
+    </plurals>
+
+    <plurals name="tablespoon_plural">
+        <item quantity="one">tablespoon</item>
+        <item quantity="other">tablespoons</item>
+    </plurals>
+
+    <plurals name="teaspoon_plural">
+        <item quantity="one">teaspoon</item>
+        <item quantity="other">teaspoons</item>
+    </plurals>
+
+    <plurals name="kilogram_plural">
+        <item quantity="one">kilogram</item>
+        <item quantity="other">kilograms</item>
+    </plurals>
+
+    <plurals name="ounce_plural">
+        <item quantity="one">ounce</item>
+        <item quantity="other">ounces</item>
+    </plurals>
+
 </resources>
