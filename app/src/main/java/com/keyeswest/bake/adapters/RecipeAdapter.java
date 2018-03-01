@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.keyeswest.bake.R;
 
+import com.keyeswest.bake.databinding.RecipeCardBinding;
 import com.keyeswest.bake.models.Recipe;
 import com.keyeswest.bake.models.RecipeViewModel;
 
@@ -43,16 +44,17 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
 
         mContext = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.recipe_card, parent, false);
 
+        RecipeCardBinding recipeBinding = RecipeCardBinding.inflate(inflater, parent, false);
+        return new RecipeHolder(recipeBinding);
 
-        return new RecipeHolder(view);
     }
 
 
     @Override
     public void onBindViewHolder(RecipeHolder holder, int position) {
         Recipe recipe = mRecipes.get(position);
+
         holder.bind(recipe, mListener);
 
     }
@@ -63,19 +65,22 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
     }
 
     static class RecipeHolder extends RecyclerView.ViewHolder{
+        private final RecipeCardBinding binding;
         @BindView(R.id.recipe_image_view)ImageView mImageView;
         @BindView(R.id.recipe_name_tv)TextView mRecipeNameTextView;
 
-        public RecipeHolder(View itemView) {
-            super(itemView);
+        public RecipeHolder(RecipeCardBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
             ButterKnife.bind(this,itemView);
 
         }
 
         public void bind(final Recipe recipe, final OnItemClickListener listener){
             RecipeViewModel viewModel = new RecipeViewModel(this.itemView.getContext(),recipe);
-            mImageView.setImageDrawable(viewModel.getDrawableRecipeImage());
-            mRecipeNameTextView.setText(viewModel.getName());
+
+            binding.setRecipe(viewModel);
+            binding.executePendingBindings();
             mRecipeNameTextView.bringToFront();
 
             itemView.setOnClickListener(new View.OnClickListener() {

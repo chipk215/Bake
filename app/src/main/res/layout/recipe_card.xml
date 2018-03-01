@@ -1,50 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<layout>
+        <data>
+                <variable name="recipe" type="com.keyeswest.bake.models.RecipeViewModel"/>
+        </data>
 
-<LinearLayout xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools">
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/recipe_card_view"
+        <LinearLayout xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/recipe_card_layout_margin"
-            android:elevation="2dp"
-            android:padding="@dimen/recipe_card_padding"
-            card_view:cardBackgroundColor="@color/colorAccent"
-            card_view:cardCornerRadius="@dimen/cardview_default_radius"
-            card_view:contentPadding="8dp">
+            xmlns:tools="http://schemas.android.com/tools">
 
-
-                <TextView
-                    android:id="@+id/recipe_name_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_gravity="start|top"
-                    android:textColor="@android:color/background_light"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    tools:text="Recipe Name" />
-
-
-                <ImageView
-                    android:id="@+id/recipe_image_view"
+                <android.support.v7.widget.CardView
+                    android:id="@+id/recipe_card_view"
                     android:layout_width="match_parent"
-                    android:layout_height="135dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginTop="8dp"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@string/thumbnail"
-                    android:scaleType="centerCrop"
-                    />
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/recipe_card_layout_margin"
+                    android:elevation="2dp"
+                    android:padding="@dimen/recipe_card_padding"
+                    card_view:cardBackgroundColor="@color/colorAccent"
+                    card_view:cardCornerRadius="@dimen/cardview_default_radius"
+                    card_view:contentPadding="8dp">
 
 
-        </android.support.v7.widget.CardView>
+                        <TextView
+                            android:id="@+id/recipe_name_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_gravity="start|top"
+                            android:textColor="@android:color/background_light"
+                            android:text="@{recipe.getName()}"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            tools:text="Recipe Name" />
 
-</LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/recipe_image_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="135dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginTop="8dp"
+                            android:adjustViewBounds="true"
+                            android:src="@{recipe.getDrawableRecipeImage()}"
+                            android:contentDescription="@string/thumbnail"
+                            android:scaleType="centerCrop"
+                            />
+
+
+                </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+</layout>
