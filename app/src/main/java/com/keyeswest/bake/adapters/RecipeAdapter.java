@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.keyeswest.bake.R;
 
 import com.keyeswest.bake.models.Recipe;
+import com.keyeswest.bake.models.RecipeViewModel;
 
 import java.util.List;
 
@@ -72,8 +73,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
         }
 
         public void bind(final Recipe recipe, final OnItemClickListener listener){
-            mImageView.setImageDrawable(recipe.getDrawableRecipeImage(this.itemView.getContext()));
-            mRecipeNameTextView.setText(recipe.getName());
+            RecipeViewModel viewModel = new RecipeViewModel(this.itemView.getContext(),recipe);
+            mImageView.setImageDrawable(viewModel.getDrawableRecipeImage());
+            mRecipeNameTextView.setText(viewModel.getName());
             mRecipeNameTextView.bringToFront();
 
             itemView.setOnClickListener(new View.OnClickListener() {

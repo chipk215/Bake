@@ -12,10 +12,7 @@
     <string name="check_network">Check WiFi settings.</string>
 
     <!-- Recipe and fragment master list -->
-    <string name="average">Average</string>
-    <string name="difficult">Difficult</string>
-    <string name="difficulty">Difficulty</string>
-    <string name="easy">Easy</string>
+
     <string name="ingredient_count">Ingredient Count: </string>
     <string name="prep_steps">Preparation Steps: </string>
 
