@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
-        <variable name="recipe" type="com.keyeswest.bake.models.Recipe"/>
+        <variable name="recipe" type="com.keyeswest.bake.models.RecipeViewModel"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -19,7 +19,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:contentDescription="@string/thumbnail"
-            android:src="@{recipe.getDrawableRecipeImage(context)}"
+            android:src="@{recipe.getDrawableRecipeImage()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="parent"
@@ -35,7 +35,7 @@
             android:layout_marginTop="8dp"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:text="@{recipe.name}"
+            android:text="@{recipe.getName()}"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
-            android:text="@{Integer.toString(recipe.steps.size())}"
+            android:text="@{recipe.getNumberSteps()}"
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/step_label_tv"
             app:layout_constraintTop_toBottomOf="@+id/recipe_name_tv"
@@ -95,7 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="4dp"
-            android:text="@{Integer.toString(recipe.servings)}"
+            android:text="@{recipe.getServings()}"
             app:layout_constraintBaseline_toBaselineOf="@+id/serve_label_tv"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toEndOf="@+id/serve_label_tv"
@@ -108,7 +108,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@{recipe.description}"
+            android:text="@{recipe.getDescription()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/serve_label_tv"

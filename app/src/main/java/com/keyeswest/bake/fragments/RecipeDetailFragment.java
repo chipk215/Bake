@@ -12,6 +12,7 @@ import com.keyeswest.bake.R;
 
 import com.keyeswest.bake.databinding.FragmentRecipeDetailBinding;
 import com.keyeswest.bake.models.Recipe;
+import com.keyeswest.bake.models.RecipeViewModel;
 
 public class RecipeDetailFragment extends Fragment {
     private static final String TAG = "RecipeDetailFragment";
@@ -31,7 +32,7 @@ public class RecipeDetailFragment extends Fragment {
                 inflater, R.layout.fragment_recipe_detail, container, false);
 
         View rootView = binding.getRoot();
-        binding.setRecipe(mRecipe);
+        binding.setRecipe(new RecipeViewModel(getContext(),mRecipe));
 
         return rootView;
 
