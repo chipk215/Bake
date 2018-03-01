@@ -35,15 +35,16 @@ public class RecipeDetailActivity extends AppCompatActivity {
         recipeFragment.setRecipe(recipe);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(R.id.detail_container,recipeFragment)
-                .commit();
+       // fragmentManager.beginTransaction()
+       //         .add(R.id.detail_container,recipeFragment)
+       //         .commit();
 
 
         // create a new ingredient list fragment
         IngredientListFragment ingredientsFragment = new IngredientListFragment();
         ingredientsFragment.setIngredients(recipe.getIngredients());
         fragmentManager.beginTransaction()
+                .add(R.id.detail_container,recipeFragment)
                 .add(R.id.ingredients_container,ingredientsFragment)
                 .commit();
 
