@@ -32,15 +32,15 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
     }
 
 
-    Context mContext;
 
     @Override
     public RecipeHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        mContext = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        RecipeCardBinding recipeBinding = RecipeCardBinding.inflate(inflater, parent, false);
+        RecipeCardBinding recipeBinding =
+                RecipeCardBinding.inflate(inflater, parent, false);
+
         return new RecipeHolder(recipeBinding);
 
     }

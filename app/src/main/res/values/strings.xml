@@ -18,6 +18,10 @@
 
     <string name="servings">Servings: </string>
 
+    <!-- Fragment Ingredient List -->
+    <string name="make_it">Make It!</string>
+    <string name="ingredients">Ingredients</string>
+
     <!-- Ingredient Measures  -->
 
     <plurals name="gram_plural">

@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.keyeswest.bake.fragments.IngredientListFragment;
 import com.keyeswest.bake.fragments.RecipeDetailFragment;
 import com.keyeswest.bake.models.Recipe;
 
@@ -38,6 +39,13 @@ public class RecipeDetailActivity extends AppCompatActivity {
                 .add(R.id.detail_container,recipeFragment)
                 .commit();
 
+
+        // create a new ingredient list fragment
+        IngredientListFragment ingredientsFragment = new IngredientListFragment();
+        ingredientsFragment.setIngredients(recipe.getIngredients());
+        fragmentManager.beginTransaction()
+                .add(R.id.ingredients_container,ingredientsFragment)
+                .commit();
 
 
     }

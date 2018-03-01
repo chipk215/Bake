@@ -89,4 +89,8 @@ public class IngredientViewModel {
        return isSingular(value) ? 1 : 2;
 
     }
+
+    public String getIngredientInfo(){
+        return getQuantity()+ "  " + getMeasure() + " " + getName();
+    }
 }
