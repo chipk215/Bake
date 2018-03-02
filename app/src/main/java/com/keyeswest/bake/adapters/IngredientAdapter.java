@@ -22,12 +22,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     private final List<Ingredient> mIngredients;
 
-    //attribution: https://android.jlelse.eu/android-handling-checkbox-state-in-recycler-views-71b03f237022
-    public SparseBooleanArray mCheckStateArray;
-
     public IngredientAdapter(List<Ingredient> ingredients){
         mIngredients = ingredients;
-        mCheckStateArray = new SparseBooleanArray();
     }
 
     @Override
@@ -49,13 +45,14 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     }
 
 
-
     @Override
     public int getItemCount() {
         return mIngredients.size();
     }
 
     class IngredientHolder extends RecyclerView.ViewHolder{
+
+        private IngredientViewModel mIngredientViewModel;
 
         @BindView(R.id.checkBox) CheckBox mIngredientCheckbox;
         private final IngredientItemBinding mBinding;
@@ -69,16 +66,14 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
             mIngredientCheckbox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int adapterPosition = getAdapterPosition();
-                    if (! mCheckStateArray.get(adapterPosition, false)){
-                        mIngredientCheckbox.setChecked(true);
-                        mCheckStateArray.put(adapterPosition, true);
-                    }else{
+
+                    if (mIngredientViewModel.getCheckedState()){
                         mIngredientCheckbox.setChecked(false);
-                        mCheckStateArray.put(adapterPosition, false);
-
+                        mIngredientViewModel.setCheckedState(false);
+                    }else{
+                        mIngredientCheckbox.setChecked(true);
+                        mIngredientViewModel.setCheckedState(true);
                     }
-
 
                 }
             });
@@ -87,10 +82,10 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         }
 
         public void bind(final Ingredient ingredient){
-            IngredientViewModel viewModel = new
+            mIngredientViewModel = new
                     IngredientViewModel(this.itemView.getContext(),ingredient);
 
-            mBinding.setIngredient(viewModel);
+            mBinding.setIngredient(mIngredientViewModel);
             mBinding.executePendingBindings();
         }
 

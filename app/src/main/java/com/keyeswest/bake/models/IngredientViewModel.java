@@ -25,10 +25,15 @@ public class IngredientViewModel {
 
     private Context mContext;
 
+    private boolean mCheckedState;
+
 
     public IngredientViewModel(Context context, Ingredient ingredient){
         mIngredient = ingredient;
         mContext = context;
+
+        //read shared preferences for checked state
+        mCheckedState = false;
 
     }
 
@@ -77,20 +82,25 @@ public class IngredientViewModel {
         }
     }
 
-
     private boolean isSingular(double value){
-
         return (abs(value - 1.0d) < EPSILON) ? true : false;
-
     }
 
     private int getPluralQuantity(double value){
-
        return isSingular(value) ? 1 : 2;
-
     }
 
     public String getIngredientInfo(){
         return getQuantity()+ "  " + getMeasure() + " " + getName();
+    }
+
+    public void setCheckedState(boolean checkedState){
+        mCheckedState = checkedState;
+
+        //update shared preferences
+    }
+
+    public boolean getCheckedState(){
+        return mCheckedState;
     }
 }
