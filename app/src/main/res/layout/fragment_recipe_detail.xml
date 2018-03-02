@@ -31,25 +31,16 @@
             android:id="@+id/recipe_name_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@{recipe.getName()}"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Recipe Name" />
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="113dp" />
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline2"
@@ -113,7 +104,7 @@
             android:text="@{recipe.getDescription()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/serve_label_tv"
+            app:layout_constraintTop_toBottomOf="@+id/recipe_image_view"
             tools:text="Recipe description" />
     </android.support.constraint.ConstraintLayout>
 </layout>
