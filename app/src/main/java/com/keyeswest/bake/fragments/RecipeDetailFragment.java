@@ -16,11 +16,28 @@ import com.keyeswest.bake.models.RecipeViewModel;
 
 public class RecipeDetailFragment extends Fragment {
     private static final String TAG = "RecipeDetailFragment";
+    private static final String KEY_SAVE_RECIPE = "save_recipe";
 
     private Recipe mRecipe;
 
     // Required so fragment manager can instantiate
     public RecipeDetailFragment(){}
+
+    public static RecipeDetailFragment newInstance(Recipe recipe){
+        Bundle args = new Bundle();
+        args.putParcelable(KEY_SAVE_RECIPE, recipe);
+
+        RecipeDetailFragment fragment = new RecipeDetailFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+
+        mRecipe = getArguments().getParcelable(KEY_SAVE_RECIPE);
+    }
 
 
     @Override
@@ -40,7 +57,4 @@ public class RecipeDetailFragment extends Fragment {
     }
 
 
-    public void setRecipe(Recipe recipe){
-        mRecipe = recipe;
-    }
 }

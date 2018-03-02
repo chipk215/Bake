@@ -15,6 +15,7 @@ import com.keyeswest.bake.models.Recipe;
 public class RecipeDetailActivity extends AppCompatActivity {
 
     private static final String EXTRA_RECIPE_BUNDLE = "com.keyeswest.bake.recipe";
+    private static final String KEY_SAVE_RECIPE = "save_recipe";
 
     public static Intent newIntent(Context packageContext, Recipe recipe){
         Intent intent = new Intent(packageContext, RecipeDetailActivity.class);
@@ -22,32 +23,39 @@ public class RecipeDetailActivity extends AppCompatActivity {
         return intent;
     }
 
+    private Recipe mRecipe;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
+        if (savedInstanceState != null){
+            mRecipe = savedInstanceState.getParcelable(KEY_SAVE_RECIPE);
+        }else{
+            mRecipe = getIntent().getExtras().getParcelable(EXTRA_RECIPE_BUNDLE);
+            // create a new recipe detail fragment
+            RecipeDetailFragment recipeFragment = RecipeDetailFragment.newInstance(mRecipe);
 
-        Recipe recipe = getIntent().getExtras().getParcelable(EXTRA_RECIPE_BUNDLE);
+            IngredientListFragment ingredientsFragment =
+                    IngredientListFragment.newInstance(mRecipe.getIngredients());
 
-        // create a new recipe detail fragment
-        RecipeDetailFragment recipeFragment = new RecipeDetailFragment();
-        recipeFragment.setRecipe(recipe);
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-       // fragmentManager.beginTransaction()
-       //         .add(R.id.detail_container,recipeFragment)
-       //         .commit();
-
-
-        // create a new ingredient list fragment
-        IngredientListFragment ingredientsFragment = new IngredientListFragment();
-        ingredientsFragment.setIngredients(recipe.getIngredients());
-        fragmentManager.beginTransaction()
-                .add(R.id.detail_container,recipeFragment)
-                .add(R.id.ingredients_container,ingredientsFragment)
-                .commit();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .add(R.id.detail_container,recipeFragment)
+                    .add(R.id.ingredients_container,ingredientsFragment)
+                    .commit();
+        }
 
 
+
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+
+        savedInstanceState.putParcelable(KEY_SAVE_RECIPE, mRecipe);
     }
 }

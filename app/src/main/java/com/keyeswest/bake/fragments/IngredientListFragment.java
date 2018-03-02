@@ -2,6 +2,7 @@ package com.keyeswest.bake.fragments;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
@@ -15,6 +16,7 @@ import com.keyeswest.bake.R;
 import com.keyeswest.bake.adapters.IngredientAdapter;
 import com.keyeswest.bake.models.Ingredient;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -23,6 +25,7 @@ import butterknife.Unbinder;
 
 public class IngredientListFragment extends Fragment {
 
+    private static final String INGREDIENTS_KEY = "ingredients_key";
     private List<Ingredient> mIngredients;
     private IngredientAdapter mIngredientAdapter;
 
@@ -31,7 +34,21 @@ public class IngredientListFragment extends Fragment {
 
     private Unbinder mUnbinder;
 
+    public static IngredientListFragment newInstance(List<Ingredient> ingredients){
+        Bundle args = new Bundle();
+        args.putParcelableArrayList(INGREDIENTS_KEY, (ArrayList<Ingredient>)ingredients);
+        IngredientListFragment fragment = new IngredientListFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     public IngredientListFragment(){}
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mIngredients = getArguments().getParcelableArrayList(INGREDIENTS_KEY);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,7 +85,4 @@ public class IngredientListFragment extends Fragment {
     }
 
 
-    public void setIngredients(List<Ingredient> ingredients){
-        mIngredients = ingredients;
-    }
 }
