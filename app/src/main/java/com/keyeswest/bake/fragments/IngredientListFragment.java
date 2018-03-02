@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import com.keyeswest.bake.R;
 import com.keyeswest.bake.adapters.IngredientAdapter;
 import com.keyeswest.bake.models.Ingredient;
+import com.keyeswest.bake.tasks.ReadCheckboxStates;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -83,14 +84,16 @@ public class IngredientListFragment extends Fragment {
         itemDecorator.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.custom_list_divider));
         mIngredientRecyclerView.addItemDecoration(itemDecorator);
 
+        //TODO move this off the UI thread
+        new ReadCheckboxStates(getContext(), mIngredients, new ReadCheckboxStates.ResultsCallback(){
 
-        mIngredientCheckboxState = new Hashtable<>();
-        for (Ingredient i : mIngredients){
-            Boolean isChecked = getContext().getSharedPreferences(mRecipeHash, MODE_PRIVATE)
-                    .getBoolean(i.getIngredientName(), false);
-            mIngredientCheckboxState.put(i.getIngredientName(), isChecked);
-        }
-        setupIngredientAdapter();
+            @Override
+            public void ingredientCheckboxStates(Hashtable<String, Boolean> checkboxStates) {
+                mIngredientCheckboxState = checkboxStates;
+                setupIngredientAdapter();
+            }
+        }).execute(mRecipeHash);
+
 
         return rootView;
     }
@@ -102,9 +105,10 @@ public class IngredientListFragment extends Fragment {
     }
 
     @Override
-    public void onStop(){
+    public void onPause(){
 
-
+        // revisit should this be off the UI thread?
+        // We would wait to call super.onPause until complete, right?
         mIngredientCheckboxState = mIngredientAdapter.getCheckBoxStates();
 
         SharedPreferences.Editor editor = getContext().getSharedPreferences(mRecipeHash, MODE_PRIVATE).edit();
@@ -117,7 +121,7 @@ public class IngredientListFragment extends Fragment {
         editor.apply();
 
 
-        super.onStop();
+        super.onPause();
     }
 
     private void setupIngredientAdapter(){
