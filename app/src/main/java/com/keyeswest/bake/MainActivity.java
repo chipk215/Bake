@@ -38,34 +38,13 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        if (mTwoPaneDivider != null){
-            // handle split screen
-            mTwoPane = true;
-            if (savedInstanceState != null){
-                mRecipe = savedInstanceState.getParcelable(KEY_SAVE_RECIPE);
-
-                // set up the detail fragments with the recipe information
-
-            }else{
-
-                // add empty fragment containers
-
-                // create a new recipe detail fragment
-                RecipeDetailFragment recipeFragment = RecipeDetailFragment.newInstance(mRecipe);
-
-                IngredientListFragment ingredientsFragment =
-                        IngredientListFragment.newInstance(mRecipe.getIngredients(),
-                                mRecipe.getRecipeHash());
-
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .add(R.id.detail_container,recipeFragment)
-                        .add(R.id.ingredients_container,ingredientsFragment)
-                        .commit();
-            }
-        }else{
-            mTwoPane = false;
+        // handle the savedInstanceState
+        if (savedInstanceState != null){
+            mRecipe = savedInstanceState.getParcelable(KEY_SAVE_RECIPE);
         }
+
+        mTwoPane = (mTwoPaneDivider != null);
+
 
     }
 
@@ -80,14 +59,33 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
     @Override
     public void onRecipeSelected(Bundle recipeBundle) {
         mRecipe = MasterListFragment.getRecipe(recipeBundle);
-        if (mRecipe != null) {
-            Log.d(TAG, "Recipe Name= " + mRecipe.getName());
-        }else{
-            Log.e(TAG, "Error, no recipe returned");
-        }
+
 
         if (mTwoPane){
-            // wide screen
+
+            // determine if the detail fragments have been loaded
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            RecipeDetailFragment recipeFragment = RecipeDetailFragment.newInstance(mRecipe);
+
+            IngredientListFragment ingredientsFragment =
+                    IngredientListFragment.newInstance(mRecipe.getIngredients(),
+                            mRecipe.getRecipeHash());
+            if (fragmentManager.findFragmentById(R.id.detail_container) == null){
+                // fragments have not been loaded
+
+
+                fragmentManager.beginTransaction()
+                        .add(R.id.detail_container,recipeFragment)
+                        .add(R.id.ingredients_container,ingredientsFragment)
+                        .commit();
+
+            } else{
+                // replace the fragments
+                fragmentManager.beginTransaction()
+                        .replace(R.id.detail_container,recipeFragment)
+                        .replace(R.id.ingredients_container,ingredientsFragment)
+                        .commit();
+            }
 
 
         }else{
