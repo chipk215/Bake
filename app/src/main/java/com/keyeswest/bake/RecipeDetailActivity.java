@@ -38,7 +38,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
             RecipeDetailFragment recipeFragment = RecipeDetailFragment.newInstance(mRecipe);
 
             IngredientListFragment ingredientsFragment =
-                    IngredientListFragment.newInstance(mRecipe.getIngredients());
+                    IngredientListFragment.newInstance(mRecipe.getIngredients(), getRecipeHash(mRecipe));
 
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
@@ -57,5 +57,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
 
         savedInstanceState.putParcelable(KEY_SAVE_RECIPE, mRecipe);
+    }
+
+    private String getRecipeHash(Recipe recipe){
+        return "R_" + Integer.toString(recipe.getId()) ;
     }
 }

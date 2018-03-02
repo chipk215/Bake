@@ -32,12 +32,12 @@ public class IngredientViewModel {
         mIngredient = ingredient;
         mContext = context;
 
-        //read shared preferences for checked state
         mCheckedState = false;
 
     }
 
     public String getName(){
+        // Do not alter the name here, a hashtable key is based upon the name of the ingredient
         return mIngredient.getIngredientName();
     }
 
@@ -97,7 +97,6 @@ public class IngredientViewModel {
     public void setCheckedState(boolean checkedState){
         mCheckedState = checkedState;
 
-        //update shared preferences
     }
 
     public boolean getCheckedState(){
