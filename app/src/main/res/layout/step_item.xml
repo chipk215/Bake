@@ -17,7 +17,7 @@
         android:layout_marginTop="8dp"
         android:buttonTint="@color/colorPrimary"
         android:checked="@{step.getCheckedState()}"
-        android:text="@{step.getShortDescription()}"
+        android:text="@{step.getListLabel()}"
 
         tools:text="Step Name" />
 

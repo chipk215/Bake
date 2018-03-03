@@ -18,9 +18,6 @@ public class StepViewModel implements HasUniqueId {
 
     }
 
-    public String getShortDescription(){
-        return mStep.getShortDescription();
-    }
 
     public String getDescription(){
         return mStep.getDescription();
@@ -40,8 +37,16 @@ public class StepViewModel implements HasUniqueId {
 
     }
 
-    public String getId(){
-        return Integer.toString(mStep.getId());
+    private String getLabelId(){
+        return Integer.toString(mStep.getId()+1);
+    }
+
+    private String getLastStep(){
+        return Integer.toString(mStep.getLastStep());
+    }
+
+    public String getListLabel(){
+        return "(" + getLabelId() + "/" + getLastStep() + ") " + mStep.getShortDescription();
     }
 
     @Override

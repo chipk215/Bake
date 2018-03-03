@@ -1,6 +1,7 @@
 package com.keyeswest.bake.fragments;
 
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.widget.Button;
 
 import com.keyeswest.bake.R;
 
+import com.keyeswest.bake.StepsActivity;
 import com.keyeswest.bake.databinding.FragmentRecipeDetailBinding;
 import com.keyeswest.bake.models.Recipe;
 import com.keyeswest.bake.models.RecipeViewModel;
@@ -65,7 +67,9 @@ public class RecipeDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // start the make it activity
-                // Intent intent = StepsActivity.newIntent(getContext(), mR)
+                Intent intent = StepsActivity.newIntent(getContext(),
+                        mRecipe.getSteps(), mRecipe.getSharedPreferencesStepsFileName());
+                startActivity(intent);
             }
         });
 

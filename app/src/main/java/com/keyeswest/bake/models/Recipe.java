@@ -152,6 +152,10 @@ public class Recipe implements Parcelable{
         return "R_Ingredient_" + Integer.toString(getId()) ;
     }
 
+    public String getSharedPreferencesStepsFileName(){
+        return "R_Step_" + Integer.toString(getId()) ;
+    }
+
 
     @Override
     public String toString()

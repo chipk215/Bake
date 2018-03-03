@@ -10,6 +10,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.keyeswest.bake.R;
 import com.keyeswest.bake.models.Recipe;
+import com.keyeswest.bake.models.Step;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,6 +45,15 @@ public class RecipeJsonDeserializer extends AsyncTask<Void, Void, List<Recipe>> 
             Gson gson = new Gson();
             Recipe[] recipeArray = gson.fromJson(jsonData, Recipe[].class);
             recipes = Arrays.asList(recipeArray);
+
+            // set the number of steps in the recipe on each step to facilitate
+            // presenting step 1/N
+            for (Recipe recipe : recipes){
+                int lastStep = recipe.getSteps().size();
+                for (Step step : recipe.getSteps()){
+                    step.setLastStep(lastStep);
+                }
+            }
         }
 
         return recipes;

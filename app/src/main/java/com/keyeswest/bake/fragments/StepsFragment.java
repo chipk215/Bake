@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +25,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -77,6 +81,13 @@ public class StepsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_steps, container, false);
 
+        mUnbinder = ButterKnife.bind(this, view);
+
+        mStepsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        DividerItemDecoration itemDecorator = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
+        itemDecorator.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.custom_list_divider));
+        mStepsRecyclerView.addItemDecoration(itemDecorator);
+
         ReadCheckboxStates<Step> task = new ReadCheckboxStates<>(getContext(),
                 mRecipePrefsStepsFilename, new ReadCheckboxStates.ResultsCallback(){
 
@@ -88,6 +99,8 @@ public class StepsFragment extends Fragment {
         });
 
         task.execute(mSteps);
+
+
 
         return view;
     }
