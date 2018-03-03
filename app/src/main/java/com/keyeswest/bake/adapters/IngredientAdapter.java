@@ -59,7 +59,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     }
 
 
-
     class IngredientHolder extends RecyclerView.ViewHolder{
 
         private IngredientViewModel mIngredientViewModel;

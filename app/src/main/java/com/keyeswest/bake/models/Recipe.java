@@ -148,8 +148,8 @@ public class Recipe implements Parcelable{
         mDescription = description;
     }
 
-    public String getRecipeHash(){
-        return "R_" + Integer.toString(getId()) ;
+    public String getIngredientRecipeHash(){
+        return "R_Ingredient_" + Integer.toString(getId()) ;
     }
 
 

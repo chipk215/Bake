@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
 
             IngredientListFragment ingredientsFragment =
                     IngredientListFragment.newInstance(mRecipe.getIngredients(),
-                            mRecipe.getRecipeHash());
+                            mRecipe.getIngredientRecipeHash());
             if (fragmentManager.findFragmentById(R.id.detail_container) == null){
                 // fragments have not been loaded
 

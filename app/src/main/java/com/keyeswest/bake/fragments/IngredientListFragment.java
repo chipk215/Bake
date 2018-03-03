@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.keyeswest.bake.R;
 import com.keyeswest.bake.adapters.IngredientAdapter;
@@ -39,12 +40,14 @@ public class IngredientListFragment extends Fragment {
 
     private List<Ingredient> mIngredients;
     private IngredientAdapter mIngredientAdapter;
-    private String mRecipeHash;
+    private String mRecipeIngredientHash;
 
     private Hashtable<String, Boolean> mIngredientCheckboxState;
 
     @BindView(R.id.ingredient_recycler_view)
     RecyclerView mIngredientRecyclerView;
+
+    @BindView(R.id.make_it_btn)Button mMakeItButton;
 
     private Unbinder mUnbinder;
 
@@ -63,7 +66,7 @@ public class IngredientListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mIngredients = getArguments().getParcelableArrayList(INGREDIENTS_KEY);
-        mRecipeHash = getArguments().getString(RECIPE_HASH_KEY);
+        mRecipeIngredientHash = getArguments().getString(RECIPE_HASH_KEY);
     }
 
     @Override
@@ -84,7 +87,6 @@ public class IngredientListFragment extends Fragment {
         itemDecorator.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.custom_list_divider));
         mIngredientRecyclerView.addItemDecoration(itemDecorator);
 
-        //TODO move this off the UI thread
         new ReadCheckboxStates(getContext(), mIngredients, new ReadCheckboxStates.ResultsCallback(){
 
             @Override
@@ -92,7 +94,15 @@ public class IngredientListFragment extends Fragment {
                 mIngredientCheckboxState = checkboxStates;
                 setupIngredientAdapter();
             }
-        }).execute(mRecipeHash);
+        }).execute(mRecipeIngredientHash);
+
+
+        mMakeItButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // start the make it activity
+            }
+        });
 
 
         return rootView;
@@ -111,7 +121,7 @@ public class IngredientListFragment extends Fragment {
         // We would wait to call super.onPause until complete, right?
         mIngredientCheckboxState = mIngredientAdapter.getCheckBoxStates();
 
-        SharedPreferences.Editor editor = getContext().getSharedPreferences(mRecipeHash, MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getContext().getSharedPreferences(mRecipeIngredientHash, MODE_PRIVATE).edit();
 
         for (Ingredient i : mIngredients){
             Boolean isChecked = mIngredientCheckboxState.get(i.getIngredientName());
