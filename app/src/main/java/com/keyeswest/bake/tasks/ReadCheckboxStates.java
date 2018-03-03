@@ -4,50 +4,52 @@ package com.keyeswest.bake.tasks;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.keyeswest.bake.models.Ingredient;
+import com.keyeswest.bake.interfaces.HasUniqueId;
 
 import java.util.Hashtable;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class ReadCheckboxStates extends AsyncTask<String, Void, Hashtable<String, Boolean>> {
+public class ReadCheckboxStates<T extends HasUniqueId> extends
+        AsyncTask<List<T>, Void, Hashtable<String, Boolean>> {
 
     private ResultsCallback mCallback;
-    private List<Ingredient> mIngredients;
+    private String mFileName;
     private Context mContext;
 
-    private Hashtable<String, Boolean> mIngredientCheckboxState;
+    private Hashtable<String, Boolean> mCheckboxState;
 
     public interface ResultsCallback{
-        void ingredientCheckboxStates(Hashtable<String, Boolean> checkboxStates);
+        void CheckboxStates(Hashtable<String, Boolean> checkboxStates);
     }
 
-    public ReadCheckboxStates(Context context, List<Ingredient> ingredients, ResultsCallback callback){
+    public ReadCheckboxStates(Context context, String fileName, ResultsCallback callback){
         mCallback = callback;
-        mIngredients = ingredients;
+        mFileName = fileName;
         mContext = context;
     }
 
     @Override
-    protected Hashtable<String, Boolean> doInBackground(String... strings) {
+    protected Hashtable<String, Boolean> doInBackground(List<T>... lists) {
 
-        if ((strings == null) || (strings[0] == null)) {
+        if ((lists == null) || (lists[0] == null)) {
             return null;
         }
 
-        mIngredientCheckboxState = new Hashtable<>();
-        for (Ingredient i : mIngredients){
-            Boolean isChecked = mContext.getSharedPreferences(strings[0], MODE_PRIVATE)
-                    .getBoolean(i.getIngredientName(), false);
-            mIngredientCheckboxState.put(i.getIngredientName(), isChecked);
+        mCheckboxState = new Hashtable<>();
+        for (T i : lists[0]){
+            String hashValue = i.getUniqueId();
+            Boolean isChecked = mContext.getSharedPreferences(mFileName, MODE_PRIVATE)
+                    .getBoolean(hashValue, false);
+            mCheckboxState.put(hashValue, isChecked);
         }
 
-        return mIngredientCheckboxState;
+        return mCheckboxState;
     }
 
     @Override
     protected void onPostExecute(Hashtable<String, Boolean> checkboxStates) {
-        mCallback.ingredientCheckboxStates(checkboxStates);
+        mCallback.CheckboxStates(checkboxStates);
     }
 }

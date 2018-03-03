@@ -1,8 +1,7 @@
 package com.keyeswest.bake.adapters;
 
-
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseBooleanArray;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,22 +41,17 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     @Override
     public void onBindViewHolder(IngredientHolder holder, int position) {
         Ingredient ingredient = mIngredients.get(position);
-
         holder.bind(ingredient);
-
     }
-
 
     @Override
     public int getItemCount() {
         return mIngredients.size();
     }
 
-
     public  Hashtable<String, Boolean> getCheckBoxStates(){
         return mCheckBoxStates;
     }
-
 
     class IngredientHolder extends RecyclerView.ViewHolder{
 
@@ -79,24 +73,22 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
                     if (mIngredientViewModel.getCheckedState()){
                         mIngredientCheckbox.setChecked(false);
                         mIngredientViewModel.setCheckedState(false);
-                        mCheckBoxStates.put(mIngredientViewModel.getName(),false);
+                        mCheckBoxStates.put(mIngredientViewModel.getUniqueId(),false);
                     }else{
                         mIngredientCheckbox.setChecked(true);
                         mIngredientViewModel.setCheckedState(true);
-                        mCheckBoxStates.put(mIngredientViewModel.getName(),true);
+                        mCheckBoxStates.put(mIngredientViewModel.getUniqueId(),true);
                     }
 
                 }
             });
-
-
         }
 
         public void bind(final Ingredient ingredient){
             mIngredientViewModel = new
                     IngredientViewModel(this.itemView.getContext(),ingredient);
 
-            mIngredientViewModel.setCheckedState(mCheckBoxStates.get(ingredient.getIngredientName()));
+            mIngredientViewModel.setCheckedState(mCheckBoxStates.get(ingredient.getUniqueId()));
 
             mBinding.setIngredient(mIngredientViewModel);
             mBinding.executePendingBindings();

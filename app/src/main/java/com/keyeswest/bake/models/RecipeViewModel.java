@@ -7,11 +7,12 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.keyeswest.bake.R;
+import com.keyeswest.bake.interfaces.HasUniqueId;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-public class RecipeViewModel {
+public class RecipeViewModel  {
     private final static String TAG= "RecipeViewModel";
 
     private Context mContext;
@@ -54,4 +55,6 @@ public class RecipeViewModel {
             return result;
         }
     }
+
+
 }

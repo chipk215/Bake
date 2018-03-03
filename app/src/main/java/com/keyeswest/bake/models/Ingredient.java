@@ -5,8 +5,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
+import com.keyeswest.bake.interfaces.HasUniqueId;
 
-public class Ingredient implements Parcelable{
+public class Ingredient implements Parcelable, HasUniqueId{
 
     @SerializedName("measure")
     private String mMeasure;
@@ -88,5 +89,10 @@ public class Ingredient implements Parcelable{
         dest.writeString(mIngredientName);
         dest.writeString(mMeasure);
         dest.writeFloat(mQuantity);
+    }
+
+    @Override
+    public String getUniqueId() {
+        return mIngredientName;
     }
 }

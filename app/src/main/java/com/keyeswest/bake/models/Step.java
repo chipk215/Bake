@@ -5,8 +5,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
+import com.keyeswest.bake.interfaces.HasUniqueId;
 
-public class Step implements Parcelable{
+public class Step implements Parcelable,HasUniqueId{
 
     @SerializedName("id")
     private int mId;
@@ -114,5 +115,10 @@ public class Step implements Parcelable{
        dest.writeString(mVideoURL);
        dest.writeString(mThumbnailURL);
 
+    }
+
+    @Override
+    public String getUniqueId() {
+        return Integer.toString(mId);
     }
 }

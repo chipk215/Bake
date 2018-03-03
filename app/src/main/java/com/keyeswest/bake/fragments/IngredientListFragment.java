@@ -87,14 +87,16 @@ public class IngredientListFragment extends Fragment {
         itemDecorator.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.custom_list_divider));
         mIngredientRecyclerView.addItemDecoration(itemDecorator);
 
-        new ReadCheckboxStates(getContext(), mIngredients, new ReadCheckboxStates.ResultsCallback(){
+        ReadCheckboxStates<Ingredient> task = new ReadCheckboxStates<>(getContext(), mRecipeIngredientHash, new ReadCheckboxStates.ResultsCallback(){
 
             @Override
-            public void ingredientCheckboxStates(Hashtable<String, Boolean> checkboxStates) {
+            public void CheckboxStates(Hashtable<String, Boolean> checkboxStates) {
                 mIngredientCheckboxState = checkboxStates;
                 setupIngredientAdapter();
             }
-        }).execute(mRecipeIngredientHash);
+        });
+
+        task.execute(mIngredients);
 
 
         mMakeItButton.setOnClickListener(new View.OnClickListener() {
@@ -124,8 +126,8 @@ public class IngredientListFragment extends Fragment {
         SharedPreferences.Editor editor = getContext().getSharedPreferences(mRecipeIngredientHash, MODE_PRIVATE).edit();
 
         for (Ingredient i : mIngredients){
-            Boolean isChecked = mIngredientCheckboxState.get(i.getIngredientName());
-            editor.putBoolean(i.getIngredientName(), isChecked);
+            Boolean isChecked = mIngredientCheckboxState.get(i.getUniqueId());
+            editor.putBoolean(i.getUniqueId(), isChecked);
         }
 
         editor.apply();

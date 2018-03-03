@@ -4,11 +4,12 @@ package com.keyeswest.bake.models;
 import android.content.Context;
 
 import com.keyeswest.bake.R;
+import com.keyeswest.bake.interfaces.HasUniqueId;
 
 
 import static java.lang.Math.abs;
 
-public class IngredientViewModel {
+public class IngredientViewModel implements HasUniqueId{
 
     // public access for testing
     public final static String CUP = "CUP";
@@ -37,9 +38,10 @@ public class IngredientViewModel {
     }
 
     public String getName(){
-        // Do not alter the name here, a hashtable key is based upon the name of the ingredient
         return mIngredient.getIngredientName();
     }
+
+
 
     public String getQuantity(){
         return Float.toString(mIngredient.getQuantity());
@@ -101,5 +103,10 @@ public class IngredientViewModel {
 
     public boolean getCheckedState(){
         return mCheckedState;
+    }
+
+    @Override
+    public String getUniqueId() {
+        return mIngredient.getUniqueId();
     }
 }
