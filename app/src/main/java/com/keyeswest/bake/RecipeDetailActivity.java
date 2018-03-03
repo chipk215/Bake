@@ -39,7 +39,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
             IngredientListFragment ingredientsFragment =
                     IngredientListFragment.newInstance(mRecipe.getIngredients(),
-                            mRecipe.getIngredientRecipeHash());
+                            mRecipe.getSharedPreferencesIngredientFileName());
 
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()

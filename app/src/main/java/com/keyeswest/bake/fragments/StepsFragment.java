@@ -31,10 +31,10 @@ public class StepsFragment extends Fragment {
     private static final String TAG="StepsFragment";
 
     private static final String STEPS_ARG = "stepsArg";
-    private static final String STEPS_HASH = "stepsHash";
+    private static final String RECIPE_PREFS_STEPS_FILENAME_KEY = "recipePrefsKey";
 
     private List<Step> mSteps;
-    private String mStepHash;
+    private String mRecipePrefsStepsFilename;
 
     private Hashtable<String, Boolean> mStepsCheckboxState;
     private StepAdapter mStepAdapter;
@@ -48,7 +48,7 @@ public class StepsFragment extends Fragment {
     public static StepsFragment newInstance(List<Step> steps, String stepHash){
         Bundle args = new Bundle();
         args.putParcelableArrayList(STEPS_ARG, (ArrayList<Step>) steps);
-        args.putString(STEPS_HASH, stepHash);
+        args.putString(RECIPE_PREFS_STEPS_FILENAME_KEY, stepHash);
         StepsFragment fragment = new StepsFragment();
         fragment.setArguments(args);
 
@@ -62,7 +62,7 @@ public class StepsFragment extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null){
             mSteps = bundle.getParcelableArrayList(STEPS_ARG);
-            mStepHash= bundle.getString(STEPS_HASH);
+            mRecipePrefsStepsFilename = bundle.getString(RECIPE_PREFS_STEPS_FILENAME_KEY);
 
 
         }else{
@@ -77,7 +77,8 @@ public class StepsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_steps, container, false);
 
-        ReadCheckboxStates<Step> task = new ReadCheckboxStates<>(getContext(), mStepHash, new ReadCheckboxStates.ResultsCallback(){
+        ReadCheckboxStates<Step> task = new ReadCheckboxStates<>(getContext(),
+                mRecipePrefsStepsFilename, new ReadCheckboxStates.ResultsCallback(){
 
             @Override
             public void CheckboxStates(Hashtable<String, Boolean> checkboxStates) {
@@ -109,7 +110,7 @@ public class StepsFragment extends Fragment {
         // We would wait to call super.onPause until complete, right?
         mStepsCheckboxState = mStepAdapter.getCheckBoxStates();
 
-        SharedPreferences.Editor editor = getContext().getSharedPreferences(mStepHash, MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getContext().getSharedPreferences(mRecipePrefsStepsFilename, MODE_PRIVATE).edit();
 
         for (Step i : mSteps){
             Boolean isChecked = mStepsCheckboxState.get(i.getUniqueId());
@@ -123,14 +124,11 @@ public class StepsFragment extends Fragment {
     }
 
 
-
-
     @Override
     public void onDestroyView(){
         super.onDestroyView();
         mUnbinder.unbind();
     }
-
 
 
 

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.keyeswest.bake.R;
 
@@ -14,11 +15,18 @@ import com.keyeswest.bake.databinding.FragmentRecipeDetailBinding;
 import com.keyeswest.bake.models.Recipe;
 import com.keyeswest.bake.models.RecipeViewModel;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 public class RecipeDetailFragment extends Fragment {
     private static final String TAG = "RecipeDetailFragment";
     private static final String KEY_SAVE_RECIPE = "save_recipe";
 
     private Recipe mRecipe;
+
+    @BindView(R.id.make_it_btn)Button mMakeItButton;
+    private Unbinder mUnbinder;
 
     // Required so fragment manager can instantiate
     public RecipeDetailFragment(){}
@@ -49,11 +57,27 @@ public class RecipeDetailFragment extends Fragment {
                 inflater, R.layout.fragment_recipe_detail, container, false);
 
         View rootView = binding.getRoot();
+        mUnbinder = ButterKnife.bind(this, rootView);
         binding.setRecipe(new RecipeViewModel(getContext(),mRecipe));
+
+
+        mMakeItButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // start the make it activity
+                // Intent intent = StepsActivity.newIntent(getContext(), mR)
+            }
+        });
 
         return rootView;
 
 
+    }
+
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 
 

@@ -6,9 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.keyeswest.bake.fragments.IngredientListFragment;
 import com.keyeswest.bake.fragments.MasterListFragment;
@@ -69,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
 
             IngredientListFragment ingredientsFragment =
                     IngredientListFragment.newInstance(mRecipe.getIngredients(),
-                            mRecipe.getIngredientRecipeHash());
+                            mRecipe.getSharedPreferencesIngredientFileName());
             if (fragmentManager.findFragmentById(R.id.detail_container) == null){
                 // fragments have not been loaded
 

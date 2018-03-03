@@ -104,7 +104,21 @@
             android:text="@{recipe.getDescription()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recipe_image_view"
+            app:layout_constraintTop_toBottomOf="@+id/make_it_btn"
             tools:text="Recipe description" />
+
+        <Button
+            android:id="@+id/make_it_btn"
+            android:layout_width="71dp"
+            android:layout_height="39dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorPrimary"
+            android:text="@string/make_it"
+            android:textColor="@color/cardview_light_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/recipe_image_view" />
     </android.support.constraint.ConstraintLayout>
 </layout>

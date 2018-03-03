@@ -78,7 +78,6 @@ public class Recipe implements Parcelable{
     }
 
 
-
     private Drawable thumbnail;
 
     public List<Ingredient> getIngredients ()
@@ -148,7 +147,8 @@ public class Recipe implements Parcelable{
         mDescription = description;
     }
 
-    public String getIngredientRecipeHash(){
+    // Used as a Shared Preferences fileName
+    public String getSharedPreferencesIngredientFileName(){
         return "R_Ingredient_" + Integer.toString(getId()) ;
     }
 

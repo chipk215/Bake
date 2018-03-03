@@ -1,6 +1,7 @@
 package com.keyeswest.bake.fragments;
 
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.keyeswest.bake.R;
+import com.keyeswest.bake.StepsActivity;
 import com.keyeswest.bake.adapters.IngredientAdapter;
 import com.keyeswest.bake.models.Ingredient;
 import com.keyeswest.bake.tasks.ReadCheckboxStates;
@@ -35,26 +37,26 @@ public class IngredientListFragment extends Fragment {
 
     private static final String TAG = "IngredientListFragment";
     private static final String INGREDIENTS_KEY = "ingredients_key";
-    private static final String RECIPE_HASH_KEY = "recipeHashKey";
+    private static final String RECIPE_PREFS_INGREDIENTS_FILENAME_KEY = "recipeIngredientsPrefsKey";
 
 
     private List<Ingredient> mIngredients;
     private IngredientAdapter mIngredientAdapter;
-    private String mRecipeIngredientHash;
+    private String mRecipePrefsIngredientsFilename;
 
     private Hashtable<String, Boolean> mIngredientCheckboxState;
 
     @BindView(R.id.ingredient_recycler_view)
     RecyclerView mIngredientRecyclerView;
 
-    @BindView(R.id.make_it_btn)Button mMakeItButton;
+
 
     private Unbinder mUnbinder;
 
-    public static IngredientListFragment newInstance(List<Ingredient> ingredients, String recipeHash){
+    public static IngredientListFragment newInstance(List<Ingredient> ingredients, String preferencsFilename){
         Bundle args = new Bundle();
         args.putParcelableArrayList(INGREDIENTS_KEY, (ArrayList<Ingredient>)ingredients);
-        args.putString(RECIPE_HASH_KEY, recipeHash);
+        args.putString(RECIPE_PREFS_INGREDIENTS_FILENAME_KEY, preferencsFilename);
         IngredientListFragment fragment = new IngredientListFragment();
         fragment.setArguments(args);
         return fragment;
@@ -66,7 +68,7 @@ public class IngredientListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mIngredients = getArguments().getParcelableArrayList(INGREDIENTS_KEY);
-        mRecipeIngredientHash = getArguments().getString(RECIPE_HASH_KEY);
+        mRecipePrefsIngredientsFilename = getArguments().getString(RECIPE_PREFS_INGREDIENTS_FILENAME_KEY);
     }
 
     @Override
@@ -87,7 +89,7 @@ public class IngredientListFragment extends Fragment {
         itemDecorator.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.custom_list_divider));
         mIngredientRecyclerView.addItemDecoration(itemDecorator);
 
-        ReadCheckboxStates<Ingredient> task = new ReadCheckboxStates<>(getContext(), mRecipeIngredientHash, new ReadCheckboxStates.ResultsCallback(){
+        ReadCheckboxStates<Ingredient> task = new ReadCheckboxStates<>(getContext(), mRecipePrefsIngredientsFilename, new ReadCheckboxStates.ResultsCallback(){
 
             @Override
             public void CheckboxStates(Hashtable<String, Boolean> checkboxStates) {
@@ -99,12 +101,7 @@ public class IngredientListFragment extends Fragment {
         task.execute(mIngredients);
 
 
-        mMakeItButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // start the make it activity
-            }
-        });
+
 
 
         return rootView;
@@ -123,7 +120,7 @@ public class IngredientListFragment extends Fragment {
         // We would wait to call super.onPause until complete, right?
         mIngredientCheckboxState = mIngredientAdapter.getCheckBoxStates();
 
-        SharedPreferences.Editor editor = getContext().getSharedPreferences(mRecipeIngredientHash, MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getContext().getSharedPreferences(mRecipePrefsIngredientsFilename, MODE_PRIVATE).edit();
 
         for (Ingredient i : mIngredients){
             Boolean isChecked = mIngredientCheckboxState.get(i.getUniqueId());
