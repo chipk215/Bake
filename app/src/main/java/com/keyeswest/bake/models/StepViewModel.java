@@ -49,6 +49,10 @@ public class StepViewModel implements HasUniqueId {
         return "(" + getLabelId() + "/" + getLastStep() + ") " + mStep.getShortDescription();
     }
 
+    public Step getStep(){
+        return mStep;
+    }
+
     @Override
     public String getUniqueId() {
         return mStep.getUniqueId();

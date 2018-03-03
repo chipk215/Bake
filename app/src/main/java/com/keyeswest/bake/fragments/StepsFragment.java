@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 
 import com.keyeswest.bake.R;
@@ -44,6 +45,7 @@ public class StepsFragment extends Fragment {
     private StepAdapter mStepAdapter;
 
     @BindView(R.id.steps_recyclerView)RecyclerView mStepsRecyclerView;
+    @BindView(R.id.step_description) TextView mStepDescription;
 
     // ButterKnife helper
     private Unbinder mUnbinder;
@@ -106,7 +108,12 @@ public class StepsFragment extends Fragment {
     }
 
     private void setupStepsAdapter(){
-        mStepAdapter = new StepAdapter(mSteps, mStepsCheckboxState);
+        mStepAdapter = new StepAdapter(mSteps, mStepsCheckboxState, new StepAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Step step) {
+                mStepDescription.setText(step.getDescription());
+            }
+        });
         if (isAdded()){
             mStepsRecyclerView.setAdapter(mStepAdapter);
 

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import com.keyeswest.bake.R;
 import com.keyeswest.bake.databinding.StepItemBinding;
@@ -20,12 +21,19 @@ import butterknife.ButterKnife;
 
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
 
+    public interface OnItemClickListener{
+        void onItemClick(Step step);
+
+    }
+
     private final List<Step> mSteps;
     public Hashtable<String, Boolean> mCheckboxStates;
+    private final OnItemClickListener mListener;
 
-    public StepAdapter( List<Step> steps, Hashtable<String, Boolean> checkBoxStates){
+    public StepAdapter( List<Step> steps, Hashtable<String, Boolean> checkBoxStates,OnItemClickListener listener ){
         mSteps = steps;
         mCheckboxStates = checkBoxStates;
+        mListener = listener;
     }
 
     @Override
@@ -58,6 +66,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
         private StepViewModel mStepViewModel;
 
         @BindView(R.id.step_checkBox) CheckBox mStepCheckbox;
+
         private final StepItemBinding mStepBinding;
 
         public StepHolder(StepItemBinding binding){
@@ -73,10 +82,14 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
                         mStepViewModel.setCheckedState(false);
                         mStepCheckbox.setChecked(false);
                         mCheckboxStates.put(mStepViewModel.getUniqueId(), false);
+
+
                     }else{
                         mStepViewModel.setCheckedState(true);
                         mStepCheckbox.setChecked(true);
                         mCheckboxStates.put(mStepViewModel.getUniqueId(), true);
+                        mListener.onItemClick(mStepViewModel.getStep());
+
                     }
                 }
             });

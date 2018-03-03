@@ -15,7 +15,7 @@ public class Step implements Parcelable,HasUniqueId{
     @SerializedName("shortDescription")
     private String mShortDescription;
 
-    @SerializedName("Description")
+    @SerializedName("description")
     private String mDescription;
 
     @SerializedName("videoURL")
