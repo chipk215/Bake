@@ -47,7 +47,7 @@ public class StepsFragment extends Fragment {
     private StepAdapter mStepAdapter;
 
     @BindView(R.id.steps_recyclerView)RecyclerView mStepsRecyclerView;
-    @BindView(R.id.step_description) TextView mStepDescription;
+
 
     // ButterKnife helper
     private Unbinder mUnbinder;
@@ -115,7 +115,7 @@ public class StepsFragment extends Fragment {
         mStepAdapter = new StepAdapter(mSteps, mStepsCheckboxState, new StepAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Step step) {
-                mStepDescription.setText(step.getDescription());
+                // Transition to step detail view
             }
         });
         if (isAdded()){
