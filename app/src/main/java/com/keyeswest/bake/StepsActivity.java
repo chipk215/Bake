@@ -3,6 +3,7 @@ package com.keyeswest.bake;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -13,11 +14,11 @@ import com.keyeswest.bake.models.Step;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StepsActivity extends SingleFragmentActivity {
+public class StepsActivity extends AppCompatActivity {
 
 
     private static final String EXTRA_STEPS = "com.keyeswest.bake.steps";
-
+    private Recipe mRecipe;
 
     public static Intent newIntent(Context context, Recipe recipe){
         Intent intent = new Intent(context, StepsActivity.class);
@@ -26,12 +27,24 @@ public class StepsActivity extends SingleFragmentActivity {
     }
 
     @Override
-    protected Fragment createFragment() {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_steps);
 
-        Recipe recipe= getIntent().getParcelableExtra(EXTRA_STEPS);
+        Intent intent = getIntent();
+        mRecipe = intent.getParcelableExtra(EXTRA_STEPS);
 
-        return StepsFragment.newInstance(recipe);
+        StepsFragment fragment = StepsFragment.newInstance(mRecipe);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        fragmentManager.beginTransaction()
+                .add(R.id.steps_container, fragment)
+                .commit();
+
+
     }
+
+
 
 
 }
