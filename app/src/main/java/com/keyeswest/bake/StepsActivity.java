@@ -2,23 +2,20 @@ package com.keyeswest.bake;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.keyeswest.bake.fragments.StepsFragment;
+import com.keyeswest.bake.fragments.StepsListFragment;
 import com.keyeswest.bake.models.Recipe;
 import com.keyeswest.bake.models.Step;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class StepsActivity extends AppCompatActivity {
+public class StepsActivity extends AppCompatActivity implements StepsListFragment.OnStepSelected {
 
 
     private static final String EXTRA_STEPS = "com.keyeswest.bake.steps";
     private Recipe mRecipe;
+    private Step mStep;
 
     public static Intent newIntent(Context context, Recipe recipe){
         Intent intent = new Intent(context, StepsActivity.class);
@@ -34,7 +31,7 @@ public class StepsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         mRecipe = intent.getParcelableExtra(EXTRA_STEPS);
 
-        StepsFragment fragment = StepsFragment.newInstance(mRecipe);
+        StepsListFragment fragment = StepsListFragment.newInstance(mRecipe);
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         fragmentManager.beginTransaction()
@@ -45,6 +42,14 @@ public class StepsActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onStepSelected(Bundle stepBundle) {
+        // Either start step detail activity or add to two pane layout
+        mStep = StepsListFragment.getStep(stepBundle);
 
+        // phone scenario
+        Intent intent = StepDetailActivity.newIntent(this,mStep);
+        startActivity(intent);
 
+    }
 }

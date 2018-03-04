@@ -1,6 +1,7 @@
 package com.keyeswest.bake.fragments;
 
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -23,7 +23,6 @@ import com.keyeswest.bake.models.Recipe;
 import com.keyeswest.bake.models.Step;
 import com.keyeswest.bake.tasks.ReadCheckboxStates;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -33,12 +32,28 @@ import butterknife.Unbinder;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class StepsFragment extends Fragment {
+public class StepsListFragment extends Fragment {
 
-    private static final String TAG="StepsFragment";
+    private static final String TAG="StepsListFragment";
+    private static final String STEP_KEY = "STEP_KEY";
 
     private static final String STEPS_ARG = "stepsArg";
-    private static final String RECIPE_PREFS_STEPS_FILENAME_KEY = "recipePrefsKey";
+
+
+    private OnStepSelected mHostActivityCallback;
+
+    public interface OnStepSelected{
+        void onStepSelected(Bundle stepBundle);
+    }
+
+
+    public static Step getStep(Bundle bundle){
+        Step step = null;
+        if (bundle != null){
+            step = bundle.getParcelable(STEP_KEY);
+        }
+        return step;
+    }
 
     private Recipe mRecipe;
     private List<Step> mSteps;
@@ -55,14 +70,28 @@ public class StepsFragment extends Fragment {
 
 
 
-    public static StepsFragment newInstance(Recipe recipe){
+    public static StepsListFragment newInstance(Recipe recipe){
         Bundle args = new Bundle();
         args.putParcelable(STEPS_ARG, recipe);
 
-        StepsFragment fragment = new StepsFragment();
+        StepsListFragment fragment = new StepsListFragment();
         fragment.setArguments(args);
 
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the host activity has implemented the callback interface
+        // If not, it throws an exception
+        try {
+            mHostActivityCallback = (OnStepSelected) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnStepSelected");
+        }
     }
 
     @Override
@@ -77,7 +106,7 @@ public class StepsFragment extends Fragment {
 
 
         }else{
-            Log.e(TAG,"Expected step data not provided to initialize StepsFragment") ;
+            Log.e(TAG,"Expected step data not provided to initialize StepsListFragment") ;
             return;
         }
     }
@@ -116,8 +145,12 @@ public class StepsFragment extends Fragment {
         mStepAdapter = new StepAdapter(mSteps, mStepsCheckboxState, new StepAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Step step) {
-                // Transition to step detail view
-                Toast.makeText(getContext(),"Step Selected: " + step.getShortDescription(), Toast.LENGTH_SHORT).show();
+
+                Log.d(TAG, "Step Selected" + Integer.toString(step.getId()));
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(STEP_KEY, step);
+                mHostActivityCallback.onStepSelected(bundle);
+
             }
         });
         if (isAdded()){
@@ -154,7 +187,6 @@ public class StepsFragment extends Fragment {
         super.onDestroyView();
         mUnbinder.unbind();
     }
-
 
 
 }

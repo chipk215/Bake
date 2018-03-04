@@ -23,7 +23,7 @@ import butterknife.Unbinder;
 
 public class RecipeDetailFragment extends Fragment {
     private static final String TAG = "RecipeDetailFragment";
-    private static final String KEY_SAVE_RECIPE = "save_recipe";
+    private static final String SAVE_RECIPE_KEY = "save_recipe";
 
     private Recipe mRecipe;
 
@@ -35,7 +35,7 @@ public class RecipeDetailFragment extends Fragment {
 
     public static RecipeDetailFragment newInstance(Recipe recipe){
         Bundle args = new Bundle();
-        args.putParcelable(KEY_SAVE_RECIPE, recipe);
+        args.putParcelable(SAVE_RECIPE_KEY, recipe);
 
         RecipeDetailFragment fragment = new RecipeDetailFragment();
         fragment.setArguments(args);
@@ -46,7 +46,7 @@ public class RecipeDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-        mRecipe = getArguments().getParcelable(KEY_SAVE_RECIPE);
+        mRecipe = getArguments().getParcelable(SAVE_RECIPE_KEY);
     }
 
 
