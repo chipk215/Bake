@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.keyeswest.bake.R;
@@ -116,6 +117,7 @@ public class StepsFragment extends Fragment {
             @Override
             public void onItemClick(Step step) {
                 // Transition to step detail view
+                Toast.makeText(getContext(),"Step Selected: " + step.getShortDescription(), Toast.LENGTH_SHORT).show();
             }
         });
         if (isAdded()){

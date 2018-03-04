@@ -7,20 +7,34 @@
         <variable name="step" type="com.keyeswest.bake.models.StepViewModel"/>
     </data>
 
-
-    <CheckBox
-        android:id="@+id/step_checkBox"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:buttonTint="@color/colorPrimary"
-        android:checked="@{step.getCheckedState()}"
-        android:text="@{step.getListLabel()}"
+        android:orientation="horizontal">
 
-        tools:text="Step Name" />
+        <CheckBox
+            android:id="@+id/step_checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:buttonTint="@color/colorPrimary"
+            android:checked="@{step.getCheckedState()}"
+             />
 
+        <TextView
+            android:id="@+id/step_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:paddingTop="6dp"
+            android:text="@{step.getListLabel()}"
+            tools:text="Step Label" />
+
+
+
+    </LinearLayout>
 
 
 </layout>

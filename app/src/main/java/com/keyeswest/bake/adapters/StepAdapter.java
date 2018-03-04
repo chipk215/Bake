@@ -67,6 +67,8 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
 
         @BindView(R.id.step_checkBox) CheckBox mStepCheckbox;
 
+        @BindView(R.id.step_label) TextView mStepLabel;
+
         private final StepItemBinding mStepBinding;
 
         public StepHolder(StepItemBinding binding){
@@ -82,16 +84,24 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
                         mStepViewModel.setCheckedState(false);
                         mStepCheckbox.setChecked(false);
                         mCheckboxStates.put(mStepViewModel.getUniqueId(), false);
-                        mListener.onItemClick(mStepViewModel.getStep());
+
 
 
                     }else{
                         mStepViewModel.setCheckedState(true);
                         mStepCheckbox.setChecked(true);
                         mCheckboxStates.put(mStepViewModel.getUniqueId(), true);
-                        mListener.onItemClick(mStepViewModel.getStep());
+
 
                     }
+                }
+            });
+
+
+            mStepLabel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onItemClick(mStepViewModel.getStep());
                 }
             });
         }
