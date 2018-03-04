@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.keyeswest.bake.R;
 import com.keyeswest.bake.adapters.StepAdapter;
+import com.keyeswest.bake.models.Recipe;
 import com.keyeswest.bake.models.Step;
 import com.keyeswest.bake.tasks.ReadCheckboxStates;
 
@@ -38,6 +39,7 @@ public class StepsFragment extends Fragment {
     private static final String STEPS_ARG = "stepsArg";
     private static final String RECIPE_PREFS_STEPS_FILENAME_KEY = "recipePrefsKey";
 
+    private Recipe mRecipe;
     private List<Step> mSteps;
     private String mRecipePrefsStepsFilename;
 
@@ -51,10 +53,11 @@ public class StepsFragment extends Fragment {
     private Unbinder mUnbinder;
 
 
-    public static StepsFragment newInstance(List<Step> steps, String stepHash){
+
+    public static StepsFragment newInstance(Recipe recipe){
         Bundle args = new Bundle();
-        args.putParcelableArrayList(STEPS_ARG, (ArrayList<Step>) steps);
-        args.putString(RECIPE_PREFS_STEPS_FILENAME_KEY, stepHash);
+        args.putParcelable(STEPS_ARG, recipe);
+
         StepsFragment fragment = new StepsFragment();
         fragment.setArguments(args);
 
@@ -67,8 +70,9 @@ public class StepsFragment extends Fragment {
 
         Bundle bundle = getArguments();
         if (bundle != null){
-            mSteps = bundle.getParcelableArrayList(STEPS_ARG);
-            mRecipePrefsStepsFilename = bundle.getString(RECIPE_PREFS_STEPS_FILENAME_KEY);
+            mRecipe = bundle.getParcelable(STEPS_ARG);
+            mSteps = mRecipe.getSteps();
+            mRecipePrefsStepsFilename = mRecipe.getSharedPreferencesStepsFileName();
 
 
         }else{
@@ -119,7 +123,6 @@ public class StepsFragment extends Fragment {
 
         }
     }
-
 
 
 

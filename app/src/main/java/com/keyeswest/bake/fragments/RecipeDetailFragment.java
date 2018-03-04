@@ -66,9 +66,8 @@ public class RecipeDetailFragment extends Fragment {
         mMakeItButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // start the make it activity
-                Intent intent = StepsActivity.newIntent(getContext(),
-                        mRecipe.getSteps(), mRecipe.getSharedPreferencesStepsFileName());
+                // start the steps activity
+                Intent intent = StepsActivity.newIntent(getContext(), mRecipe);
                 startActivity(intent);
             }
         });

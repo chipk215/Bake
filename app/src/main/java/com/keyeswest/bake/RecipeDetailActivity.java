@@ -38,8 +38,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
             RecipeDetailFragment recipeFragment = RecipeDetailFragment.newInstance(mRecipe);
 
             IngredientListFragment ingredientsFragment =
-                    IngredientListFragment.newInstance(mRecipe.getIngredients(),
-                            mRecipe.getSharedPreferencesIngredientFileName());
+                    IngredientListFragment.newInstance(mRecipe);
 
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()

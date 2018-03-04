@@ -20,6 +20,7 @@ import com.keyeswest.bake.R;
 
 import com.keyeswest.bake.adapters.IngredientAdapter;
 import com.keyeswest.bake.models.Ingredient;
+import com.keyeswest.bake.models.Recipe;
 import com.keyeswest.bake.tasks.ReadCheckboxStates;
 
 import java.util.ArrayList;
@@ -35,27 +36,26 @@ import static android.content.Context.MODE_PRIVATE;
 public class IngredientListFragment extends Fragment {
 
     private static final String TAG = "IngredientListFragment";
-    private static final String INGREDIENTS_KEY = "ingredients_key";
-    private static final String RECIPE_PREFS_INGREDIENTS_FILENAME_KEY = "recipeIngredientsPrefsKey";
+    private static final String RECIPE_KEY = "recipeKey";
+
 
 
     private List<Ingredient> mIngredients;
     private IngredientAdapter mIngredientAdapter;
     private String mRecipePrefsIngredientsFilename;
 
+
     private Hashtable<String, Boolean> mIngredientCheckboxState;
 
     @BindView(R.id.ingredient_recycler_view)
     RecyclerView mIngredientRecyclerView;
 
-
-
     private Unbinder mUnbinder;
 
-    public static IngredientListFragment newInstance(List<Ingredient> ingredients, String preferencsFilename){
+    public static IngredientListFragment newInstance(Recipe recipe){
         Bundle args = new Bundle();
-        args.putParcelableArrayList(INGREDIENTS_KEY, (ArrayList<Ingredient>)ingredients);
-        args.putString(RECIPE_PREFS_INGREDIENTS_FILENAME_KEY, preferencsFilename);
+        args.putParcelable(RECIPE_KEY, recipe);
+
         IngredientListFragment fragment = new IngredientListFragment();
         fragment.setArguments(args);
         return fragment;
@@ -66,8 +66,9 @@ public class IngredientListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mIngredients = getArguments().getParcelableArrayList(INGREDIENTS_KEY);
-        mRecipePrefsIngredientsFilename = getArguments().getString(RECIPE_PREFS_INGREDIENTS_FILENAME_KEY);
+        Recipe  recipe= getArguments().getParcelable(RECIPE_KEY);
+        mIngredients = recipe.getIngredients();
+        mRecipePrefsIngredientsFilename = recipe.getSharedPreferencesIngredientFileName();
     }
 
     @Override
