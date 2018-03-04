@@ -82,6 +82,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
                         mStepViewModel.setCheckedState(false);
                         mStepCheckbox.setChecked(false);
                         mCheckboxStates.put(mStepViewModel.getUniqueId(), false);
+                        mListener.onItemClick(mStepViewModel.getStep());
 
 
                     }else{
