@@ -54,6 +54,10 @@ public class StepDetailFragment  extends Fragment {
         mUnbinder = ButterKnife.bind(this, view);
         mDescriptionTextView.setText(mStep.getDescription());
 
+
+        mPreviousButton.setEnabled(mStep.getId() != 0);
+        mNextButton.setEnabled(mStep.getId() != mStep.getLastStep());
+
         return view;
     }
 
