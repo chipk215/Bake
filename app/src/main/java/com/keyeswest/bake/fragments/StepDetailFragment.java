@@ -32,9 +32,9 @@ public class StepDetailFragment  extends Fragment {
         return fragment;
     }
 
-    private OnGetStepSelected mHostActivityCallback;
+    private OnStepNavigation mHostActivityCallback;
 
-    public interface OnGetStepSelected{
+    public interface OnStepNavigation {
         void onNextSelected(String currentStepId);
         void onPreviousSelected(String currentStepId);
     }
@@ -68,10 +68,10 @@ public class StepDetailFragment  extends Fragment {
         // This makes sure that the host activity has implemented the callback interface
         // If not, it throws an exception
         try {
-            mHostActivityCallback = (OnGetStepSelected) context;
+            mHostActivityCallback = (OnStepNavigation) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement OnGetStepSelected");
+                    + " must implement OnStepNavigation");
         }
 
         try {

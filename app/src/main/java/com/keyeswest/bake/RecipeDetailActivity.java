@@ -12,6 +12,11 @@ import com.keyeswest.bake.fragments.IngredientListFragment;
 import com.keyeswest.bake.fragments.RecipeDetailFragment;
 import com.keyeswest.bake.models.Recipe;
 
+
+/**
+ * Handles the view displaying recipe details except for the list of steps.
+ *
+ */
 public class RecipeDetailActivity extends AppCompatActivity {
 
     private static final String EXTRA_RECIPE_BUNDLE = "com.keyeswest.bake.recipe";
@@ -47,9 +52,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
                     .commit();
         }
 
-
-
-
     }
 
     @Override
@@ -58,6 +60,5 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         savedInstanceState.putParcelable(KEY_SAVE_RECIPE, mRecipe);
     }
-
 
 }

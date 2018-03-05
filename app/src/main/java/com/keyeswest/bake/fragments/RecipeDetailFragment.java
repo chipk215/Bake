@@ -12,7 +12,7 @@ import android.widget.Button;
 
 import com.keyeswest.bake.R;
 
-import com.keyeswest.bake.StepsActivity;
+import com.keyeswest.bake.StepsListActivity;
 import com.keyeswest.bake.databinding.FragmentRecipeDetailBinding;
 import com.keyeswest.bake.models.Recipe;
 import com.keyeswest.bake.models.RecipeViewModel;
@@ -67,7 +67,7 @@ public class RecipeDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // start the steps activity
-                Intent intent = StepsActivity.newIntent(getContext(), mRecipe);
+                Intent intent = StepsListActivity.newIntent(getContext(), mRecipe);
                 startActivity(intent);
             }
         });

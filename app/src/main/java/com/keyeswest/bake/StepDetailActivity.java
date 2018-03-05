@@ -13,9 +13,12 @@ import com.keyeswest.bake.models.Step;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StepDetailActivity extends AppCompatActivity
-        implements StepDetailFragment.OnGetStepSelected,
-                   StepDetailFragment.OnCompletionStateChange{
+public class StepDetailActivity extends AppCompatActivity implements
+        // Invoked by StepDetailFragment when user wants to access previous or next step
+        StepDetailFragment.OnStepNavigation,
+
+        // The user changes the completion checkbox state
+        StepDetailFragment.OnCompletionStateChange{
 
     public static final String TAG="StepDetailActivity";
     public static final String EXTRA_STEP_BUNDLE = "com.keyeswest.bake.step";
@@ -57,20 +60,28 @@ public class StepDetailActivity extends AppCompatActivity
                     .commit();
 
         }
-
-
     }
 
+    /**
+     * User wants the next Step in the recipe
+     * @param currentStepId
+     */
     @Override
     public void onNextSelected(String currentStepId) {
         int currentIndex = getIndexForCorrespondingId(currentStepId);
         if ((currentIndex != -1) && ((currentIndex +1) < mSteps.size()) ){
             StepDetailFragment stepDetailFragment = StepDetailFragment.newInstance(mSteps.get(currentIndex + 1));
+
             replaceFragment(stepDetailFragment);
 
         }
     }
 
+
+    /**
+     * User wants the previous step in the recipe
+     * @param currentStepId
+     */
     @Override
     public void onPreviousSelected(String currentStepId) {
         int currentIndex = getIndexForCorrespondingId(currentStepId);
@@ -82,6 +93,35 @@ public class StepDetailActivity extends AppCompatActivity
 
     }
 
+
+    /**
+     * User changed the step completion state by clicking on the checkbox
+     * @param step = the stwp whose state was changed
+     */
+    @Override
+    public void onCompletionStateChange(Step step) {
+        int index = getIndexForCorrespondingId(step.getUniqueId());
+        Log.d(TAG, "Checkbox changed for step index: " + Integer.toString(index));
+        mSteps.get(index).setCheckedState(step.getCheckedState());
+
+        // Update the Intent data (the steps) returned to the invoking activity
+        updateActivityResults();
+
+    }
+
+
+    /**
+     * Helper function for unwrapping the intent data returned to the calling Activity.
+     * @param data
+     * @return
+     */
+    public static List<Step> getUpdatedSteps(Intent data){
+        Bundle bundle =  data.getBundleExtra(EXTRA_STEP_BUNDLE);
+        return bundle.getParcelableArrayList(STEPS_KEY);
+
+    }
+
+
     private void replaceFragment(StepDetailFragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -89,39 +129,23 @@ public class StepDetailActivity extends AppCompatActivity
                 .commit();
     }
 
+
     private int getIndexForCorrespondingId(String id){
         for (int i=0; i< mSteps.size(); i++){
             if (mSteps.get(i).getUniqueId().equals(id)){
                 return i;
             }
         }
-
         return -1;
     }
 
-    @Override
-    public void onCompletionStateChange(Step step) {
-        int index = getIndexForCorrespondingId(step.getUniqueId());
-        Log.d(TAG, "Checkbox changed for step index: " + Integer.toString(index));
-        mSteps.get(index).setCheckedState(step.getCheckedState());
-        updateActivityResults();
 
-    }
-
-
-    public void updateActivityResults(){
+    private void updateActivityResults(){
         Intent data = new Intent();
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(STEPS_KEY, (ArrayList<Step>)mSteps);
         data.putExtra(EXTRA_STEP_BUNDLE, bundle);
         setResult(RESULT_OK, data);
-
-
     }
 
-    public static List<Step> getUpdatedSteps(Intent data){
-        Bundle bundle =  data.getBundleExtra(EXTRA_STEP_BUNDLE);
-        return bundle.getParcelableArrayList(STEPS_KEY);
-
-    }
 }

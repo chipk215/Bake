@@ -16,7 +16,9 @@ import com.keyeswest.bake.models.Recipe;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
+/**
+ * Master activity in the Master/Detail flow for Recipes.
+ */
 public class MainActivity extends AppCompatActivity implements MasterListFragment.OnRecipeSelected {
 
     private static final String TAG = "MainActivity";
@@ -42,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
         }
 
         mTwoPane = (mTwoPaneDivider != null);
-
 
     }
 
