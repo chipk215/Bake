@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.keyeswest.bake.R;
@@ -38,6 +39,11 @@ public class StepDetailFragment  extends Fragment {
         void onPreviousSelected(String currentStepId);
     }
 
+    private OnCompletionStateChange mOnHostActivityCompletionCallback;
+    public interface OnCompletionStateChange
+    {
+        void onCompletionStateChange(Step step);
+    }
 
     private Step mStep;
     private Unbinder mUnbinder;
@@ -45,6 +51,7 @@ public class StepDetailFragment  extends Fragment {
     @BindView(R.id.step_description_tv)TextView mDescriptionTextView;
     @BindView(R.id.prev_button)Button mPreviousButton;
     @BindView(R.id.next_button)Button mNextButton;
+    @BindView(R.id.step_complete_cb)CheckBox mStepCheckBox;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -65,6 +72,13 @@ public class StepDetailFragment  extends Fragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
                     + " must implement OnGetStepSelected");
+        }
+
+        try {
+            mOnHostActivityCompletionCallback = (OnCompletionStateChange) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnCompletionStateChange");
         }
     }
 
@@ -95,6 +109,17 @@ public class StepDetailFragment  extends Fragment {
             @Override
             public void onClick(View v) {
                 mHostActivityCallback.onNextSelected(mStep.getUniqueId());
+            }
+        });
+
+        mStepCheckBox.setChecked(mStep.getCheckedState());
+
+        mStepCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mStep.setCheckedState(((CheckBox) v).isChecked());
+                mOnHostActivityCompletionCallback.onCompletionStateChange(mStep);
+
             }
         });
 

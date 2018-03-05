@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.keyeswest.bake.fragments.StepDetailFragment;
 import com.keyeswest.bake.models.Step;
@@ -12,8 +13,11 @@ import com.keyeswest.bake.models.Step;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StepDetailActivity extends AppCompatActivity implements StepDetailFragment.OnGetStepSelected {
+public class StepDetailActivity extends AppCompatActivity
+        implements StepDetailFragment.OnGetStepSelected,
+                   StepDetailFragment.OnCompletionStateChange{
 
+    public static final String TAG="StepDetailActivity";
     public static final String EXTRA_STEP_BUNDLE = "com.keyeswest.bake.step";
     public static final String STEPS_KEY = "stepsKey";
     public static final String SELECTED_INDEX_KEY="selectedIndexKey";
@@ -93,5 +97,12 @@ public class StepDetailActivity extends AppCompatActivity implements StepDetailF
         }
 
         return -1;
+    }
+
+    @Override
+    public void onCompletionStateChange(Step step) {
+        int index = getIndexForCorrespondingId(step.getUniqueId());
+        Log.d(TAG, "Checkbox changed for step index: " + Integer.toString(index));
+        mSteps.get(index).setCheckedState(step.getCheckedState());
     }
 }
