@@ -46,10 +46,15 @@ public class StepsActivity extends AppCompatActivity implements StepsListFragmen
     public void onStepSelected(Bundle stepBundle) {
         // Either start step detail activity or add to two pane layout
         mStep = StepsListFragment.getStep(stepBundle);
+        int selectedIndex = mRecipe.getStepIndex(mStep);
+        if (selectedIndex != -1){
+            // phone scenario
+            Intent intent = StepDetailActivity.newIntent(this,mRecipe.getSteps(), selectedIndex);
+            startActivity(intent);
+        }
 
-        // phone scenario
-        Intent intent = StepDetailActivity.newIntent(this,mStep);
-        startActivity(intent);
 
     }
+
+
 }

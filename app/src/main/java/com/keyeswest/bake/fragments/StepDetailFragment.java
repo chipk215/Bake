@@ -1,6 +1,7 @@
 package com.keyeswest.bake.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -30,6 +31,14 @@ public class StepDetailFragment  extends Fragment {
         return fragment;
     }
 
+    private OnGetStepSelected mHostActivityCallback;
+
+    public interface OnGetStepSelected{
+        void onNextSelected(String currentStepId);
+        void onPreviousSelected(String currentStepId);
+    }
+
+
     private Step mStep;
     private Unbinder mUnbinder;
 
@@ -44,6 +53,21 @@ public class StepDetailFragment  extends Fragment {
         mStep = getArguments().getParcelable(SAVE_STEP_KEY);
     }
 
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the host activity has implemented the callback interface
+        // If not, it throws an exception
+        try {
+            mHostActivityCallback = (OnGetStepSelected) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnGetStepSelected");
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
@@ -54,9 +78,25 @@ public class StepDetailFragment  extends Fragment {
         mUnbinder = ButterKnife.bind(this, view);
         mDescriptionTextView.setText(mStep.getDescription());
 
-
+        // requires the step ids to start at 0 and increase by 1
         mPreviousButton.setEnabled(mStep.getId() != 0);
-        mNextButton.setEnabled(mStep.getId() != mStep.getLastStep());
+
+        //this is hacky ...revisit
+        mNextButton.setEnabled((mStep.getId()+1) < mStep.getNumberOfStepsInRecipe());
+
+        mPreviousButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mHostActivityCallback.onPreviousSelected(mStep.getUniqueId());
+            }
+        });
+
+        mNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mHostActivityCallback.onNextSelected(mStep.getUniqueId());
+            }
+        });
 
         return view;
     }

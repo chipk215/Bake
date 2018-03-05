@@ -42,7 +42,7 @@ public class StepViewModel implements HasUniqueId {
     }
 
     private String getLastStep(){
-        return Integer.toString(mStep.getLastStep());
+        return Integer.toString(mStep.getNumberOfStepsInRecipe());
     }
 
     public String getListLabel(){

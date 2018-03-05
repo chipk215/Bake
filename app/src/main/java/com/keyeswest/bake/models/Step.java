@@ -24,7 +24,7 @@ public class Step implements Parcelable,HasUniqueId{
     @SerializedName("thumbnailURL")
     private String mThumbnailURL;
 
-    private int mLastStep;
+    private int mNumberOfStepsInRecipe;
 
     public static final Parcelable.Creator<Step> CREATOR = new Parcelable.Creator<Step>(){
         public Step createFromParcel(Parcel in) {
@@ -44,7 +44,7 @@ public class Step implements Parcelable,HasUniqueId{
         mDescription = in.readString();
         mVideoURL = in.readString();
         mThumbnailURL = in.readString();
-        mLastStep = in.readInt();
+        mNumberOfStepsInRecipe = in.readInt();
     }
 
     public int getId ()
@@ -97,12 +97,12 @@ public class Step implements Parcelable,HasUniqueId{
         this.mThumbnailURL = thumbnailURL;
     }
 
-    public int getLastStep() {
-        return mLastStep;
+    public int getNumberOfStepsInRecipe() {
+        return mNumberOfStepsInRecipe;
     }
 
-    public void setLastStep(int lastStep) {
-        mLastStep = lastStep;
+    public void setNumberOfStepsInRecipe(int numberOfStepsInRecipe) {
+        mNumberOfStepsInRecipe = numberOfStepsInRecipe;
     }
 
     @Override
@@ -125,7 +125,7 @@ public class Step implements Parcelable,HasUniqueId{
        dest.writeString(mDescription);
        dest.writeString(mVideoURL);
        dest.writeString(mThumbnailURL);
-       dest.writeInt(mLastStep);
+       dest.writeInt(mNumberOfStepsInRecipe);
 
     }
 

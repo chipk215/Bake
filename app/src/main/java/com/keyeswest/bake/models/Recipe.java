@@ -156,6 +156,17 @@ public class Recipe implements Parcelable{
         return "R_Step_" + Integer.toString(getId()) ;
     }
 
+    public int getStepIndex(Step step){
+
+        for (int i=0; i<getSteps().size(); i++){
+            if (getSteps().get(i).getUniqueId().equals(step.getUniqueId())){
+                return i;
+            }
+        }
+        //not found
+        return -1;
+    }
+
 
     @Override
     public String toString()

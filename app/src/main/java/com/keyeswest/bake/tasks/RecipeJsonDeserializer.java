@@ -3,7 +3,6 @@ package com.keyeswest.bake.tasks;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -49,9 +48,12 @@ public class RecipeJsonDeserializer extends AsyncTask<Void, Void, List<Recipe>> 
             // set the number of steps in the recipe on each step to facilitate
             // presenting step 1/N
             for (Recipe recipe : recipes){
+
                 int lastStep = recipe.getSteps().size();
+
+
                 for (Step step : recipe.getSteps()){
-                    step.setLastStep(lastStep);
+                    step.setNumberOfStepsInRecipe(lastStep);
                 }
             }
         }

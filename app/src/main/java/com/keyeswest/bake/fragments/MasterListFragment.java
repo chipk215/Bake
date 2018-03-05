@@ -108,7 +108,7 @@ public class MasterListFragment extends Fragment {
         mRecipeAdapter = new RecipeAdapter(recipeList, new RecipeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Recipe recipe) {
-                //Toast.makeText(getContext(), recipe.getName(), Toast.LENGTH_SHORT).show();
+                //This does not need to be in a bundle
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(RECIPE_KEY, recipe);
                 mHostCallback.onRecipeSelected(bundle);
