@@ -31,24 +31,16 @@ import static com.keyeswest.bake.tasks.RecipeJsonDeserializer.*;
 public class MasterListFragment extends Fragment {
 
     private static final String TAG = "MasterListFragment";
-    private static final String RECIPE_KEY = "RECIPE_KEY";
 
     private OnRecipeSelected mHostCallback;
     public interface OnRecipeSelected{
-        void onRecipeSelected(Bundle recipeBundle);
+        void onRecipeSelected(Recipe recipe);
     }
 
     private RecipeAdapter mRecipeAdapter;
 
     private Unbinder mUnbinder;
 
-    public static Recipe getRecipe(Bundle bundle){
-        Recipe recipe=null;
-       if (bundle != null){
-           recipe = bundle.getParcelable(RECIPE_KEY);
-       }
-       return recipe;
-    }
 
     @BindView(R.id.recipe_recycler_view)  RecyclerView mRecipeRecyclerView;
 
@@ -108,10 +100,8 @@ public class MasterListFragment extends Fragment {
         mRecipeAdapter = new RecipeAdapter(recipeList, new RecipeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Recipe recipe) {
-                //This does not need to be in a bundle
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(RECIPE_KEY, recipe);
-                mHostCallback.onRecipeSelected(bundle);
+
+                mHostCallback.onRecipeSelected(recipe);
 
             }
         });

@@ -43,9 +43,9 @@ public class StepsActivity extends AppCompatActivity implements StepsListFragmen
 
 
     @Override
-    public void onStepSelected(Bundle stepBundle) {
+    public void onStepSelected(Step step) {
         // Either start step detail activity or add to two pane layout
-        mStep = StepsListFragment.getStep(stepBundle);
+        mStep = step;
         int selectedIndex = mRecipe.getStepIndex(mStep);
         if (selectedIndex != -1){
             // phone scenario

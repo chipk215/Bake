@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
 
 
     @Override
-    public void onRecipeSelected(Bundle recipeBundle) {
-        mRecipe = MasterListFragment.getRecipe(recipeBundle);
+    public void onRecipeSelected(Recipe recipe) {
+        mRecipe =recipe;
 
 
         if (mTwoPane){

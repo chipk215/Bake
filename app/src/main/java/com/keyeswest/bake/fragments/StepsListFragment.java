@@ -35,25 +35,16 @@ import static android.content.Context.MODE_PRIVATE;
 public class StepsListFragment extends Fragment {
 
     private static final String TAG="StepsListFragment";
-    private static final String STEP_KEY = "STEP_KEY";
 
     private static final String STEPS_ARG = "stepsArg";
-
 
     private OnStepSelected mHostActivityCallback;
 
     public interface OnStepSelected{
-        void onStepSelected(Bundle stepBundle);
+        void onStepSelected(Step step);
     }
 
 
-    public static Step getStep(Bundle bundle){
-        Step step = null;
-        if (bundle != null){
-            step = bundle.getParcelable(STEP_KEY);
-        }
-        return step;
-    }
 
     private Recipe mRecipe;
     private List<Step> mSteps;
@@ -67,7 +58,6 @@ public class StepsListFragment extends Fragment {
 
     // ButterKnife helper
     private Unbinder mUnbinder;
-
 
 
     public static StepsListFragment newInstance(Recipe recipe){
@@ -147,9 +137,8 @@ public class StepsListFragment extends Fragment {
             public void onItemClick(Step step) {
 
                 Log.d(TAG, "Step Selected" + Integer.toString(step.getId()));
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(STEP_KEY, step);
-                mHostActivityCallback.onStepSelected(bundle);
+
+                mHostActivityCallback.onStepSelected(step);
 
             }
         });
