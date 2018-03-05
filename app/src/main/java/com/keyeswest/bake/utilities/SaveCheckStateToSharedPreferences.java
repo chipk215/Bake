@@ -19,6 +19,8 @@ public class SaveCheckStateToSharedPreferences {
             editor.putBoolean(i.getUniqueId(), isChecked);
         }
 
+        // this is a synchronous commit. Revisit, it is synchronous to ensure the step data is persisted
+        // before it is written before being read
         editor.commit();
     }
 }
