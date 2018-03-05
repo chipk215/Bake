@@ -5,9 +5,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
-import com.keyeswest.bake.interfaces.HasUniqueId;
 
-public class Step implements Parcelable,HasUniqueId{
+import com.keyeswest.bake.interfaces.IsCheckable;
+
+public class Step implements Parcelable, IsCheckable {
 
     @SerializedName("id")
     private int mId;
@@ -25,6 +26,8 @@ public class Step implements Parcelable,HasUniqueId{
     private String mThumbnailURL;
 
     private int mNumberOfStepsInRecipe;
+
+    private boolean mCheckedState;
 
     public static final Parcelable.Creator<Step> CREATOR = new Parcelable.Creator<Step>(){
         public Step createFromParcel(Parcel in) {
@@ -45,6 +48,7 @@ public class Step implements Parcelable,HasUniqueId{
         mVideoURL = in.readString();
         mThumbnailURL = in.readString();
         mNumberOfStepsInRecipe = in.readInt();
+        mCheckedState = in.readInt() != 0;
     }
 
     public int getId ()
@@ -106,6 +110,16 @@ public class Step implements Parcelable,HasUniqueId{
     }
 
     @Override
+    public boolean getCheckedState() {
+        return mCheckedState;
+    }
+
+    @Override
+    public void setCheckedState(boolean checkedState) {
+        mCheckedState = checkedState;
+    }
+
+    @Override
     public String toString()
     {
         return "Step [mId = "+ mId +", mShortDescription = "+ mShortDescription
@@ -126,6 +140,7 @@ public class Step implements Parcelable,HasUniqueId{
        dest.writeString(mVideoURL);
        dest.writeString(mThumbnailURL);
        dest.writeInt(mNumberOfStepsInRecipe);
+        dest.writeInt(mCheckedState ? 1 : 0);
 
     }
 

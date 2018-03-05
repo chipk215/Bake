@@ -13,7 +13,6 @@ import com.keyeswest.bake.databinding.StepItemBinding;
 import com.keyeswest.bake.models.Step;
 import com.keyeswest.bake.models.StepViewModel;
 
-import java.util.Hashtable;
 import java.util.List;
 
 import butterknife.BindView;
@@ -27,12 +26,12 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
     }
 
     private final List<Step> mSteps;
-    public Hashtable<String, Boolean> mCheckboxStates;
+
     private final OnItemClickListener mListener;
 
-    public StepAdapter( List<Step> steps, Hashtable<String, Boolean> checkBoxStates,OnItemClickListener listener ){
+    public StepAdapter( List<Step> steps, OnItemClickListener listener ){
         mSteps = steps;
-        mCheckboxStates = checkBoxStates;
+
         mListener = listener;
     }
 
@@ -57,9 +56,6 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
         return mSteps.size();
     }
 
-    public  Hashtable<String, Boolean> getCheckBoxStates(){
-        return mCheckboxStates;
-    }
 
     class StepHolder extends RecyclerView.ViewHolder{
 
@@ -83,15 +79,10 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
                     if (mStepViewModel.getCheckedState()){
                         mStepViewModel.setCheckedState(false);
                         mStepCheckbox.setChecked(false);
-                        mCheckboxStates.put(mStepViewModel.getUniqueId(), false);
-
-
 
                     }else{
                         mStepViewModel.setCheckedState(true);
                         mStepCheckbox.setChecked(true);
-                        mCheckboxStates.put(mStepViewModel.getUniqueId(), true);
-
 
                     }
                 }
@@ -109,7 +100,6 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
         public void bind(final Step step){
             mStepViewModel = new StepViewModel(this.itemView.getContext(), step);
 
-            mStepViewModel.setCheckedState(mCheckboxStates.get(step.getUniqueId()));
             mStepBinding.setStep(mStepViewModel);
             mStepBinding.executePendingBindings();
         }

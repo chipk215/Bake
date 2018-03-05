@@ -5,9 +5,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
-import com.keyeswest.bake.interfaces.HasUniqueId;
+import com.keyeswest.bake.interfaces.IsCheckable;
 
-public class Ingredient implements Parcelable, HasUniqueId{
+
+public class Ingredient implements Parcelable, IsCheckable {
 
     @SerializedName("measure")
     private String mMeasure;
@@ -17,6 +18,8 @@ public class Ingredient implements Parcelable, HasUniqueId{
 
     @SerializedName("quantity")
     private float mQuantity;
+
+    private boolean mCheckedState;
 
     public static final Parcelable.Creator<Ingredient> CREATOR
             = new Parcelable.Creator<Ingredient>(){
@@ -40,6 +43,7 @@ public class Ingredient implements Parcelable, HasUniqueId{
         mIngredientName = in.readString();
         mMeasure = in.readString();
         mQuantity = in.readFloat();
+        mCheckedState = in.readInt() != 0;
 
     }
 
@@ -74,6 +78,16 @@ public class Ingredient implements Parcelable, HasUniqueId{
     }
 
     @Override
+    public boolean getCheckedState() {
+        return mCheckedState;
+    }
+
+    @Override
+    public void setCheckedState(boolean checkedState) {
+        mCheckedState = checkedState;
+    }
+
+    @Override
     public String toString()
     {
         return "Ingredient [mMeasure = "+ mMeasure +", mIngredientName = "+ mIngredientName +", mQuantity = "+ mQuantity +"]";
@@ -89,6 +103,7 @@ public class Ingredient implements Parcelable, HasUniqueId{
         dest.writeString(mIngredientName);
         dest.writeString(mMeasure);
         dest.writeFloat(mQuantity);
+        dest.writeInt(mCheckedState ? 1 : 0);
     }
 
     @Override

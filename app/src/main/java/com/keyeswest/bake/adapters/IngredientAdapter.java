@@ -12,7 +12,6 @@ import com.keyeswest.bake.databinding.IngredientItemBinding;
 import com.keyeswest.bake.models.Ingredient;
 import com.keyeswest.bake.models.IngredientViewModel;
 
-import java.util.Hashtable;
 import java.util.List;
 
 import butterknife.BindView;
@@ -21,11 +20,11 @@ import butterknife.ButterKnife;
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientHolder> {
 
     private final List<Ingredient> mIngredients;
-    private Hashtable<String, Boolean> mCheckBoxStates;
 
-    public IngredientAdapter(List<Ingredient> ingredients, Hashtable<String, Boolean> checkBoxStates){
+
+    public IngredientAdapter(List<Ingredient> ingredients){
         mIngredients = ingredients;
-        mCheckBoxStates = checkBoxStates;
+
     }
 
     @Override
@@ -49,9 +48,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         return mIngredients.size();
     }
 
-    public  Hashtable<String, Boolean> getCheckBoxStates(){
-        return mCheckBoxStates;
-    }
 
     class IngredientHolder extends RecyclerView.ViewHolder{
 
@@ -73,11 +69,11 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
                     if (mIngredientViewModel.getCheckedState()){
                         mIngredientCheckbox.setChecked(false);
                         mIngredientViewModel.setCheckedState(false);
-                        mCheckBoxStates.put(mIngredientViewModel.getUniqueId(),false);
+
                     }else{
                         mIngredientCheckbox.setChecked(true);
                         mIngredientViewModel.setCheckedState(true);
-                        mCheckBoxStates.put(mIngredientViewModel.getUniqueId(),true);
+
                     }
 
                 }
@@ -87,8 +83,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         public void bind(final Ingredient ingredient){
             mIngredientViewModel = new
                     IngredientViewModel(this.itemView.getContext(),ingredient);
-
-            mIngredientViewModel.setCheckedState(mCheckBoxStates.get(ingredient.getUniqueId()));
 
             mBinding.setIngredient(mIngredientViewModel);
             mBinding.executePendingBindings();

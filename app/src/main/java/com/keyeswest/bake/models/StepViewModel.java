@@ -3,14 +3,11 @@ package com.keyeswest.bake.models;
 
 import android.content.Context;
 
-import com.keyeswest.bake.interfaces.HasUniqueId;
 
-public class StepViewModel implements HasUniqueId {
+public class StepViewModel {
 
     private Context mContext;
     private Step mStep;
-
-    private boolean mCheckedState;
 
     public StepViewModel(Context context, Step step){
         mContext = context;
@@ -29,12 +26,11 @@ public class StepViewModel implements HasUniqueId {
     }
 
     public boolean getCheckedState(){
-        return mCheckedState;
+        return mStep.getCheckedState();
     }
 
     public void setCheckedState(boolean checkedState){
-        mCheckedState = checkedState;
-
+      mStep.setCheckedState(checkedState);
     }
 
     private String getLabelId(){
@@ -53,7 +49,7 @@ public class StepViewModel implements HasUniqueId {
         return mStep;
     }
 
-    @Override
+
     public String getUniqueId() {
         return mStep.getUniqueId();
     }

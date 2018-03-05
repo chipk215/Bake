@@ -4,12 +4,12 @@ package com.keyeswest.bake.models;
 import android.content.Context;
 
 import com.keyeswest.bake.R;
-import com.keyeswest.bake.interfaces.HasUniqueId;
+
 
 
 import static java.lang.Math.abs;
 
-public class IngredientViewModel implements HasUniqueId{
+public class IngredientViewModel {
 
     // public access for testing
     public final static String CUP = "CUP";
@@ -26,21 +26,16 @@ public class IngredientViewModel implements HasUniqueId{
 
     private Context mContext;
 
-    private boolean mCheckedState;
-
 
     public IngredientViewModel(Context context, Ingredient ingredient){
         mIngredient = ingredient;
         mContext = context;
-
-        mCheckedState = false;
-
     }
+
 
     public String getName(){
         return mIngredient.getIngredientName();
     }
-
 
 
     public String getQuantity(){
@@ -97,15 +92,15 @@ public class IngredientViewModel implements HasUniqueId{
     }
 
     public void setCheckedState(boolean checkedState){
-        mCheckedState = checkedState;
+        mIngredient.setCheckedState(checkedState);
 
     }
 
     public boolean getCheckedState(){
-        return mCheckedState;
+        return mIngredient.getCheckedState();
     }
 
-    @Override
+
     public String getUniqueId() {
         return mIngredient.getUniqueId();
     }

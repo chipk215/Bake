@@ -4,24 +4,20 @@ package com.keyeswest.bake.tasks;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.keyeswest.bake.interfaces.HasUniqueId;
-
-import java.util.Hashtable;
+import com.keyeswest.bake.interfaces.IsCheckable;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class ReadCheckboxStates<T extends HasUniqueId> extends
-        AsyncTask<List<T>, Void, Hashtable<String, Boolean>> {
+public class ReadCheckboxStates<T extends IsCheckable> extends
+        AsyncTask<List<T>, Void, List<T>> {
 
     private ResultsCallback mCallback;
     private String mFileName;
     private Context mContext;
 
-    private Hashtable<String, Boolean> mCheckboxState;
-
-    public interface ResultsCallback{
-        void CheckboxStates(Hashtable<String, Boolean> checkboxStates);
+    public interface ResultsCallback<T>{
+        void CheckboxStates(List<T> updatedItems);
     }
 
     public ReadCheckboxStates(Context context, String fileName, ResultsCallback callback){
@@ -31,25 +27,25 @@ public class ReadCheckboxStates<T extends HasUniqueId> extends
     }
 
     @Override
-    protected Hashtable<String, Boolean> doInBackground(List<T>... lists) {
+    protected List<T> doInBackground(List<T>... lists) {
 
         if ((lists == null) || (lists[0] == null)) {
             return null;
         }
 
-        mCheckboxState = new Hashtable<>();
+
         for (T i : lists[0]){
             String hashValue = i.getUniqueId();
             Boolean isChecked = mContext.getSharedPreferences(mFileName, MODE_PRIVATE)
                     .getBoolean(hashValue, false);
-            mCheckboxState.put(hashValue, isChecked);
+            i.setCheckedState(isChecked);
         }
 
-        return mCheckboxState;
+        return lists[0];
     }
 
     @Override
-    protected void onPostExecute(Hashtable<String, Boolean> checkboxStates) {
-        mCallback.CheckboxStates(checkboxStates);
+    protected void onPostExecute(List<T> updatedList) {
+        mCallback.CheckboxStates(updatedList);
     }
 }

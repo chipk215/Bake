@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.keyeswest.bake.R;
-import com.keyeswest.bake.interfaces.HasUniqueId;
+
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;

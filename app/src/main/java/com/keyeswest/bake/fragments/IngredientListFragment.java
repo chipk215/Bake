@@ -23,8 +23,6 @@ import com.keyeswest.bake.models.Ingredient;
 import com.keyeswest.bake.models.Recipe;
 import com.keyeswest.bake.tasks.ReadCheckboxStates;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 
 import butterknife.BindView;
@@ -38,14 +36,10 @@ public class IngredientListFragment extends Fragment {
     private static final String TAG = "IngredientListFragment";
     private static final String RECIPE_KEY = "recipeKey";
 
-
-
     private List<Ingredient> mIngredients;
     private IngredientAdapter mIngredientAdapter;
     private String mRecipePrefsIngredientsFilename;
 
-
-    private Hashtable<String, Boolean> mIngredientCheckboxState;
 
     @BindView(R.id.ingredient_recycler_view)
     RecyclerView mIngredientRecyclerView;
@@ -89,19 +83,19 @@ public class IngredientListFragment extends Fragment {
         itemDecorator.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.custom_list_divider));
         mIngredientRecyclerView.addItemDecoration(itemDecorator);
 
-        ReadCheckboxStates<Ingredient> task = new ReadCheckboxStates<>(getContext(), mRecipePrefsIngredientsFilename, new ReadCheckboxStates.ResultsCallback(){
+        ReadCheckboxStates<Ingredient> task = new ReadCheckboxStates<>(getContext(),
+                mRecipePrefsIngredientsFilename, new ReadCheckboxStates.ResultsCallback<Ingredient>(){
 
             @Override
-            public void CheckboxStates(Hashtable<String, Boolean> checkboxStates) {
-                mIngredientCheckboxState = checkboxStates;
+            public void CheckboxStates(List<Ingredient> updatedList) {
+
+                // I don't think this assignment is necessary
+                mIngredients = updatedList;
                 setupIngredientAdapter();
             }
         });
 
         task.execute(mIngredients);
-
-
-
 
 
         return rootView;
@@ -118,12 +112,12 @@ public class IngredientListFragment extends Fragment {
 
         // revisit should this be off the UI thread?
         // We would wait to call super.onPause until complete, right?
-        mIngredientCheckboxState = mIngredientAdapter.getCheckBoxStates();
+
 
         SharedPreferences.Editor editor = getContext().getSharedPreferences(mRecipePrefsIngredientsFilename, MODE_PRIVATE).edit();
 
         for (Ingredient i : mIngredients){
-            Boolean isChecked = mIngredientCheckboxState.get(i.getUniqueId());
+            Boolean isChecked = i.getCheckedState();
             editor.putBoolean(i.getUniqueId(), isChecked);
         }
 
@@ -135,7 +129,7 @@ public class IngredientListFragment extends Fragment {
 
     private void setupIngredientAdapter(){
 
-        mIngredientAdapter = new IngredientAdapter(mIngredients, mIngredientCheckboxState);
+        mIngredientAdapter = new IngredientAdapter(mIngredients);
 
         if (isAdded()){
             mIngredientRecyclerView.setAdapter(mIngredientAdapter);

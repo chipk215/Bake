@@ -23,7 +23,6 @@ import com.keyeswest.bake.models.Recipe;
 import com.keyeswest.bake.models.Step;
 import com.keyeswest.bake.tasks.ReadCheckboxStates;
 
-import java.util.Hashtable;
 import java.util.List;
 
 import butterknife.BindView;
@@ -45,12 +44,10 @@ public class StepsListFragment extends Fragment {
     }
 
 
-
     private Recipe mRecipe;
     private List<Step> mSteps;
     private String mRecipePrefsStepsFilename;
 
-    private Hashtable<String, Boolean> mStepsCheckboxState;
     private StepAdapter mStepAdapter;
 
     @BindView(R.id.steps_recyclerView)RecyclerView mStepsRecyclerView;
@@ -115,11 +112,11 @@ public class StepsListFragment extends Fragment {
         mStepsRecyclerView.addItemDecoration(itemDecorator);
 
         ReadCheckboxStates<Step> task = new ReadCheckboxStates<>(getContext(),
-                mRecipePrefsStepsFilename, new ReadCheckboxStates.ResultsCallback(){
+                mRecipePrefsStepsFilename, new ReadCheckboxStates.ResultsCallback<Step>(){
 
             @Override
-            public void CheckboxStates(Hashtable<String, Boolean> checkboxStates) {
-                mStepsCheckboxState = checkboxStates;
+            public void CheckboxStates(List<Step> updatedList) {
+                mSteps = updatedList;
                 setupStepsAdapter();
             }
         });
@@ -132,7 +129,7 @@ public class StepsListFragment extends Fragment {
     }
 
     private void setupStepsAdapter(){
-        mStepAdapter = new StepAdapter(mSteps, mStepsCheckboxState, new StepAdapter.OnItemClickListener() {
+        mStepAdapter = new StepAdapter(mSteps, new StepAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Step step) {
 
@@ -154,13 +151,13 @@ public class StepsListFragment extends Fragment {
     public void onPause(){
 
         // revisit should this be off the UI thread?
-        // We would wait to call super.onPause until complete, right?
-        mStepsCheckboxState = mStepAdapter.getCheckBoxStates();
+        // Can we exit onPause before the operation completes?
+
 
         SharedPreferences.Editor editor = getContext().getSharedPreferences(mRecipePrefsStepsFilename, MODE_PRIVATE).edit();
 
         for (Step i : mSteps){
-            Boolean isChecked = mStepsCheckboxState.get(i.getUniqueId());
+            Boolean isChecked = i.getCheckedState();
             editor.putBoolean(i.getUniqueId(), isChecked);
         }
 
