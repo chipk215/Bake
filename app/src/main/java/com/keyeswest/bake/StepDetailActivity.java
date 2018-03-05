@@ -104,5 +104,24 @@ public class StepDetailActivity extends AppCompatActivity
         int index = getIndexForCorrespondingId(step.getUniqueId());
         Log.d(TAG, "Checkbox changed for step index: " + Integer.toString(index));
         mSteps.get(index).setCheckedState(step.getCheckedState());
+        updateActivityResults();
+
+    }
+
+
+    public void updateActivityResults(){
+        Intent data = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(STEPS_KEY, (ArrayList<Step>)mSteps);
+        data.putExtra(EXTRA_STEP_BUNDLE, bundle);
+        setResult(RESULT_OK, data);
+
+
+    }
+
+    public static List<Step> getUpdatedSteps(Intent data){
+        Bundle bundle =  data.getBundleExtra(EXTRA_STEP_BUNDLE);
+        return bundle.getParcelableArrayList(STEPS_KEY);
+
     }
 }

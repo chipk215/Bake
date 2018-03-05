@@ -46,7 +46,7 @@ public class StepsListFragment extends Fragment {
 
     private Recipe mRecipe;
     private List<Step> mSteps;
-    private String mRecipePrefsStepsFilename;
+
 
     private StepAdapter mStepAdapter;
 
@@ -81,6 +81,8 @@ public class StepsListFragment extends Fragment {
         }
     }
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -89,13 +91,31 @@ public class StepsListFragment extends Fragment {
         if (bundle != null){
             mRecipe = bundle.getParcelable(STEPS_ARG);
             mSteps = mRecipe.getSteps();
-            mRecipePrefsStepsFilename = mRecipe.getSharedPreferencesStepsFileName();
+
 
 
         }else{
             Log.e(TAG,"Expected step data not provided to initialize StepsListFragment") ;
             return;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ReadCheckboxStates<Step> task = new ReadCheckboxStates<>(getContext(),
+                mRecipe.getSharedPreferencesStepsFileName(), new ReadCheckboxStates.ResultsCallback<Step>(){
+
+            @Override
+            public void CheckboxStates(List<Step> updatedList) {
+                mSteps = updatedList;
+                setupStepsAdapter();
+            }
+        });
+
+        task.execute(mSteps);
+
+
     }
 
     @Override
@@ -112,7 +132,7 @@ public class StepsListFragment extends Fragment {
         mStepsRecyclerView.addItemDecoration(itemDecorator);
 
         ReadCheckboxStates<Step> task = new ReadCheckboxStates<>(getContext(),
-                mRecipePrefsStepsFilename, new ReadCheckboxStates.ResultsCallback<Step>(){
+                mRecipe.getSharedPreferencesStepsFileName(), new ReadCheckboxStates.ResultsCallback<Step>(){
 
             @Override
             public void CheckboxStates(List<Step> updatedList) {
@@ -154,7 +174,7 @@ public class StepsListFragment extends Fragment {
         // Can we exit onPause before the operation completes?
 
 
-        SharedPreferences.Editor editor = getContext().getSharedPreferences(mRecipePrefsStepsFilename, MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getContext().getSharedPreferences(mRecipe.getSharedPreferencesStepsFileName(), MODE_PRIVATE).edit();
 
         for (Step i : mSteps){
             Boolean isChecked = i.getCheckedState();
