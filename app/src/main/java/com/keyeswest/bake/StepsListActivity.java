@@ -45,6 +45,7 @@ public class StepsListActivity extends AppCompatActivity implements
 
     private static final String EXTRA_STEPS = "com.keyeswest.bake.steps";
     private static final String RECIPE_KEY = "save_recipe";
+    private static final String SELECTED_KEY = "selectedIndex";
     private static final String STEP_KEY = "save_step";
     private static final int STEP_UPDATED_CODE = 0;
 
@@ -73,10 +74,12 @@ public class StepsListActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steps);
         ButterKnife.bind(this);
+        mSelectedIndex = 0;
 
         if (savedInstanceState != null){
             mRecipe = savedInstanceState.getParcelable(RECIPE_KEY);
             mStep = savedInstanceState.getParcelable(STEP_KEY);
+            mSelectedIndex = savedInstanceState.getInt(SELECTED_KEY);
         }else{
             Intent intent = getIntent();
             mRecipe = intent.getParcelableExtra(EXTRA_STEPS);
@@ -91,6 +94,22 @@ public class StepsListActivity extends AppCompatActivity implements
         fragmentManager.beginTransaction()
                 .add(R.id.steps_container, fragment)
                 .commit();
+
+        if (mTwoPane){
+
+            StepDetailFragment stepDetailFragment =
+                    StepDetailFragment.newInstance(mRecipe.getSteps().get(mSelectedIndex));
+
+            if (fragmentManager.findFragmentById(R.id.step_detail_container) == null) {
+                // first load of fragment
+                fragmentManager.beginTransaction()
+                        .add(R.id.step_detail_container, stepDetailFragment)
+                        .commit();
+            }
+
+            onStepSelected(mRecipe.getSteps().get(mSelectedIndex));
+
+        }
     }
 
 
@@ -111,20 +130,12 @@ public class StepsListActivity extends AppCompatActivity implements
                 StepDetailFragment stepDetailFragment =
                         StepDetailFragment.newInstance(mRecipe.getSteps().get(mSelectedIndex));
 
-                if (fragmentManager.findFragmentById(R.id.step_detail_container) == null) {
-                    // first load of fragment
-                    fragmentManager.beginTransaction()
-                            .add(R.id.step_detail_container, stepDetailFragment)
-                            .commit();
-                } else {
-                    // replace detail fragment
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.step_detail_container, stepDetailFragment)
-                            .commit();
-                }
-
-
+                // replace detail fragment
+                fragmentManager.beginTransaction()
+                        .replace(R.id.step_detail_container, stepDetailFragment)
+                        .commit();
             } else {
+
                 // phone scenario
                 // The StepDetailActivity takes the entire list of steps to enable navigation
                 //between steps without popping back to this activity.
@@ -168,6 +179,7 @@ public class StepsListActivity extends AppCompatActivity implements
 
         savedInstanceState.putParcelable(RECIPE_KEY,mRecipe);
         savedInstanceState.putParcelable(STEP_KEY,mStep);
+        savedInstanceState.putInt(SELECTED_KEY, mSelectedIndex);
 
 
     }
