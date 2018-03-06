@@ -52,7 +52,7 @@ public class MainActivityTest {
 
 
     /**
-     * Check the first and fourth items in the ist for correct names
+     * Check the first and fourth items in the list for correct names
      */
     @Test
     public void recipeNameTest(){
@@ -72,7 +72,8 @@ public class MainActivityTest {
     @Test
     public void clickRecipeItemOpensRecipeDetailActivityOnPhone(){
 
-       if (! isTablet(InstrumentationRegistry.getTargetContext())) {
+        // The isTablet check ensures this test only runs on small screens
+        if (! isTablet(InstrumentationRegistry.getTargetContext())) {
 
            onView(withId(R.id.recipe_recycler_view))
                    .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
@@ -80,7 +81,7 @@ public class MainActivityTest {
            onView(withId(R.id.recipe_name_tv)).check(matches(isDisplayed()));
 
            onView(withId(R.id.recipe_name_tv)).check(matches(withText(BROWNIES)));
-       }
+        }
 
         Assert.assertTrue(true);
 
