@@ -17,7 +17,7 @@ import org.hamcrest.Matcher;
 
 import static android.support.test.espresso.core.internal.deps.guava.base.Preconditions.checkNotNull;
 
-public class utils {
+public class Utils {
 
 
     // Attribution https://stackoverflow.com/a/34795431/9128441

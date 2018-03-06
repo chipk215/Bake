@@ -33,7 +33,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isNotChecked;
 
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.keyeswest.bake.ui.utils.atPosition;
+import static com.keyeswest.bake.ui.Utils.atPosition;
 
 
 

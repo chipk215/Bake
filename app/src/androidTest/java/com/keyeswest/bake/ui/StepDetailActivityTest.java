@@ -14,9 +14,14 @@ import org.junit.runner.RunWith;
 import static android.support.test.espresso.Espresso.onView;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
+import static android.support.test.espresso.matcher.ViewMatchers.isNotChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.not;
 
 @RunWith(AndroidJUnit4.class)
 public class StepDetailActivityTest extends StepBaseTest{
@@ -48,6 +53,127 @@ public class StepDetailActivityTest extends StepBaseTest{
 
     }
 
+    @Test
+    public void firstStepValuesTest(){
+        Intent intent = StepDetailActivity.newIntent(getTargetContext(), mRecipe.getSteps(), 0);
+        mActivityTestRule.launchActivity(intent);
 
+        // check the step description
+        onView(withId(R.id.step_description_tv)).check(matches(withText(mRecipe.getSteps().get(0).getDescription())));
+
+        //verify the checkbox is unchecked
+        onView(withId(R.id.step_complete_cb)).check(matches(isNotChecked()));
+
+        // verify previous button is disabled
+        onView(withId(R.id.prev_button)).check(matches(not(isEnabled())));
+
+        //verify next button is enabled
+        onView(withId(R.id.next_button)).check(matches(isEnabled()));
+    }
+
+
+    @Test
+    public void secondStepValuesTest(){
+        Intent intent = StepDetailActivity.newIntent(getTargetContext(), mRecipe.getSteps(), 1);
+        mActivityTestRule.launchActivity(intent);
+
+        // check the step description
+        onView(withId(R.id.step_description_tv)).check(matches(withText(mRecipe.getSteps().get(1).getDescription())));
+
+        //verify the checkbox is unchecked
+        onView(withId(R.id.step_complete_cb)).check(matches(isNotChecked()));
+
+        // verify previous button is enabled
+        onView(withId(R.id.prev_button)).check(matches(isEnabled()));
+
+        //verify next button is enabled
+        onView(withId(R.id.next_button)).check(matches(isEnabled()));
+
+    }
+
+    @Test
+    public void lastStepValuesTest(){
+        Intent intent = StepDetailActivity.newIntent(getTargetContext(), mRecipe.getSteps(), 2);
+        mActivityTestRule.launchActivity(intent);
+
+        // check the step description
+        onView(withId(R.id.step_description_tv)).check(matches(withText(mRecipe.getSteps().get(2).getDescription())));
+
+        //verify the checkbox is unchecked
+        onView(withId(R.id.step_complete_cb)).check(matches(isNotChecked()));
+
+        // verify previous button is enabled
+        onView(withId(R.id.prev_button)).check(matches(isEnabled()));
+
+        //verify next button is disabled
+        onView(withId(R.id.next_button)).check(matches(not(isEnabled())));
+
+    }
+
+    @Test
+    public void verifyClickingOnEnabledPreviousButtonLoadsPreviousStep(){
+
+        Intent intent = StepDetailActivity.newIntent(getTargetContext(), mRecipe.getSteps(), 2);
+        mActivityTestRule.launchActivity(intent);
+
+        //verify correct step is displayed
+        onView(withId(R.id.step_description_tv)).check(matches(withText(mRecipe.getSteps().get(2).getDescription())));
+
+        // verify previous button is enabled
+        onView(withId(R.id.prev_button)).check(matches(isEnabled()));
+
+        //verify next button is disabled
+        onView(withId(R.id.next_button)).check(matches(not(isEnabled())));
+
+
+        //click the previous button
+        onView(withId(R.id.prev_button)).perform(click());
+
+        // check the  previous step description
+        onView(withId(R.id.step_description_tv)).check(matches(withText(mRecipe.getSteps().get(1).getDescription())));
+
+        //both navigation buttons should be enabled
+        // verify previous button is enabled
+        onView(withId(R.id.prev_button)).check(matches(isEnabled()));
+
+        //verify next button is enabled
+        onView(withId(R.id.next_button)).check(matches(isEnabled()));
+
+    }
+
+
+    @Test
+    public void verifyClickingOnEnabledNextButtonLoadsNextStep(){
+
+        Intent intent = StepDetailActivity.newIntent(getTargetContext(), mRecipe.getSteps(), 0);
+        mActivityTestRule.launchActivity(intent);
+
+        //verify correct step is displayed
+        onView(withId(R.id.step_description_tv)).check(matches(withText(mRecipe.getSteps().get(0).getDescription())));
+
+        // verify previous button is disabled
+        onView(withId(R.id.prev_button)).check(matches(not(isEnabled())));
+
+        //verify next button is enabled
+        onView(withId(R.id.next_button)).check(matches(isEnabled()));
+
+        //click the next button
+        onView(withId(R.id.next_button)).perform(click());
+
+        // check the  next step description
+        onView(withId(R.id.step_description_tv)).check(matches(withText(mRecipe.getSteps().get(1).getDescription())));
+
+        //both navigation buttons should be enabled
+        // verify previous button is enabled
+        onView(withId(R.id.prev_button)).check(matches(isEnabled()));
+
+        //verify next button is enabled
+        onView(withId(R.id.next_button)).check(matches(isEnabled()));
+
+
+
+
+
+    }
 
 }

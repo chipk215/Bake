@@ -44,7 +44,7 @@ public abstract class  StepBaseTest {
         // Add three steps
         List<Step> steps = new ArrayList<>();
         Step step = new Step();
-        step.setId(1);
+        step.setId(0);
         step.setShortDescription("Short description one");
         step.setDescription("Long description one");
         step.setVideoURL("https://d17h27t6h515a5.cloudfront.net/topher/2017/April/" +
@@ -54,7 +54,7 @@ public abstract class  StepBaseTest {
         steps.add(step);
 
         Step stepTwo = new Step();
-        stepTwo.setId(2);
+        stepTwo.setId(1);
         stepTwo.setShortDescription("Short description two");
         stepTwo.setDescription("Long description two");
         stepTwo.setVideoURL("");
@@ -62,7 +62,7 @@ public abstract class  StepBaseTest {
         steps.add(stepTwo);
 
         Step stepThree = new Step();
-        stepThree.setId(3);
+        stepThree.setId(2);
         stepThree.setShortDescription("Short description three");
         stepThree.setDescription("Long description three");
         stepThree.setVideoURL("");
@@ -74,6 +74,14 @@ public abstract class  StepBaseTest {
 
         mRecipe.setRecipeImageUriString( "android.resource://com.keyeswest.bake/drawable/baking");
         mRecipe.setDescription("Recipe Description.");
+
+
+        // these initializing steps are handled by the de-serializer
+        int lastStep = mRecipe.getSteps().size();
+
+        for (Step s : mRecipe.getSteps()){
+            s.setNumberOfStepsInRecipe(lastStep);
+        }
 
         // clear shared preferences
         getTargetContext()

@@ -30,7 +30,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isNotChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.keyeswest.bake.ui.utils.atPosition;
+import static com.keyeswest.bake.ui.Utils.atPosition;
 
 
 @RunWith(AndroidJUnit4.class)
@@ -76,7 +76,7 @@ public class StepsListActivityTest extends StepBaseTest{
         // click on the item
         onView(withId(R.id.steps_recyclerView))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0,
-                        utils.clickChildViewWithId(R.id.step_checkBox)));
+                        Utils.clickChildViewWithId(R.id.step_checkBox)));
 
 
         // verify the checkbox in the first item in the list is unchecked

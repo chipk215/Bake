@@ -14,8 +14,6 @@ import com.keyeswest.bake.R;
 
 import junit.framework.Assert;
 
-import org.junit.Assume;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,8 +26,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.keyeswest.bake.ui.utils.atPosition;
-import static com.keyeswest.bake.ui.utils.isTablet;
+import static com.keyeswest.bake.ui.Utils.atPosition;
+import static com.keyeswest.bake.ui.Utils.isTablet;
 
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTest {
