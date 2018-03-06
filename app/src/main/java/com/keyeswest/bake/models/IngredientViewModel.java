@@ -88,7 +88,7 @@ public class IngredientViewModel {
     }
 
     public String getIngredientInfo(){
-        return getQuantity()+ "  " + getMeasure() + " " + getName();
+        return getQuantity()+ " " + getMeasure() + " " + getName();
     }
 
     public void setCheckedState(boolean checkedState){

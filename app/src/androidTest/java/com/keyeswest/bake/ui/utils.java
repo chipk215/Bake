@@ -4,6 +4,8 @@ package com.keyeswest.bake.ui;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.support.annotation.NonNull;
+import android.support.test.espresso.UiController;
+import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -36,6 +38,28 @@ public class utils {
                     return false;
                 }
                 return itemMatcher.matches(viewHolder.itemView);
+            }
+        };
+    }
+
+
+    //Attribution: https://stackoverflow.com/a/30338665/9128441
+    public static ViewAction clickChildViewWithId(final int id) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return null;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Click on a child view with specified id.";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                View v = view.findViewById(id);
+                v.performClick();
             }
         };
     }
