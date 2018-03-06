@@ -1,6 +1,7 @@
 package com.keyeswest.bake.ui;
 
 import android.content.Intent;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -21,6 +22,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.isNotChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.keyeswest.bake.ui.Utils.isTablet;
 import static org.hamcrest.CoreMatchers.not;
 
 @RunWith(AndroidJUnit4.class)
@@ -36,11 +38,15 @@ public class StepDetailActivityTest extends StepBaseTest{
         Intent intent = StepDetailActivity.newIntent(getTargetContext(), mRecipe.getSteps(), 0);
         mActivityTestRule.launchActivity(intent);
 
-        // completion state checkbox
-        onView(withId(R.id.step_complete_cb)).check(matches(isDisplayed()));
+        if (! isTablet(InstrumentationRegistry.getTargetContext())) {
+            // completion state checkbox
+            onView(withId(R.id.step_complete_cb)).check(matches(isDisplayed()));
 
-        // complete label
-        onView(withId(R.id.complete_tv)).check(matches(isDisplayed()));
+            // complete label
+            onView(withId(R.id.complete_tv)).check(matches(isDisplayed()));
+
+        }
+
 
         // step description
         onView(withId(R.id.step_description_tv)).check(matches(isDisplayed()));
@@ -61,8 +67,10 @@ public class StepDetailActivityTest extends StepBaseTest{
         // check the step description
         onView(withId(R.id.step_description_tv)).check(matches(withText(mRecipe.getSteps().get(0).getDescription())));
 
-        //verify the checkbox is unchecked
-        onView(withId(R.id.step_complete_cb)).check(matches(isNotChecked()));
+        if (! isTablet(InstrumentationRegistry.getTargetContext())) {
+            //verify the checkbox is unchecked
+            onView(withId(R.id.step_complete_cb)).check(matches(isNotChecked()));
+        }
 
         // verify previous button is disabled
         onView(withId(R.id.prev_button)).check(matches(not(isEnabled())));
@@ -80,8 +88,10 @@ public class StepDetailActivityTest extends StepBaseTest{
         // check the step description
         onView(withId(R.id.step_description_tv)).check(matches(withText(mRecipe.getSteps().get(1).getDescription())));
 
-        //verify the checkbox is unchecked
-        onView(withId(R.id.step_complete_cb)).check(matches(isNotChecked()));
+        if (! isTablet(InstrumentationRegistry.getTargetContext())) {
+            //verify the checkbox is unchecked
+            onView(withId(R.id.step_complete_cb)).check(matches(isNotChecked()));
+        }
 
         // verify previous button is enabled
         onView(withId(R.id.prev_button)).check(matches(isEnabled()));
@@ -99,8 +109,10 @@ public class StepDetailActivityTest extends StepBaseTest{
         // check the step description
         onView(withId(R.id.step_description_tv)).check(matches(withText(mRecipe.getSteps().get(2).getDescription())));
 
-        //verify the checkbox is unchecked
-        onView(withId(R.id.step_complete_cb)).check(matches(isNotChecked()));
+        if (! isTablet(InstrumentationRegistry.getTargetContext())) {
+            //verify the checkbox is unchecked
+            onView(withId(R.id.step_complete_cb)).check(matches(isNotChecked()));
+        }
 
         // verify previous button is enabled
         onView(withId(R.id.prev_button)).check(matches(isEnabled()));
@@ -169,9 +181,6 @@ public class StepDetailActivityTest extends StepBaseTest{
 
         //verify next button is enabled
         onView(withId(R.id.next_button)).check(matches(isEnabled()));
-
-
-
 
 
     }
