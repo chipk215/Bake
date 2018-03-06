@@ -3,6 +3,7 @@ package com.keyeswest.bake.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +52,8 @@ public class StepDetailFragment  extends Fragment {
     @BindView(R.id.step_description_tv)TextView mDescriptionTextView;
     @BindView(R.id.prev_button)Button mPreviousButton;
     @BindView(R.id.next_button)Button mNextButton;
+
+    @Nullable
     @BindView(R.id.step_complete_cb)CheckBox mStepCheckBox;
 
     @Override
@@ -112,16 +115,18 @@ public class StepDetailFragment  extends Fragment {
             }
         });
 
-        mStepCheckBox.setChecked(mStep.getCheckedState());
+        if (mStepCheckBox != null) {
+            mStepCheckBox.setChecked(mStep.getCheckedState());
 
-        mStepCheckBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mStep.setCheckedState(((CheckBox) v).isChecked());
-                mOnHostActivityCompletionCallback.onCompletionStateChange(mStep);
+            mStepCheckBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mStep.setCheckedState(((CheckBox) v).isChecked());
+                    mOnHostActivityCompletionCallback.onCompletionStateChange(mStep);
 
-            }
-        });
+                }
+            });
+        }
 
         return view;
     }

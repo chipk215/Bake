@@ -174,7 +174,9 @@ public class StepsListFragment extends Fragment {
         // Can we exit onPause before the operation completes?
 
 
-        SharedPreferences.Editor editor = getContext().getSharedPreferences(mRecipe.getSharedPreferencesStepsFileName(), MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor =
+                getContext().getSharedPreferences(mRecipe.getSharedPreferencesStepsFileName(),
+                        MODE_PRIVATE).edit();
 
         for (Step i : mSteps){
             Boolean isChecked = i.getCheckedState();

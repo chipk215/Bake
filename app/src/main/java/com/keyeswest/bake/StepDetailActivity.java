@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.keyeswest.bake.fragments.StepDetailFragment;
 import com.keyeswest.bake.models.Step;
+import com.keyeswest.bake.utilities.StepListUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +71,7 @@ public class StepDetailActivity extends AppCompatActivity implements
      */
     @Override
     public void onNextSelected(String currentStepId) {
-        int currentIndex = getIndexForCorrespondingId(currentStepId);
+        int currentIndex = StepListUtilities.getIndexForCorrespondingId(currentStepId, mSteps);
         if ((currentIndex != -1) && ((currentIndex +1) < mSteps.size()) ){
             StepDetailFragment stepDetailFragment = StepDetailFragment.newInstance(mSteps.get(currentIndex + 1));
             mSelectedIndex +=1;
@@ -86,12 +87,11 @@ public class StepDetailActivity extends AppCompatActivity implements
      */
     @Override
     public void onPreviousSelected(String currentStepId) {
-        int currentIndex = getIndexForCorrespondingId(currentStepId);
+        int currentIndex = StepListUtilities.getIndexForCorrespondingId(currentStepId,mSteps);
         if ((currentIndex != -1) && ((currentIndex -1) >= 0) ){
             StepDetailFragment stepDetailFragment = StepDetailFragment.newInstance(mSteps.get(currentIndex-1));
             mSelectedIndex -=1;
             replaceFragment(stepDetailFragment);
-
 
         }
 
@@ -100,11 +100,11 @@ public class StepDetailActivity extends AppCompatActivity implements
 
     /**
      * User changed the step completion state by clicking on the checkbox
-     * @param step = the stwp whose state was changed
+     * @param step = the step whose state was changed
      */
     @Override
     public void onCompletionStateChange(Step step) {
-        int index = getIndexForCorrespondingId(step.getUniqueId());
+        int index = StepListUtilities.getIndexForCorrespondingId(step.getUniqueId(), mSteps);
         Log.d(TAG, "Checkbox changed for step index: " + Integer.toString(index));
         mSteps.get(index).setCheckedState(step.getCheckedState());
 
@@ -138,16 +138,6 @@ public class StepDetailActivity extends AppCompatActivity implements
         fragmentManager.beginTransaction()
                 .replace(R.id.step_detail_container, fragment)
                 .commit();
-    }
-
-
-    private int getIndexForCorrespondingId(String id){
-        for (int i=0; i< mSteps.size(); i++){
-            if (mSteps.get(i).getUniqueId().equals(id)){
-                return i;
-            }
-        }
-        return -1;
     }
 
 

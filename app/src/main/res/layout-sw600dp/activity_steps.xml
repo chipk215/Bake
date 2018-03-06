@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    tools:context="com.keyeswest.bake.StepsListActivity">
+
+
+    <FrameLayout android:id="@+id/steps_container"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="360dp"
+        android:layout_height="match_parent" />
+
+    <!-- A small divider -->
+    <View
+        android:id="@+id/step_divider_view"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/darker_gray" />
+
+    <include android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/activity_step_detail"/>
+
+</LinearLayout>
