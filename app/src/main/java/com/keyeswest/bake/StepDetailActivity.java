@@ -46,20 +46,22 @@ public class StepDetailActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_step_detail);
 
         if (savedInstanceState != null){
-
-        }else{
+            mSteps = savedInstanceState.getParcelableArrayList(STEPS_KEY);
+            mSelectedIndex = savedInstanceState.getInt(SELECTED_INDEX_KEY);
+        }else {
             Bundle bundle = getIntent().getParcelableExtra(EXTRA_STEP_BUNDLE);
             mSteps = bundle.getParcelableArrayList(STEPS_KEY);
             mSelectedIndex = bundle.getInt(SELECTED_INDEX_KEY);
-
-            StepDetailFragment stepDetailFragment = StepDetailFragment.newInstance(mSteps.get(mSelectedIndex));
-
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .add(R.id.step_detail_container, stepDetailFragment)
-                    .commit();
-
         }
+
+        StepDetailFragment stepDetailFragment = StepDetailFragment.newInstance(mSteps.get(mSelectedIndex));
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .add(R.id.step_detail_container, stepDetailFragment)
+                .commit();
+
+
     }
 
     /**
@@ -71,7 +73,7 @@ public class StepDetailActivity extends AppCompatActivity implements
         int currentIndex = getIndexForCorrespondingId(currentStepId);
         if ((currentIndex != -1) && ((currentIndex +1) < mSteps.size()) ){
             StepDetailFragment stepDetailFragment = StepDetailFragment.newInstance(mSteps.get(currentIndex + 1));
-
+            mSelectedIndex +=1;
             replaceFragment(stepDetailFragment);
 
         }
@@ -87,7 +89,9 @@ public class StepDetailActivity extends AppCompatActivity implements
         int currentIndex = getIndexForCorrespondingId(currentStepId);
         if ((currentIndex != -1) && ((currentIndex -1) >= 0) ){
             StepDetailFragment stepDetailFragment = StepDetailFragment.newInstance(mSteps.get(currentIndex-1));
+            mSelectedIndex -=1;
             replaceFragment(stepDetailFragment);
+
 
         }
 
@@ -107,6 +111,13 @@ public class StepDetailActivity extends AppCompatActivity implements
         // Update the Intent data (the steps) returned to the invoking activity
         updateActivityResults();
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putParcelableArrayList(STEPS_KEY, (ArrayList<Step>)mSteps);
+        savedInstanceState.putInt(SELECTED_INDEX_KEY, mSelectedIndex);
     }
 
 
