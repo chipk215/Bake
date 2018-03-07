@@ -165,7 +165,7 @@ public class StepDetailFragment  extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        hideSystemUi();
+      //  hideSystemUi();
         if ((Util.SDK_INT <= 23 || mPlayer == null)) {
             initializePlayer();
         }

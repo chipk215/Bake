@@ -67,9 +67,8 @@
         android:layout_height="wrap_content"
 
 
-        android:background="@color/colorPrimary"
+        android:background="@drawable/button_selector"
         android:text="@string/previous"
-        android:textColor="@color/colorAccent"
         android:visibility="visible"
         app:layout_constraintBaseline_toBaselineOf="@+id/next_button"
         app:layout_constraintEnd_toStartOf="@+id/next_button"
@@ -82,9 +81,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
 
-        android:background="@color/colorPrimary"
+        android:background="@drawable/button_selector"
         android:text="@string/next"
-        android:textColor="@color/colorAccent"
+        android:textColor="@android:color/black"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
