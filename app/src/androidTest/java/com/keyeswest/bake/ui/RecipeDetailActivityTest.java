@@ -12,7 +12,11 @@ import com.keyeswest.bake.RecipeDetailActivity;
 import com.keyeswest.bake.models.Ingredient;
 import com.keyeswest.bake.models.IngredientViewModel;
 import com.keyeswest.bake.models.Recipe;
+import com.keyeswest.bake.models.RecipeFactory;
 import com.keyeswest.bake.models.Step;
+import com.keyeswest.bake.tasks.RecipeJsonDeserializer;
+
+import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -21,6 +25,8 @@ import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
@@ -38,56 +44,18 @@ import static com.keyeswest.bake.ui.Utils.atPosition;
 
 
 @RunWith(AndroidJUnit4.class)
-public class RecipeDetailActivityTest {
+public class RecipeDetailActivityTest extends StepBaseTest {
 
-    private Recipe mRecipe;
 
     @Rule
     public ActivityTestRule mActivityTestRule =
             new ActivityTestRule<>(RecipeDetailActivity.class,
                     false, false);
 
-    @Before
-    public void initRecipe(){
-        mRecipe = new Recipe();
-
-        mRecipe.setId(1);
-        mRecipe.setName("Test Recipe");
-        mRecipe.setServings(8);
-
-        List<Ingredient> ingredients = new ArrayList<>();
-        Ingredient ingredient = new Ingredient();
-        ingredient.setIngredientName("Ingredient One");
-        ingredient.setMeasure("Bushel");
-        ingredient.setQuantity(10.2f);
-        ingredients.add(ingredient);
-        mRecipe.setIngredients(ingredients);
-
-        List<Step> steps = new ArrayList<>();
-        Step step = new Step();
-        step.setId(1);
-        step.setShortDescription("Short description");
-        step.setDescription("Long Description");
-        step.setVideoURL("https://d17h27t6h515a5.cloudfront.net/topher/2017/April/" +
-                "590129ad_17-frost-all-around-cake-yellow-cake/" +
-                "17-frost-all-around-cake-yellow-cake.mp4");
-        step.setThumbnailURL("");
-        steps.add(step);
-        mRecipe.setSteps(steps);
-
-        mRecipe.setRecipeImageUriString( "android.resource://com.keyeswest.bake/drawable/baking");
-        mRecipe.setDescription("Recipe Description.");
-
-
-        // clear shared preferences
-        getTargetContext().getSharedPreferences(mRecipe.getSharedPreferencesIngredientFileName(),
-                0).edit().clear().commit();
-
-
-    }
 
     @Test
-    public void launchTest(){
+    public void launchTest() {
+
         Intent intent = RecipeDetailActivity.newIntent(getTargetContext(), mRecipe);
         mActivityTestRule.launchActivity(intent);
 
@@ -99,6 +67,7 @@ public class RecipeDetailActivityTest {
         onView(withId(R.id.serve_label_tv)).check(matches(isDisplayed()));
         onView(withId(R.id.servings_count_tv)).check(matches(isDisplayed()));
         onView(withId(R.id.description_tv)).check(matches(isDisplayed()));
+
         // check for the MAKE IT Button
         onView(withId(R.id.make_it_btn)).check(matches(isDisplayed()));
 
@@ -123,6 +92,8 @@ public class RecipeDetailActivityTest {
 
     @Test
     public void clickOnIngredientTest(){
+
+
         Intent intent = RecipeDetailActivity.newIntent(getTargetContext(), mRecipe);
         mActivityTestRule.launchActivity(intent);
 

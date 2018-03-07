@@ -103,11 +103,17 @@ public class StepDetailActivityTest extends StepBaseTest{
 
     @Test
     public void lastStepValuesTest(){
-        Intent intent = StepDetailActivity.newIntent(getTargetContext(), mRecipe.getSteps(), 2);
+
+        int lastIndex = mRecipe.getSteps().size()-1;
+
+        Intent intent = StepDetailActivity.newIntent(getTargetContext(),
+                mRecipe.getSteps(), lastIndex);
+
         mActivityTestRule.launchActivity(intent);
 
         // check the step description
-        onView(withId(R.id.step_description_tv)).check(matches(withText(mRecipe.getSteps().get(2).getDescription())));
+        onView(withId(R.id.step_description_tv)).check(matches(withText(mRecipe.getSteps()
+                .get(lastIndex).getDescription())));
 
         if (! isTablet(InstrumentationRegistry.getTargetContext())) {
             //verify the checkbox is unchecked
@@ -123,13 +129,17 @@ public class StepDetailActivityTest extends StepBaseTest{
     }
 
     @Test
-    public void verifyClickingOnEnabledPreviousButtonLoadsPreviousStep(){
+    public void verifyClickingOnEnabledPreviousButtonLastItemLoadsPreviousStep(){
 
-        Intent intent = StepDetailActivity.newIntent(getTargetContext(), mRecipe.getSteps(), 2);
+        int lastIndex = mRecipe.getSteps().size()-1;
+
+        Intent intent = StepDetailActivity.newIntent(getTargetContext(),
+                mRecipe.getSteps(),lastIndex);
+
         mActivityTestRule.launchActivity(intent);
 
         //verify correct step is displayed
-        onView(withId(R.id.step_description_tv)).check(matches(withText(mRecipe.getSteps().get(2).getDescription())));
+        onView(withId(R.id.step_description_tv)).check(matches(withText(mRecipe.getSteps().get(lastIndex).getDescription())));
 
         // verify previous button is enabled
         onView(withId(R.id.prev_button)).check(matches(isEnabled()));
@@ -142,7 +152,7 @@ public class StepDetailActivityTest extends StepBaseTest{
         onView(withId(R.id.prev_button)).perform(click());
 
         // check the  previous step description
-        onView(withId(R.id.step_description_tv)).check(matches(withText(mRecipe.getSteps().get(1).getDescription())));
+        onView(withId(R.id.step_description_tv)).check(matches(withText(mRecipe.getSteps().get(lastIndex-1).getDescription())));
 
         //both navigation buttons should be enabled
         // verify previous button is enabled
