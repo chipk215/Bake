@@ -153,11 +153,6 @@
         "quantity": 1.5,
         "measure": "TSP",
         "ingredient": "salt"
-      },
-      {
-        "quantity": 350,
-        "measure": "G",
-        "ingredient": "semisweet chocolate chips"
       }
     ],
     "steps": [
@@ -415,7 +410,7 @@
       {
         "quantity": 4,
         "measure": "TSP",
-        "ingredient": "vanilla,divided"
+        "ingredient": "vanilla, divided"
       },
       {
         "quantity": 680,

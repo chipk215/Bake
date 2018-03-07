@@ -6,6 +6,7 @@ import android.content.Context;
 import com.keyeswest.bake.R;
 
 
+import java.text.DecimalFormat;
 
 import static java.lang.Math.abs;
 
@@ -39,7 +40,8 @@ public class IngredientViewModel {
 
 
     public String getQuantity(){
-        return Float.toString(mIngredient.getQuantity());
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        return decimalFormat.format(mIngredient.getQuantity());
     }
 
     public String getMeasure(){
