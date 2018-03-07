@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 
 import com.keyeswest.bake.R;
@@ -39,6 +40,7 @@ public class IngredientListFragment extends Fragment {
     private List<Ingredient> mIngredients;
     private IngredientAdapter mIngredientAdapter;
     private String mRecipePrefsIngredientsFilename;
+
 
 
     @BindView(R.id.ingredient_recycler_view)
@@ -83,20 +85,16 @@ public class IngredientListFragment extends Fragment {
         itemDecorator.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.custom_list_divider));
         mIngredientRecyclerView.addItemDecoration(itemDecorator);
 
-        ReadCheckboxStates<Ingredient> task = new ReadCheckboxStates<>(getContext(),
+        ReadCheckboxStates<Ingredient> readIngredientStateTask = new ReadCheckboxStates<>(getContext(),
                 mRecipePrefsIngredientsFilename, new ReadCheckboxStates.ResultsCallback<Ingredient>(){
-
             @Override
             public void CheckboxStates(List<Ingredient> updatedList) {
-
-                // I don't think this assignment is necessary
                 mIngredients = updatedList;
                 setupIngredientAdapter();
             }
         });
 
-        task.execute(mIngredients);
-
+        readIngredientStateTask.execute(mIngredients);
 
         return rootView;
     }
