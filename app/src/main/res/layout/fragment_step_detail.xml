@@ -12,9 +12,10 @@
         android:id="@+id/video_view"
         android:layout_width="match_parent"
         android:layout_height="259dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalHalf"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/horizontalHalf"
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.constraint.Guideline
@@ -66,7 +67,9 @@
         android:layout_height="wrap_content"
 
 
+        android:background="@color/colorPrimary"
         android:text="@string/previous"
+        android:textColor="@color/colorAccent"
         android:visibility="visible"
         app:layout_constraintBaseline_toBaselineOf="@+id/next_button"
         app:layout_constraintEnd_toStartOf="@+id/next_button"
@@ -79,7 +82,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
 
+        android:background="@color/colorPrimary"
         android:text="@string/next"
+        android:textColor="@color/colorAccent"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

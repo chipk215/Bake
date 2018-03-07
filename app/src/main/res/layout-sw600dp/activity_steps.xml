@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorAccent"
     android:baselineAligned="false"
+    android:orientation="horizontal"
     tools:context="com.keyeswest.bake.StepsListActivity">
 
 
-    <FrameLayout android:id="@+id/steps_container"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/steps_container"
         android:layout_width="360dp"
         android:layout_height="match_parent" />
 
@@ -20,8 +21,9 @@
         android:layout_height="match_parent"
         android:background="@android:color/darker_gray" />
 
-    <include android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/activity_step_detail"/>
+    <include
+        layout="@layout/activity_step_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>
