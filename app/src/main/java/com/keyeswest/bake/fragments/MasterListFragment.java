@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.keyeswest.bake.R;
 import com.keyeswest.bake.adapters.RecipeAdapter;
 import com.keyeswest.bake.models.Recipe;
+import com.keyeswest.bake.models.RecipeFactory;
 import com.keyeswest.bake.tasks.RecipeJsonDeserializer;
 
 import java.util.List;
@@ -80,17 +81,13 @@ public class MasterListFragment extends Fragment {
         int columns = getResources().getInteger(R.integer.recipe_grid_columns);
         mRecipeRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),columns));
 
-        RecipeJsonDeserializer deserializer =
-                new RecipeJsonDeserializer(getContext(),
-                        new RecipeResultsCallback() {
-                            @Override
-                            public void recipeResult(List<Recipe> recipeList) {
-                                setupRecipeAdapter(recipeList);
+        RecipeFactory.readRecipes(getContext(),new RecipeResultsCallback() {
+            @Override
+            public void recipeResult(List<Recipe> recipeList) {
+                setupRecipeAdapter(recipeList);
 
-                            }
-                        });
-
-        deserializer.execute();
+            }
+        });
 
         return rootView;
     }
