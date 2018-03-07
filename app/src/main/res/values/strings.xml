@@ -22,6 +22,10 @@
     <string name="make_it">Make It!</string>
     <string name="ingredients">Ingredients</string>
 
+
+    <string name="instruction">Instructions</string>
+    <string name="tap_for_detail">(tap for details)</string>
+
     <!-- Step Detail Fragment -->
     <string name="previous">Previous</string>
     <string name="next">Next</string>
