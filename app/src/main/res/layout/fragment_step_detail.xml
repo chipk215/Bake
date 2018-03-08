@@ -63,11 +63,7 @@
 
     <Button
         android:id="@+id/prev_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-
-        android:background="@drawable/button_selector"
+        style="@style/ButtonStyle"
         android:text="@string/previous"
         android:visibility="visible"
         app:layout_constraintBaseline_toBaselineOf="@+id/next_button"
@@ -77,13 +73,9 @@
 
     <Button
         android:id="@+id/next_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-
-        android:background="@drawable/button_selector"
+        style="@style/ButtonStyle"
         android:text="@string/next"
-        android:textColor="@android:color/black"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
