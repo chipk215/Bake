@@ -3,7 +3,9 @@ package com.keyeswest.bake;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -20,49 +22,24 @@ import java.util.List;
 public class BakeAppWidget extends AppWidgetProvider {
 
     private static final String TAG="BAKEAPPWIDGET";
-
-    private static final String mSharedPrefFile =
-            "com.keyeswest.bake";
-    private static final String COUNT_KEY = "count";
+    public static final String EXTRA_ITEM = "com.keyeswest.bake.BakeAppWidget.EXTRA_ITEM";
 
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        SharedPreferences recipeData = context.getSharedPreferences(RecipeWriter.RECIPE_FILENAME,
-                0);
-
-        int recipeCount = recipeData.getInt(RecipeWriter.RECIPE_COUNT_KEY, 0);
-        List<String> recipeNames = new ArrayList<>();
-        for (int i=0; i< recipeCount; i++){
-            recipeNames.add(recipeData.getString(Integer.toString(i),""));
-            Log.i(TAG, "Recipe: " + Integer.toString(i) + "--> " + recipeNames.get(i));
-
-        }
-
-
-
-        SharedPreferences prefs = context.getSharedPreferences(
-                mSharedPrefFile, 0);
-        int count = prefs.getInt(COUNT_KEY + appWidgetId, 0);
-        count++;
-
-        String dateString =
-                DateFormat.getTimeInstance(DateFormat.SHORT).format(new Date());
+        Intent intent = new Intent(context, RecipeWidgetService.class);
+        intent.setData(Uri.fromParts("content", String.valueOf(appWidgetId), null));
 
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.bake_app_widget);
 
-     //   views.setTextViewText(R.id.appwidget_id,String.valueOf(appWidgetId) );
-        views.setTextViewText(R.id.appwidget_id,Integer.toString(recipeCount) );
+        views.setRemoteAdapter( R.id.recipe_list, intent);
 
-        views.setTextViewText(R.id.appwidget_update,
-                context.getResources().getString(
-                        R.string.date_count_format, count, dateString));
+        // The empty view is displayed when the collection has no items. It should be a sibling
+        // of the collection view.
+        views.setEmptyView(R.id.recipe_list, R.id.empty_view);
 
-        SharedPreferences.Editor prefEditor = prefs.edit();
-        prefEditor.putInt(COUNT_KEY + appWidgetId, count);
-        prefEditor.apply();
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -74,6 +51,8 @@ public class BakeAppWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
+
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
 
