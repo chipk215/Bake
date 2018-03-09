@@ -63,4 +63,10 @@
         <item quantity="other">ounces</item>
     </plurals>
 
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="widget_id">Widget ID</string>
+    <string name="date_count_format">%1$d @%2$s</string>
+    <string name="recipe_count">Recipe Count</string>
+
 </resources>

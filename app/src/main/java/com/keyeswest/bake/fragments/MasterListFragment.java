@@ -33,6 +33,7 @@ public class MasterListFragment extends Fragment {
 
     private static final String TAG = "MasterListFragment";
 
+
     private OnRecipeSelected mHostCallback;
     public interface OnRecipeSelected{
         void onRecipeSelected(Recipe recipe);
@@ -84,6 +85,8 @@ public class MasterListFragment extends Fragment {
         RecipeFactory.readRecipes(getContext(),new RecipeResultsCallback() {
             @Override
             public void recipeResult(List<Recipe> recipeList) {
+
+
                 setupRecipeAdapter(recipeList);
 
             }
