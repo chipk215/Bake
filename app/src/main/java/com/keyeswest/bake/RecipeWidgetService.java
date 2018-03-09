@@ -37,7 +37,7 @@ public class RecipeWidgetService extends RemoteViewsService {
         private Context mContext;
         private int mAppWidgetId;
 
-        private List<String> mRecipes = new ArrayList<>();
+        private List<Recipe> mRecipes = new ArrayList<>();
 
 
         RecipeRemoteViewsFactory(Context context, Intent intent){
@@ -50,21 +50,21 @@ public class RecipeWidgetService extends RemoteViewsService {
         @Override
         public void onCreate() {
             Log.d(TAG, "Entering onCreate in RecipeRemotesViewFactory");
-          //  String json = readJsonFromAssets();
-          //  if (json != null) {
-          //      Gson gson = new Gson();
-          //      Recipe[] recipeArray = gson.fromJson(json, Recipe[].class);
-           //     mRecipes = Arrays.asList(recipeArray);
-           //     Log.d(TAG, "Recipes read.. First recipe: " + mRecipes.get(0).getName());
+            String json = readJsonFromAssets();
+            if (json != null) {
+                Gson gson = new Gson();
+                Recipe[] recipeArray = gson.fromJson(json, Recipe[].class);
+                mRecipes = Arrays.asList(recipeArray);
+                Log.d(TAG, "Recipes read.. First recipe: " + mRecipes.get(0).getName());
 
 
 
-           // }
+            }
 
-            mRecipes.add("Nutella Pie");
-            mRecipes.add("Brownies");
-            mRecipes.add("Yellow Cake");
-            mRecipes.add("Cheesecake");
+           // mRecipes.add("Nutella Pie");
+          //  mRecipes.add("Brownies");
+           // mRecipes.add("Yellow Cake");
+           // mRecipes.add("Cheesecake");
 
         }
 
@@ -111,7 +111,7 @@ public class RecipeWidgetService extends RemoteViewsService {
             RemoteViews remoteView = new RemoteViews(mContext.getPackageName(),
                     R.layout.recipe_row_item);
 
-            remoteView.setTextViewText(R.id.item, mRecipes.get(position));
+            remoteView.setTextViewText(R.id.item, mRecipes.get(position).getName());
 
             // Next, we set a fill-intent which will be used to fill-in the pending intent template
             // which is set on the collection view in StackWidgetProvider.
