@@ -38,10 +38,19 @@
         android:id="@+id/recipe_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/list_label_tv"
+        android:layout_below="@id/recipe_btn"
         android:layout_gravity="center"
         android:layout_margin="4dp"
         android:loopViews="true" />
+
+    <Button
+        android:id="@+id/recipe_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/list_label_tv"
+        style="@style/ButtonStyle"
+        android:visibility="gone"
+        android:text="@string/recipes" />
 
 
 </RelativeLayout>

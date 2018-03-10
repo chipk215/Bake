@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.keyeswest.bake.R;
 
@@ -21,6 +22,8 @@ public class BakeAppWidget extends AppWidgetProvider {
 
     private static final String TAG="BAKEAPPWIDGET";
     private static final int INVALID_INDEX = -1;
+
+    private static String WIDGET_BUTTON = "com.keyeswest.bake.WIDGET_BUTTON";
 
     public static final String SELECT_ACTION =
             "com.keyeswest.bake.Widget.BakeAppWidget.SELECT_ACTION";
@@ -73,6 +76,7 @@ public class BakeAppWidget extends AppWidgetProvider {
             views.setTextViewText(R.id.list_label_tv, context.getResources().getString(R.string.recipes));
 
             views.setViewVisibility(R.id.recipe_name_tv, View.GONE);
+            views.setViewVisibility(R.id.recipe_btn, View.GONE);
 
             views.setRemoteAdapter(R.id.recipe_list, intent);
 
@@ -118,6 +122,13 @@ public class BakeAppWidget extends AppWidgetProvider {
 
             views.setTextViewText(R.id.recipe_name_tv, selectedRecipe.recipeName);
             views.setViewVisibility(R.id.recipe_name_tv, View.VISIBLE);
+
+            views.setViewVisibility(R.id.recipe_btn, View.VISIBLE);
+
+
+
+            views.setOnClickPendingIntent(R.id.recipe_btn,getPendingSelfIntent(context,
+                    WIDGET_BUTTON,appWidgetId));
 
             views.setRemoteAdapter(R.id.recipe_list, intent);
 
@@ -168,13 +179,34 @@ public class BakeAppWidget extends AppWidgetProvider {
             Log.d(TAG, "mSelectedRecipeName = " + selectedRecipeName);
             updateAppWidget(context, mgr, appWidgetId);
 
-            // temporary reset the recipe index back to -1 until back button implemented
+
+
+        }else if(WIDGET_BUTTON.equals(intent.getAction())){
+
+            int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+                    AppWidgetManager.INVALID_APPWIDGET_ID);
+            Log.d(TAG, "onReceive reading appWidgetId= " + appWidgetId);
+
             SelectedRecipe recipe = sSelectedRecipe.get(appWidgetId);
             recipe.index = INVALID_INDEX;
             sSelectedRecipe.put(appWidgetId,recipe);
 
+            updateAppWidget(context, mgr, appWidgetId);
+
         }
         super.onReceive(context, intent);
+    }
+
+
+    //attribution: Leverages (lightly) upon https://stackoverflow.com/a/24878090/9128441
+    private static PendingIntent getPendingSelfIntent(Context context, String action, int appWidgetId) {
+        // An explicit intent directed at the current class (the "self").
+        Intent intent = new Intent(context, BakeAppWidget.class);
+        Log.d(TAG, "Button Intent writing appWidgetId= " + appWidgetId);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        intent.setAction(action);
+        intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+        return PendingIntent.getBroadcast(context, 0, intent, 0);
     }
 
 }
