@@ -89,6 +89,7 @@ public class BakeAppWidget extends AppWidgetProvider {
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+
     }
 
     @Override
@@ -116,6 +117,7 @@ public class BakeAppWidget extends AppWidgetProvider {
             mSelectedRecipeViewIndex = intent.getIntExtra(EXTRA_ITEM, INVALID_INDEX);
             Log.d(TAG, "mSelectedRecipeIndex = " + mSelectedRecipeViewIndex);
             updateAppWidget(context, mgr, appWidgetId, mSelectedRecipeViewIndex);
+            mSelectedRecipeViewIndex = -1;
 
         }
         super.onReceive(context, intent);
