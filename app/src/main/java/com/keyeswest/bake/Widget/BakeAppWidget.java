@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import com.keyeswest.bake.R;
@@ -69,7 +70,9 @@ public class BakeAppWidget extends AppWidgetProvider {
             // Construct the RemoteViews object
             views = new RemoteViews(context.getPackageName(), R.layout.bake_app_widget);
 
-            views.setTextViewText(R.id.recipe_label_tv, context.getResources().getString(R.string.recipes));
+            views.setTextViewText(R.id.list_label_tv, context.getResources().getString(R.string.recipes));
+
+            views.setViewVisibility(R.id.recipe_name_tv, View.GONE);
 
             views.setRemoteAdapter(R.id.recipe_list, intent);
 
@@ -111,7 +114,10 @@ public class BakeAppWidget extends AppWidgetProvider {
             // Construct the RemoteViews object
             views = new RemoteViews(context.getPackageName(), R.layout.bake_app_widget);
 
-            views.setTextViewText(R.id.recipe_label_tv, context.getResources().getString(R.string.ingredients));
+            views.setTextViewText(R.id.list_label_tv, context.getResources().getString(R.string.ingredients));
+
+            views.setTextViewText(R.id.recipe_name_tv, selectedRecipe.recipeName);
+            views.setViewVisibility(R.id.recipe_name_tv, View.VISIBLE);
 
             views.setRemoteAdapter(R.id.recipe_list, intent);
 
