@@ -11,6 +11,8 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.google.gson.Gson;
+import com.keyeswest.bake.models.Ingredient;
+import com.keyeswest.bake.models.IngredientViewModel;
 import com.keyeswest.bake.models.Recipe;
 
 
@@ -24,6 +26,7 @@ import java.util.List;
 public class RecipeWidgetService extends RemoteViewsService {
 
     private static final String TAG="RecipeWidgetService";
+
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         return new RecipeRemoteViewsFactory(this.getApplicationContext(), intent);
@@ -32,17 +35,37 @@ public class RecipeWidgetService extends RemoteViewsService {
 
     class RecipeRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory{
 
-
-
         private Context mContext;
         private int mAppWidgetId;
+        private  int mRecipeIndex = -1;
+        private boolean mIsRecipeRequest;
 
         private List<Recipe> mRecipes = new ArrayList<>();
+        private List<Ingredient> mIngredients = new ArrayList<>();
 
 
         RecipeRemoteViewsFactory(Context context, Intent intent){
             mContext = context;
-            mAppWidgetId = Integer.valueOf(intent.getData().getSchemeSpecificPart());
+
+            String scheme_specific_part = intent.getData().getSchemeSpecificPart();
+
+            int colonIndex = scheme_specific_part.indexOf(":");
+            int commaIndex = scheme_specific_part.indexOf(",");
+
+            if (commaIndex == -1){
+                // we have a recipe request
+                mIsRecipeRequest = true;
+            }else{
+                // we have an ingredient request
+                mIsRecipeRequest = false;
+                String recipeIndexString = scheme_specific_part.substring(commaIndex+1);
+                mRecipeIndex = Integer.valueOf(recipeIndexString);
+
+            }
+
+            String appWidgetId = scheme_specific_part.substring(0,colonIndex );
+            mAppWidgetId = Integer.valueOf(appWidgetId);
+
 
 
         }
@@ -54,17 +77,15 @@ public class RecipeWidgetService extends RemoteViewsService {
             if (json != null) {
                 Gson gson = new Gson();
                 Recipe[] recipeArray = gson.fromJson(json, Recipe[].class);
-                mRecipes = Arrays.asList(recipeArray);
+                mRecipes.addAll(Arrays.asList(recipeArray));
+
+                if (! mIsRecipeRequest){
+                    mIngredients = mRecipes.get(mRecipeIndex).getIngredients();
+                }
+
                 Log.d(TAG, "Recipes read.. First recipe: " + mRecipes.get(0).getName());
 
-
-
             }
-
-           // mRecipes.add("Nutella Pie");
-          //  mRecipes.add("Brownies");
-           // mRecipes.add("Yellow Cake");
-           // mRecipes.add("Cheesecake");
 
         }
 
@@ -100,7 +121,11 @@ public class RecipeWidgetService extends RemoteViewsService {
         @Override
         public int getCount() {
             Log.d(TAG,"getCount invoked returning: " + Integer.toString(mRecipes.size()));
-            return mRecipes.size();
+            if (mIsRecipeRequest) {
+                return mRecipes.size();
+            }else{
+                return mIngredients.size();
+            }
         }
 
         @Override
@@ -111,20 +136,24 @@ public class RecipeWidgetService extends RemoteViewsService {
             RemoteViews remoteView = new RemoteViews(mContext.getPackageName(),
                     R.layout.recipe_row_item);
 
-            remoteView.setTextViewText(R.id.item, mRecipes.get(position).getName());
+            if (mIsRecipeRequest) {
+                remoteView.setTextViewText(R.id.item, mRecipes.get(position).getName());
 
-            // Next, we set a fill-intent which will be used to fill-in the pending intent template
-            // which is set on the collection view in StackWidgetProvider.
-            Bundle extras = new Bundle();
-            extras.putInt(BakeAppWidget.EXTRA_ITEM, position);
-            Intent fillInIntent = new Intent();
-            fillInIntent.putExtras(extras);
-            remoteView.setOnClickFillInIntent(R.id.item, fillInIntent);
-            // You can do heaving lifting in here, synchronously. For example, if you need to
-            // process an image, fetch something from the network, etc., it is ok to do it here,
-            // synchronously. A loading view will show up in lieu of the actual contents in the
-            // interim.
-
+                // Next, we set a fill-intent which will be used to fill-in the pending intent template
+                // which is set on the collection view in StackWidgetProvider.
+                Bundle extras = new Bundle();
+                extras.putInt(BakeAppWidget.EXTRA_ITEM, position);
+                Intent fillInIntent = new Intent();
+                fillInIntent.putExtras(extras);
+                remoteView.setOnClickFillInIntent(R.id.item, fillInIntent);
+                // You can do heaving lifting in here, synchronously. For example, if you need to
+                // process an image, fetch something from the network, etc., it is ok to do it here,
+                // synchronously. A loading view will show up in lieu of the actual contents in the
+                // interim.
+            }else{
+                IngredientViewModel viewModel = new IngredientViewModel(mContext, mIngredients.get(position));
+                remoteView.setTextViewText(R.id.item,viewModel.getIngredientInfo());
+            }
 
 
             return remoteView;

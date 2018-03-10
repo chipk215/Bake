@@ -1,8 +1,9 @@
-<FrameLayout android:id="@+id/widget_layout"
+<RelativeLayout android:id="@+id/widget_layout"
     android:background="@color/colorAccent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
         android:id="@+id/recipe_label_tv"
@@ -10,16 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/recipes" />
-
-    <ListView
-        android:id="@+id/recipe_list"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
         android:layout_margin="4dp"
-        android:loopViews="true"
-        />
+        tools:text="Recipe/Ingredient" />
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/empty_view"
@@ -32,8 +25,17 @@
         android:text="@string/empty_list_view"
         android:textSize="20sp" />
 
+    <ListView
+        android:id="@+id/recipe_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recipe_label_tv"
+        android:layout_gravity="center"
+        android:layout_margin="4dp"
+        android:loopViews="true" />
 
-</FrameLayout>
+
+</RelativeLayout>
 
 
 

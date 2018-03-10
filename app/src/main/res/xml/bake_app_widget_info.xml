@@ -3,7 +3,7 @@
     android:initialLayout="@layout/bake_app_widget"
     android:previewImage="@drawable/chef"
     android:minHeight="180dp"
-    android:minWidth="110dp"
+    android:minWidth="180dp"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="1800000"
     android:widgetCategory="home_screen"/>

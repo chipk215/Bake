@@ -5,18 +5,10 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
-
-import com.keyeswest.bake.utilities.RecipeWriter;
-
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Implementation of App Widget functionality.
@@ -24,46 +16,76 @@ import java.util.List;
 public class BakeAppWidget extends AppWidgetProvider {
 
     private static final String TAG="BAKEAPPWIDGET";
+    private static final int INVALID_INDEX = -1;
 
-    public static final String TOAST_ACTION = "com.keyeswest.bake.BakeAppWidget.TOAST_ACTION";
+    public static final String SELECT_ACTION = "com.keyeswest.bake.BakeAppWidget.SELECT_ACTION";
     public static final String EXTRA_ITEM = "com.keyeswest.bake.BakeAppWidget.EXTRA_ITEM";
+
+    private int mSelectedRecipeViewIndex = INVALID_INDEX;
 
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+                                int appWidgetId, int selectedRecipeIndex) {
 
-        Intent intent = new Intent(context, RecipeWidgetService.class);
-        intent.setData(Uri.fromParts("content", String.valueOf(appWidgetId), null));
+        Log.d(TAG, "Entering updateAppWidget");
+        RemoteViews views;
 
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.bake_app_widget);
+        if (selectedRecipeIndex == INVALID_INDEX) {
+            Intent intent = new Intent(context, RecipeWidgetService.class);
+            // scheme -  widgetId:R|I, integer
+            // I, integer encodes recipe index to get the corresponding ingredients
+            String scheme_specific_part = String.valueOf(appWidgetId) + ":" + "R";
+            intent.setData(Uri.fromParts("content", scheme_specific_part, null));
 
-        views.setRemoteAdapter( R.id.recipe_list, intent);
+            // Construct the RemoteViews object
+            views = new RemoteViews(context.getPackageName(), R.layout.bake_app_widget);
 
-        // The empty view is displayed when the collection has no items. It should be a sibling
-        // of the collection view.
-        views.setEmptyView(R.id.recipe_list, R.id.empty_view);
+            views.setTextViewText(R.id.recipe_label_tv, context.getResources().getString(R.string.recipes));
 
+            views.setRemoteAdapter(R.id.recipe_list, intent);
 
-
-        // This section makes it possible for items to have individualized behavior.
-        // It does this by setting up a pending intent template. Individuals items of a collection
-        // cannot set up their own pending intents. Instead, the collection as a whole sets
-        // up a pending intent template, and the individual items set a fillInIntent
-        // to create unique behavior on an item-by-item basis.
-        Intent toastIntent = new Intent(context, BakeAppWidget.class);
-        // Set the action for the intent.
-        // When the user touches a particular view, it will have the effect of
-        // broadcasting TOAST_ACTION.
-        toastIntent.setAction(BakeAppWidget.TOAST_ACTION);
-        toastIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
-        PendingIntent toastPendingIntent = PendingIntent.getBroadcast(context, 0, toastIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-
-        views.setPendingIntentTemplate(R.id.recipe_list, toastPendingIntent);
+            // The empty view is displayed when the collection has no items. It should be a sibling
+            // of the collection view.
+            views.setEmptyView(R.id.recipe_list, R.id.empty_view);
 
 
+            // This section makes it possible for items to have individualized behavior.
+            // It does this by setting up a pending intent template. Individuals items of a collection
+            // cannot set up their own pending intents. Instead, the collection as a whole sets
+            // up a pending intent template, and the individual items set a fillInIntent
+            // to create unique behavior on an item-by-item basis.
+            Intent selectIntent = new Intent(context, BakeAppWidget.class);
+            // Set the action for the intent.
+            // When the user touches a particular view, it will have the effect of
+            // broadcasting SELECT_ACTION.
+            selectIntent.setAction(BakeAppWidget.SELECT_ACTION);
+            selectIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+            intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+            PendingIntent toastPendingIntent = PendingIntent.getBroadcast(context, 0, selectIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+
+            views.setPendingIntentTemplate(R.id.recipe_list, toastPendingIntent);
+
+        }else{
+
+            // show the ingredient list corresponding to the recipe
+            Intent intent = new Intent(context, RecipeWidgetService.class);
+            // scheme -  widgetId:R|I, integer
+            // I, integer encodes recipe index to get the corresponding ingredients
+            String scheme_specific_part = String.valueOf(appWidgetId) + ":" + "I" + "," + "1";
+            intent.setData(Uri.fromParts("content", scheme_specific_part, null));
+
+            // Construct the RemoteViews object
+            views = new RemoteViews(context.getPackageName(), R.layout.bake_app_widget);
+
+            views.setTextViewText(R.id.recipe_label_tv, context.getResources().getString(R.string.ingredients));
+
+            views.setRemoteAdapter(R.id.recipe_list, intent);
+
+            // The empty view is displayed when the collection has no items. It should be a sibling
+            // of the collection view.
+            views.setEmptyView(R.id.recipe_list, R.id.empty_view);
+        }
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -73,9 +95,9 @@ public class BakeAppWidget extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
+            updateAppWidget(context, appWidgetManager, appWidgetId, mSelectedRecipeViewIndex);
         }
-
+        mSelectedRecipeViewIndex = -1;
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
 
@@ -83,16 +105,21 @@ public class BakeAppWidget extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d(TAG, "Entering onReceive");
         AppWidgetManager mgr = AppWidgetManager.getInstance(context);
-        if (intent.getAction().equals(TOAST_ACTION)) {
+
+        if (intent.getAction().equals(SELECT_ACTION)) {
+
             int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
-            int viewIndex = intent.getIntExtra(EXTRA_ITEM, 0);
-            Toast.makeText(context, "Touched view " + viewIndex, Toast.LENGTH_SHORT).show();
+
+            mSelectedRecipeViewIndex = intent.getIntExtra(EXTRA_ITEM, INVALID_INDEX);
+            Log.d(TAG, "mSelectedRecipeIndex = " + mSelectedRecipeViewIndex);
+            updateAppWidget(context, mgr, appWidgetId, mSelectedRecipeViewIndex);
+
         }
         super.onReceive(context, intent);
     }
-
 
 
 }
