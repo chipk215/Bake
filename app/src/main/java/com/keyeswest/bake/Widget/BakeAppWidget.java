@@ -142,8 +142,12 @@ public class BakeAppWidget extends AppWidgetProvider {
 
     }
 
+
+
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
+
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
 
@@ -152,19 +156,18 @@ public class BakeAppWidget extends AppWidgetProvider {
             }
 
             updateAppWidget(context, appWidgetManager, appWidgetId);
-
         }
-
-        super.onUpdate(context, appWidgetManager, appWidgetIds);
-
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+
         Log.d(TAG, "Entering onReceive");
         AppWidgetManager mgr = AppWidgetManager.getInstance(context);
 
         if (intent.getAction().equals(SELECT_ACTION)) {
+            Log.d(TAG, "Handling selection of recipe");
 
             int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
@@ -179,9 +182,11 @@ public class BakeAppWidget extends AppWidgetProvider {
             Log.d(TAG, "mSelectedRecipeName = " + selectedRecipeName);
             updateAppWidget(context, mgr, appWidgetId);
 
-
+            return;
 
         }else if(WIDGET_BUTTON.equals(intent.getAction())){
+
+            Log.d(TAG, "Handling widget button press");
 
             int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
@@ -193,8 +198,11 @@ public class BakeAppWidget extends AppWidgetProvider {
 
             updateAppWidget(context, mgr, appWidgetId);
 
+            return;
         }
-        super.onReceive(context, intent);
+
+        Log.d(TAG, "Handling intent other than recipe selection or widget button");
+
     }
 
 

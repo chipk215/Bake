@@ -20,6 +20,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:buttonTint="@color/colorPrimary"
+            android:textColor="#8A000000"
             android:checked="@{ingredient.getCheckedState()}"
             android:text="@{ingredient.getIngredientInfo()}"
             app:layout_constraintEnd_toEndOf="parent"
