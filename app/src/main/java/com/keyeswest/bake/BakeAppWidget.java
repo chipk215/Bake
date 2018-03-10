@@ -10,6 +10,8 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import java.util.Hashtable;
+
 /**
  * Implementation of App Widget functionality.
  */
@@ -21,16 +23,18 @@ public class BakeAppWidget extends AppWidgetProvider {
     public static final String SELECT_ACTION = "com.keyeswest.bake.BakeAppWidget.SELECT_ACTION";
     public static final String EXTRA_ITEM = "com.keyeswest.bake.BakeAppWidget.EXTRA_ITEM";
 
-    private int mSelectedRecipeViewIndex = INVALID_INDEX;
+    private static Hashtable<Integer, Integer> sRecipeIndex = new Hashtable<>();
 
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId, int selectedRecipeIndex) {
+                                int appWidgetId) {
 
         Log.d(TAG, "Entering updateAppWidget");
         RemoteViews views;
 
-        if (selectedRecipeIndex == INVALID_INDEX) {
+        if (sRecipeIndex.get(appWidgetId) == INVALID_INDEX) {
+            // this is the path for displaying recipes
+
             Intent intent = new Intent(context, RecipeWidgetService.class);
             // scheme -  widgetId:R|I, integer
             // I, integer encodes recipe index to get the corresponding ingredients
@@ -67,12 +71,16 @@ public class BakeAppWidget extends AppWidgetProvider {
             views.setPendingIntentTemplate(R.id.recipe_list, toastPendingIntent);
 
         }else{
+            // this is the path for displaying ingredients
 
             // show the ingredient list corresponding to the recipe
             Intent intent = new Intent(context, RecipeWidgetService.class);
+
             // scheme -  widgetId:R|I, integer
             // I, integer encodes recipe index to get the corresponding ingredients
-            String scheme_specific_part = String.valueOf(appWidgetId) + ":" + "I" + "," + "1";
+            String scheme_specific_part = String.valueOf(appWidgetId) + ":" + "I" + ","
+                    + Integer.toString(sRecipeIndex.get(appWidgetId));
+
             intent.setData(Uri.fromParts("content", scheme_specific_part, null));
 
             // Construct the RemoteViews object
@@ -96,11 +104,16 @@ public class BakeAppWidget extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId, mSelectedRecipeViewIndex);
-        }
-        mSelectedRecipeViewIndex = -1;
-        super.onUpdate(context, appWidgetManager, appWidgetIds);
 
+            if (! sRecipeIndex.containsKey(appWidgetId)){
+                sRecipeIndex.put(appWidgetId, INVALID_INDEX );
+            }
+
+            updateAppWidget(context, appWidgetManager, appWidgetId);
+
+        }
+
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
 
     }
 
@@ -114,15 +127,18 @@ public class BakeAppWidget extends AppWidgetProvider {
             int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
 
-            mSelectedRecipeViewIndex = intent.getIntExtra(EXTRA_ITEM, INVALID_INDEX);
-            Log.d(TAG, "mSelectedRecipeIndex = " + mSelectedRecipeViewIndex);
-            updateAppWidget(context, mgr, appWidgetId, mSelectedRecipeViewIndex);
-            mSelectedRecipeViewIndex = -1;
+            int selectedRecipeViewIndex = intent.getIntExtra(EXTRA_ITEM, INVALID_INDEX);
+            sRecipeIndex.put(appWidgetId, selectedRecipeViewIndex );
+
+            Log.d(TAG, "mSelectedRecipeIndex = " + selectedRecipeViewIndex);
+            updateAppWidget(context, mgr, appWidgetId);
+
+            // temporary reset the recipe index back to -1 until back button implemented
+            sRecipeIndex.put(appWidgetId, INVALID_INDEX );
 
         }
         super.onReceive(context, intent);
     }
-
 
 }
 
