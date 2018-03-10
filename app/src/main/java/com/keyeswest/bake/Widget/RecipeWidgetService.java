@@ -4,6 +4,7 @@ package com.keyeswest.bake.Widget;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -20,12 +21,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.List;
 
 
 public class RecipeWidgetService extends RemoteViewsService {
 
     private static final String TAG="RecipeWidgetService";
+
+    private Hashtable<Integer, Boolean> mUserIngredientsRead = new Hashtable<>();
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
@@ -42,6 +46,7 @@ public class RecipeWidgetService extends RemoteViewsService {
 
         private List<Recipe> mRecipes = new ArrayList<>();
         private List<Ingredient> mIngredients = new ArrayList<>();
+
 
 
         RecipeRemoteViewsFactory(Context context, Intent intent){
@@ -109,6 +114,7 @@ public class RecipeWidgetService extends RemoteViewsService {
 
         @Override
         public void onDataSetChanged() {
+            Log.d(TAG, "onDataSetChanged");
 
         }
 
@@ -154,6 +160,19 @@ public class RecipeWidgetService extends RemoteViewsService {
             }else{
                 IngredientViewModel viewModel = new IngredientViewModel(mContext, mIngredients.get(position));
                 remoteView.setTextViewText(R.id.item,viewModel.getIngredientInfo());
+
+
+                if ( ! mUserIngredientsRead.containsKey(mRecipeIndex)){
+                    readUserIngredients();
+                }
+
+                if (! mIngredients.get(position).getCheckedState()){
+                        remoteView.setTextColor(R.id.item, Color.RED);
+                               // mContext.getResources().getColor(R.color.colorSecondary));
+                }else{
+                    remoteView.setTextColor(R.id.item, Color.DKGRAY );
+                }
+
             }
 
 
@@ -177,7 +196,21 @@ public class RecipeWidgetService extends RemoteViewsService {
 
         @Override
         public boolean hasStableIds() {
-            return true;
+            return false;
+        }
+
+
+        private void readUserIngredients(){
+            String fileName = mRecipes.get(mRecipeIndex).getSharedPreferencesIngredientFileName();
+            for (Ingredient i : mIngredients){
+                Boolean isChecked = mContext.getSharedPreferences(fileName, MODE_PRIVATE)
+                        .getBoolean(i.getUniqueId(), true);
+                Log.d(TAG, "I-name: " + i.getIngredientName() + "checked: " + Boolean.toString(isChecked));
+                i.setCheckedState(isChecked);
+            }
+
+            mUserIngredientsRead.put(mRecipeIndex,true);
+
         }
     }
 }
