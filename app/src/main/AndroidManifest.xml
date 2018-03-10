@@ -26,7 +26,7 @@
         <activity android:name=".StepsListActivity" />
         <activity android:name=".StepDetailActivity" />
 
-        <receiver android:name=".BakeAppWidget">
+        <receiver android:name=".Widget.BakeAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -36,7 +36,7 @@
                 android:resource="@xml/bake_app_widget_info" />
         </receiver>
 
-        <service android:name=".RecipeWidgetService"
+        <service android:name=".Widget.RecipeWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
 

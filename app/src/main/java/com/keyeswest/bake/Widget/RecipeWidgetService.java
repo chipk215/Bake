@@ -1,7 +1,6 @@
-package com.keyeswest.bake;
+package com.keyeswest.bake.Widget;
 
 
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
@@ -11,6 +10,7 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.google.gson.Gson;
+import com.keyeswest.bake.R;
 import com.keyeswest.bake.models.Ingredient;
 import com.keyeswest.bake.models.IngredientViewModel;
 import com.keyeswest.bake.models.Recipe;
@@ -142,7 +142,8 @@ public class RecipeWidgetService extends RemoteViewsService {
                 // Next, we set a fill-intent which will be used to fill-in the pending intent template
                 // which is set on the collection view in StackWidgetProvider.
                 Bundle extras = new Bundle();
-                extras.putInt(BakeAppWidget.EXTRA_ITEM, position);
+                extras.putInt(BakeAppWidget.EXTRA_ITEM_POSITION, position);
+                extras.putString(BakeAppWidget.EXTRA_ITEM_RECIPE_NAME,mRecipes.get(position).getName());
                 Intent fillInIntent = new Intent();
                 fillInIntent.putExtras(extras);
                 remoteView.setOnClickFillInIntent(R.id.item, fillInIntent);
