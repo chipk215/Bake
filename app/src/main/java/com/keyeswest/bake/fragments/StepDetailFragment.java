@@ -65,7 +65,6 @@ public class StepDetailFragment  extends Fragment {
     private Step mStep;
     private Unbinder mUnbinder;
 
-    private float mGuidelinePercent;
 
     @BindView(R.id.step_description_tv)TextView mDescriptionTextView;
     @BindView(R.id.prev_button)Button mPreviousButton;
@@ -263,21 +262,21 @@ public class StepDetailFragment  extends Fragment {
 
     // Hide the video player if the step has no corresponding video
     private void setupVideoPlayerView(){
+
         if ("".equals(mStep.getVideoURL())){
+            // no video to show
             mPlayerView.setVisibility(View.GONE);
             ConstraintLayout.LayoutParams params =
                     (ConstraintLayout.LayoutParams) mGuideline.getLayoutParams();
 
             // shift the step instruction up the screen
-            mGuidelinePercent = params.guidePercent;
+
             params.guidePercent = HIDE_VIDEO_PLAYER_PERCENT;
 
         }
         else{
             mPlayerView.setVisibility(View.VISIBLE);
-            ConstraintLayout.LayoutParams params =
-                    (ConstraintLayout.LayoutParams) mGuideline.getLayoutParams();
-            params.guidePercent = mGuidelinePercent;
+
         }
     }
 
