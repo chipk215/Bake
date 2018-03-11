@@ -159,11 +159,18 @@ public class BakeAppWidget extends AppWidgetProvider {
         }
     }
 
+
+    @Override
+    public void onEnabled(Context context) {
+        super.onEnabled(context);
+        Log.d(TAG, "onEnabled invoked");
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
-        Log.d(TAG, "Entering onReceive");
+        Log.d(TAG, "onReceive invoked");
         AppWidgetManager mgr = AppWidgetManager.getInstance(context);
 
         if (intent.getAction().equals(SELECT_ACTION)) {
