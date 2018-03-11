@@ -25,14 +25,22 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
 
     }
 
+    public interface OnCheckboxClicked{
+        void checkboxClicked();
+    }
+
     private final List<Step> mSteps;
 
     private final OnItemClickListener mListener;
+    private final OnCheckboxClicked mCheckBoxListener;
 
-    public StepAdapter( List<Step> steps, OnItemClickListener listener ){
+    public StepAdapter( List<Step> steps, OnItemClickListener listener,
+                        OnCheckboxClicked checkboxListener ){
         mSteps = steps;
 
         mListener = listener;
+
+        mCheckBoxListener = checkboxListener;
     }
 
     @Override
@@ -85,6 +93,8 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
                         mStepCheckbox.setChecked(true);
 
                     }
+
+                    mCheckBoxListener.checkboxClicked();
                 }
             });
 

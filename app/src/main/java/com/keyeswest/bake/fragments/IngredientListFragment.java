@@ -108,6 +108,7 @@ public class IngredientListFragment extends Fragment {
                 }
 
                 mIngredientAdapter.notifyItemRangeChanged(0,mIngredients.size());
+                mResetButton.setEnabled(false);
             }
         });
 

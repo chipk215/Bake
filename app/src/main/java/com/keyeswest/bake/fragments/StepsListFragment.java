@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 
@@ -47,10 +48,10 @@ public class StepsListFragment extends Fragment {
     private Recipe mRecipe;
     private List<Step> mSteps;
 
-
     private StepAdapter mStepAdapter;
 
     @BindView(R.id.steps_recyclerView)RecyclerView mStepsRecyclerView;
+    @BindView(R.id.step_reset_btn)Button mResetButton;
 
 
     // ButterKnife helper
@@ -110,6 +111,7 @@ public class StepsListFragment extends Fragment {
             public void CheckboxStates(List<Step> updatedList) {
                 mSteps = updatedList;
                 setupStepsAdapter();
+                setupResetButton();
             }
         });
 
@@ -137,13 +139,24 @@ public class StepsListFragment extends Fragment {
             @Override
             public void CheckboxStates(List<Step> updatedList) {
                 mSteps = updatedList;
+                setupResetButton();
                 setupStepsAdapter();
             }
         });
 
         task.execute(mSteps);
 
+        mResetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (Step s : mSteps){
+                    s.setCheckedState(false);
+                }
 
+                mStepAdapter.notifyItemRangeChanged(0, mSteps.size());
+                mResetButton.setEnabled(false);
+            }
+        });
 
         return view;
     }
@@ -158,7 +171,13 @@ public class StepsListFragment extends Fragment {
                 mHostActivityCallback.onStepSelected(step);
 
             }
+        }, new StepAdapter.OnCheckboxClicked() {
+            @Override
+            public void checkboxClicked() {
+                setupResetButton();
+            }
         });
+
         if (isAdded()){
             mStepsRecyclerView.setAdapter(mStepAdapter);
 
@@ -196,5 +215,17 @@ public class StepsListFragment extends Fragment {
         mUnbinder.unbind();
     }
 
+
+    private void setupResetButton(){
+
+        boolean setEnabled = false;
+        for (Step s : mSteps){
+            if (s.getCheckedState()){
+                setEnabled = true;
+                break;
+            }
+        }
+        mResetButton.setEnabled(setEnabled);
+    }
 
 }
