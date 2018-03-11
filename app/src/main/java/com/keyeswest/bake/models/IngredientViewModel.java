@@ -106,4 +106,6 @@ public class IngredientViewModel {
     public String getUniqueId() {
         return mIngredient.getUniqueId();
     }
+
+    public Ingredient getIngredient(){return mIngredient;}
 }

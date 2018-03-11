@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ScrollView;
 
 
@@ -41,10 +42,10 @@ public class IngredientListFragment extends Fragment {
     private IngredientAdapter mIngredientAdapter;
     private String mRecipePrefsIngredientsFilename;
 
-
-
     @BindView(R.id.ingredient_recycler_view)
     RecyclerView mIngredientRecyclerView;
+
+    @BindView(R.id.ing_reset_btn)Button mResetButton;
 
     private Unbinder mUnbinder;
 
@@ -90,14 +91,29 @@ public class IngredientListFragment extends Fragment {
             @Override
             public void CheckboxStates(List<Ingredient> updatedList) {
                 mIngredients = updatedList;
+                setupResetButton();
                 setupIngredientAdapter();
             }
         });
 
         readIngredientStateTask.execute(mIngredients);
 
+
+        mResetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // clear all the checkboxes
+                for (Ingredient i : mIngredients){
+                    i.setCheckedState(false);
+                }
+
+                mIngredientAdapter.notifyItemRangeChanged(0,mIngredients.size());
+            }
+        });
+
         return rootView;
     }
+
 
     @Override
     public void onDestroyView(){
@@ -127,12 +143,29 @@ public class IngredientListFragment extends Fragment {
 
     private void setupIngredientAdapter(){
 
-        mIngredientAdapter = new IngredientAdapter(mIngredients);
+        mIngredientAdapter = new IngredientAdapter(mIngredients, new IngredientAdapter.OnIngredientClickListener() {
+            @Override
+            public void onIngredientClick() {
+                setupResetButton();
+            }
+        });
 
         if (isAdded()){
             mIngredientRecyclerView.setAdapter(mIngredientAdapter);
 
         }
+    }
+
+    private void setupResetButton(){
+
+        boolean setEnabled = false;
+        for (Ingredient i : mIngredients){
+            if (i.getCheckedState()){
+                setEnabled = true;
+                break;
+            }
+        }
+        mResetButton.setEnabled(setEnabled);
     }
 
 

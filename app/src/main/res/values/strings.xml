@@ -69,5 +69,6 @@
     <string name="recipe_count">Recipe Count</string>
     <string name="recipes">Recipes</string>
     <string name="empty_list_view">Empty List</string>
+    <string name="reset">Reset</string>
 
 </resources>

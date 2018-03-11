@@ -19,11 +19,18 @@ import butterknife.ButterKnife;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientHolder> {
 
+
+    public interface OnIngredientClickListener{
+        void onIngredientClick();
+    }
+
     private final List<Ingredient> mIngredients;
 
+    private final OnIngredientClickListener mListener;
 
-    public IngredientAdapter(List<Ingredient> ingredients){
+    public IngredientAdapter(List<Ingredient> ingredients, OnIngredientClickListener listener){
         mIngredients = ingredients;
+        mListener = listener;
 
     }
 
@@ -75,6 +82,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
                         mIngredientViewModel.setCheckedState(true);
 
                     }
+
+                    mListener.onIngredientClick();
 
                 }
             });
