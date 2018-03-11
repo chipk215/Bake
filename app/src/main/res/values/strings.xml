@@ -15,7 +15,6 @@
 
     <string name="ingredient_count">Ingredient Count: </string>
     <string name="prep_steps">Preparation Steps: </string>
-
     <string name="servings">Servings: </string>
 
     <!-- Fragment Ingredient List -->
@@ -24,7 +23,7 @@
 
 
     <string name="instruction">Instructions</string>
-    <string name="tap_for_detail">(tap for details)</string>
+    <string name="tap_for_detail">(tap item for details)</string>
 
     <!-- Step Detail Fragment -->
     <string name="previous">Previous</string>

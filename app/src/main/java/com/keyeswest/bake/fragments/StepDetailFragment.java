@@ -6,6 +6,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Guideline;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +37,8 @@ public class StepDetailFragment  extends Fragment {
 
     private static final String SAVE_STEP_KEY = "saveStepKey";
 
+    private static final float HIDE_VIDEO_PLAYER_PERCENT = 0.1f;
+
     public static StepDetailFragment newInstance(Step step){
         Bundle args = new Bundle();
         args.putParcelable(SAVE_STEP_KEY, step);
@@ -61,10 +65,15 @@ public class StepDetailFragment  extends Fragment {
     private Step mStep;
     private Unbinder mUnbinder;
 
+    private float mGuidelinePercent;
+
     @BindView(R.id.step_description_tv)TextView mDescriptionTextView;
     @BindView(R.id.prev_button)Button mPreviousButton;
     @BindView(R.id.next_button)Button mNextButton;
-    @BindView(R.id.video_view) SimpleExoPlayerView playerView;
+    @BindView(R.id.video_view) SimpleExoPlayerView mPlayerView;
+
+    @Nullable
+    @BindView(R.id.horizontalHalf)Guideline mGuideline;
 
     private int mCurrentWindow =0;
     private long mPlaybackPosition =0;
@@ -146,8 +155,12 @@ public class StepDetailFragment  extends Fragment {
             });
         }
 
+        setupVideoPlayerView();
+
+
         return view;
     }
+
 
 
     //=== Media Player Code Attribution
@@ -156,6 +169,7 @@ public class StepDetailFragment  extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
         if (Util.SDK_INT > 23) {
             initializePlayer();
         }
@@ -197,19 +211,23 @@ public class StepDetailFragment  extends Fragment {
 
 
     private void initializePlayer(){
-        mPlayer = ExoPlayerFactory.newSimpleInstance(
-                new DefaultRenderersFactory(getContext()),
-                new DefaultTrackSelector(), new DefaultLoadControl());
 
-        playerView.setPlayer(mPlayer);
+        if (! "".equals(mStep.getVideoURL())) {
 
-        mPlayer.setPlayWhenReady(mPlayWhenReady);
-        mPlayer.seekTo(mCurrentWindow, mPlaybackPosition);
+            mPlayer = ExoPlayerFactory.newSimpleInstance(
+                    new DefaultRenderersFactory(getContext()),
+                    new DefaultTrackSelector(), new DefaultLoadControl());
 
-        if (mStep.getVideoURL() != null){
+            mPlayerView.setPlayer(mPlayer);
+
+            mPlayer.setPlayWhenReady(mPlayWhenReady);
+            mPlayer.seekTo(mCurrentWindow, mPlaybackPosition);
+
+
             Uri uri = Uri.parse(mStep.getVideoURL());
             MediaSource mediaSource = buildMediaSource(uri);
             mPlayer.prepare(mediaSource, true, false);
+
         }
     }
 
@@ -223,7 +241,7 @@ public class StepDetailFragment  extends Fragment {
 
     @SuppressLint("InlinedApi")
     private void hideSystemUi() {
-        playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+        mPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
@@ -243,5 +261,24 @@ public class StepDetailFragment  extends Fragment {
     }
 
 
+    // Hide the video player if the step has no corresponding video
+    private void setupVideoPlayerView(){
+        if ("".equals(mStep.getVideoURL())){
+            mPlayerView.setVisibility(View.GONE);
+            ConstraintLayout.LayoutParams params =
+                    (ConstraintLayout.LayoutParams) mGuideline.getLayoutParams();
+
+            // shift the step instruction up the screen
+            mGuidelinePercent = params.guidePercent;
+            params.guidePercent = HIDE_VIDEO_PLAYER_PERCENT;
+
+        }
+        else{
+            mPlayerView.setVisibility(View.VISIBLE);
+            ConstraintLayout.LayoutParams params =
+                    (ConstraintLayout.LayoutParams) mGuideline.getLayoutParams();
+            params.guidePercent = mGuidelinePercent;
+        }
+    }
 
 }
