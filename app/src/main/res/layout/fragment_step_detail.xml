@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:textColor="@color/black"
+        style="@style/TextViewStyle"
         android:text="@string/completed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/horizontalHalf" />
@@ -57,7 +57,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
         android:paddingTop="4dp"
-        android:textColor="@color/black"
+        style="@style/TextViewStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/step_complete_cb"
         app:layout_constraintTop_toBottomOf="@+id/complete_tv"

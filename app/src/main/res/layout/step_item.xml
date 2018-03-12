@@ -29,7 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:paddingTop="6dp"
-            android:textColor="@color/black"
+            style="@style/TextViewStyle"
+
             android:text="@{step.getListLabel()}"
             tools:text="Step Label" />
 
