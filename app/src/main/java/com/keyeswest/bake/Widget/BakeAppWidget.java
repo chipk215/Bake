@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import com.keyeswest.bake.R;
 
@@ -78,11 +77,11 @@ public class BakeAppWidget extends AppWidgetProvider {
             views.setViewVisibility(R.id.recipe_name_tv, View.GONE);
             views.setViewVisibility(R.id.recipe_btn, View.GONE);
 
-            views.setRemoteAdapter(R.id.recipe_list, intent);
+            views.setRemoteAdapter(R.id.item_list, intent);
 
             // The empty view is displayed when the collection has no items. It should be a sibling
             // of the collection view.
-            views.setEmptyView(R.id.recipe_list, R.id.empty_view);
+            views.setEmptyView(R.id.item_list, R.id.empty_view);
 
 
             // This section makes it possible for items to have individualized behavior.
@@ -100,7 +99,7 @@ public class BakeAppWidget extends AppWidgetProvider {
             PendingIntent selectRecipePendingIntent = PendingIntent.getBroadcast(context, 0, selectIntent,
                     PendingIntent.FLAG_UPDATE_CURRENT);
 
-            views.setPendingIntentTemplate(R.id.recipe_list, selectRecipePendingIntent);
+            views.setPendingIntentTemplate(R.id.item_list, selectRecipePendingIntent);
 
         }else{
             // this is the path for displaying ingredients
@@ -130,11 +129,11 @@ public class BakeAppWidget extends AppWidgetProvider {
             views.setOnClickPendingIntent(R.id.recipe_btn,getPendingSelfIntent(context,
                     WIDGET_BUTTON,appWidgetId));
 
-            views.setRemoteAdapter(R.id.recipe_list, intent);
+            views.setRemoteAdapter(R.id.item_list, intent);
 
             // The empty view is displayed when the collection has no items. It should be a sibling
             // of the collection view.
-            views.setEmptyView(R.id.recipe_list, R.id.empty_view);
+            views.setEmptyView(R.id.item_list, R.id.empty_view);
         }
 
         // Instruct the widget manager to update the widget

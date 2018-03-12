@@ -10,8 +10,9 @@
         style="@style/AppWidgetLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_margin="4dp"
+        android:gravity="center"
+        android:textStyle="italic"
         tools:text="list label" />
 
     <TextView
@@ -19,8 +20,9 @@
         style="@style/AppWidgetLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/list_label_tv"
         android:layout_margin="4dp"
+        android:layout_toEndOf="@id/list_label_tv"
+        android:textStyle="italic"
         tools:text="Name" />
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -35,7 +37,7 @@
         android:textSize="20sp" />
 
     <ListView
-        android:id="@+id/recipe_list"
+        android:id="@+id/item_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/recipe_btn"

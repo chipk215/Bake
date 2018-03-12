@@ -12,7 +12,7 @@
         style="@style/AppWidgetLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#8A000000"
+        android:textColor="@color/black"
         android:textSize="14sp" />
 
 </LinearLayout>

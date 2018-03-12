@@ -11,6 +11,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:background="@color/colorAccent">
 
         <ImageView
@@ -37,6 +38,7 @@
             android:text="@{recipe.getName()}"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:textColor="@color/black"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -57,6 +59,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/prep_steps"
             android:textSize="14sp"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recipe_name_tv" />
 
@@ -68,6 +71,7 @@
             android:layout_marginTop="8dp"
             android:text="@{recipe.getNumberSteps()}"
             android:textSize="14sp"
+            android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@+id/step_label_tv"
             app:layout_constraintTop_toBottomOf="@+id/recipe_name_tv"
             tools:text="6" />
@@ -79,6 +83,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/servings"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/step_label_tv" />
 
@@ -88,6 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="4dp"
+            android:textColor="@color/black"
             android:text="@{recipe.getServings()}"
             app:layout_constraintBaseline_toBaselineOf="@+id/serve_label_tv"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
@@ -100,6 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:textColor="@color/black"
             android:layout_marginTop="8dp"
             android:text="@{recipe.getDescription()}"
             app:layout_constraintEnd_toEndOf="parent"
