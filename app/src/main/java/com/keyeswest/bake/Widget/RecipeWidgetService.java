@@ -113,6 +113,9 @@ public class RecipeWidgetService extends RemoteViewsService {
         public void onDataSetChanged() {
             Log.d(TAG, "onDataSetChanged");
 
+            //TODO with test
+            // reset the mUserIngredientsRead to all false and force a re-read of recipe ingredients
+
         }
 
         @Override

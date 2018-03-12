@@ -59,7 +59,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
         return mRecipes.size();
     }
 
-    static class RecipeHolder extends RecyclerView.ViewHolder{
+     class RecipeHolder extends RecyclerView.ViewHolder{
         private final RecipeCardBinding binding;
 
         public RecipeHolder(RecipeCardBinding binding) {

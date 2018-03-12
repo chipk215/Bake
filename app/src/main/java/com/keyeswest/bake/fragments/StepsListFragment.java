@@ -2,7 +2,6 @@ package com.keyeswest.bake.fragments;
 
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -15,14 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
-
 
 import com.keyeswest.bake.R;
 import com.keyeswest.bake.adapters.StepAdapter;
 import com.keyeswest.bake.models.Recipe;
 import com.keyeswest.bake.models.Step;
 import com.keyeswest.bake.tasks.ReadCheckboxStates;
+import com.keyeswest.bake.utilities.WriteSharedPreferences;
 
 import java.util.List;
 
@@ -30,7 +28,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static android.content.Context.MODE_PRIVATE;
 
 public class StepsListFragment extends Fragment {
 
@@ -92,9 +89,6 @@ public class StepsListFragment extends Fragment {
         if (bundle != null){
             mRecipe = bundle.getParcelable(STEPS_ARG);
             mSteps = mRecipe.getSteps();
-
-
-
         }else{
             Log.e(TAG,"Expected step data not provided to initialize StepsListFragment") ;
             return;
@@ -117,8 +111,8 @@ public class StepsListFragment extends Fragment {
 
         task.execute(mSteps);
 
-
     }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -190,29 +184,16 @@ public class StepsListFragment extends Fragment {
 
         }
 
-
     }
-
 
 
     @Override
     public void onPause(){
 
-        // revisit should this be off the UI thread?
-        // Can we exit onPause before the operation completes?
-
-
-        SharedPreferences.Editor editor =
-                getContext().getSharedPreferences(mRecipe.getSharedPreferencesStepsFileName(),
-                        MODE_PRIVATE).edit();
-
-        for (Step i : mSteps){
-            Boolean isChecked = i.getCheckedState();
-            editor.putBoolean(i.getUniqueId(), isChecked);
-        }
-
-        editor.apply();
-
+        // Update the shared preferences file on a worker thread
+        WriteSharedPreferences<Step> prefWriter = new WriteSharedPreferences<>(getContext(),
+                mRecipe.getSharedPreferencesStepsFileName(), mSteps);
+        new Thread(prefWriter).start();
 
         super.onPause();
     }

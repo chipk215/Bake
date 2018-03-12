@@ -9,17 +9,15 @@ import android.support.v7.widget.GridLayoutManager;
 
 import android.support.v7.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 
 import com.keyeswest.bake.R;
 import com.keyeswest.bake.adapters.RecipeAdapter;
 import com.keyeswest.bake.models.Recipe;
 import com.keyeswest.bake.models.RecipeFactory;
-import com.keyeswest.bake.tasks.RecipeJsonDeserializer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,8 +67,8 @@ public class MasterListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-
     }
+
 
     @Nullable
     @Override
@@ -91,12 +89,14 @@ public class MasterListFragment extends Fragment {
             @Override
             public void recipeResult(List<Recipe> recipeList) {
                 mRecipes = recipeList;
-                setupRecipeAdapter();
 
+                // Updating the recipe adaptor is not working
+                //mRecipeAdapter.notifyDataSetChanged();
+
+                //creating a new adaptor does work, hmmm, why?
+                setupRecipeAdapter();
             }
         });
-
-
 
         return rootView;
     }
@@ -105,6 +105,8 @@ public class MasterListFragment extends Fragment {
     private void setupRecipeAdapter(){
 
         if (isAdded()){
+
+            Log.d(TAG, "Fragment added, setting up adapter");
 
             mRecipeAdapter = new RecipeAdapter(mRecipes, new RecipeAdapter.OnItemClickListener() {
                 @Override
@@ -116,6 +118,9 @@ public class MasterListFragment extends Fragment {
             });
 
             mRecipeRecyclerView.setAdapter(mRecipeAdapter);
+        }else{
+            Log.d(TAG, "Fragment NOT added, not setting up adapter");
+
         }
 
     }

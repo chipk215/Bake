@@ -138,7 +138,7 @@ public class RecipeDetailActivityTest extends StepBaseTest {
     }
 
 
-    //Note: This test fails when run on real device. The wrong button is clicked in the 1st step
+    //Note: This test fails when run on real device. The wrong button is clicked in the 2nd step
     // the test passes on an emulator
     @Test
     public void clickingMakeButtonLaunchesStepsListActivityTest(){

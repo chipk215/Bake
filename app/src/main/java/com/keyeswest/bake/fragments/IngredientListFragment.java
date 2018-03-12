@@ -1,7 +1,6 @@
 package com.keyeswest.bake.fragments;
 
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
@@ -15,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ScrollView;
 
 
 import com.keyeswest.bake.R;
@@ -24,6 +22,7 @@ import com.keyeswest.bake.adapters.IngredientAdapter;
 import com.keyeswest.bake.models.Ingredient;
 import com.keyeswest.bake.models.Recipe;
 import com.keyeswest.bake.tasks.ReadCheckboxStates;
+import com.keyeswest.bake.utilities.WriteSharedPreferences;
 
 import java.util.List;
 
@@ -31,7 +30,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static android.content.Context.MODE_PRIVATE;
 
 public class IngredientListFragment extends Fragment {
 
@@ -129,23 +127,14 @@ public class IngredientListFragment extends Fragment {
     @Override
     public void onPause(){
 
-        // revisit should this be off the UI thread?
-        // We would wait to call super.onPause until complete, right?
 
-
-        SharedPreferences.Editor editor = getContext().getSharedPreferences(mRecipePrefsIngredientsFilename, MODE_PRIVATE).edit();
-
-        for (Ingredient i : mIngredients){
-            Boolean isChecked = i.getCheckedState();
-            editor.putBoolean(i.getUniqueId(), isChecked);
-        }
-
-        editor.apply();
-
+        // Update the shared preferences file on a worker thread
+        WriteSharedPreferences<Ingredient> prefWriter = new WriteSharedPreferences<>(getContext(),
+                mRecipePrefsIngredientsFilename, mIngredients);
+        new Thread(prefWriter).start();
 
         super.onPause();
     }
-
 
 
     private void updateIngredients(List<Ingredient> ingredients){
@@ -154,6 +143,8 @@ public class IngredientListFragment extends Fragment {
         mIngredientAdapter.notifyDataSetChanged();
 
     }
+
+
     private void setupIngredientAdapter(){
 
         if (isAdded()){
@@ -167,7 +158,6 @@ public class IngredientListFragment extends Fragment {
             mIngredientRecyclerView.setAdapter(mIngredientAdapter);
 
         }
-
     }
 
     private void setupResetButton(){
