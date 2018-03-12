@@ -27,7 +27,7 @@ public class RecipeDetailFragment extends Fragment {
 
     private Recipe mRecipe;
 
-    @BindView(R.id.make_it_btn)Button mMakeItButton;
+    @BindView(R.id.recipe_make_it_btn)Button mMakeItButton;
     private Unbinder mUnbinder;
 
     // Required so fragment manager can instantiate

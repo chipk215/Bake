@@ -27,10 +27,12 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.isNotChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.keyeswest.bake.ui.Utils.atPosition;
+import static org.hamcrest.CoreMatchers.not;
 
 
 @RunWith(AndroidJUnit4.class)
@@ -48,15 +50,26 @@ public class StepsListActivityTest extends StepBaseTest{
         Intent intent = StepsListActivity.newIntent(getTargetContext(), mRecipe);
         mActivityTestRule.launchActivity(intent);
 
+        // Verify Instructions label is visible
+        onView(withId(R.id.instruct_label_tv)).check(matches(isDisplayed()));
+
+        //Verify tap message is displayed
+        onView(withId(R.id.tap_message_label_tv)).check(matches(isDisplayed()));
+
+        // Verify step reset button is visible and disabled
+        onView(withId(R.id.step_reset_btn)).check(matches(isDisplayed()));
+        onView(withId(R.id.step_reset_btn)).check(matches(not(isEnabled())));
+
+
         onView(withId(R.id.steps_recyclerView)).check(matches(isDisplayed()));
 
-        // check the text of the 1st item in the list
+        // verify the text of the 1st item in the list
         StepViewModel viewModel = new StepViewModel(getTargetContext(),mRecipe.getSteps().get(0));
         onView(withId(R.id.steps_recyclerView))
                 .check(matches(atPosition(0,
                         hasDescendant(withText(viewModel.getListLabel())))));
 
-        // check the 3rd item
+        // verify the 3rd item
         viewModel = new StepViewModel(getTargetContext(),mRecipe.getSteps().get(2));
         onView(withId(R.id.steps_recyclerView))
                 .check(matches(atPosition(2,
@@ -79,10 +92,13 @@ public class StepsListActivityTest extends StepBaseTest{
                         Utils.clickChildViewWithId(R.id.step_checkBox)));
 
 
-        // verify the checkbox in the first item in the list is unchecked
+        // verify the checkbox in the first item in the list is checked
         onView(withId(R.id.steps_recyclerView))
                 .check(matches(atPosition(0,hasDescendant(isChecked()))));
 
+        // verify the reset button is visible and enabled
+        onView(withId(R.id.step_reset_btn)).check(matches(isDisplayed()));
+        onView(withId(R.id.step_reset_btn)).check(matches(isEnabled()));
 
     }
 
