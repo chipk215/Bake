@@ -3,7 +3,7 @@ package com.keyeswest.bake.Widget;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
-import android.graphics.Color;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Provides recipe and ingredient list data to the widget.
@@ -40,7 +41,11 @@ public class RecipeWidgetService extends RemoteViewsService {
 
     // Tracks whether the shared preference ingredients file for the corresponding
     // recipe has been read. The key is the recipe index.
-    private Hashtable<Integer, Boolean> mUserIngredientsRead = new Hashtable<>();
+    private static Hashtable<Integer, Boolean> mUserIngredientsRead = new Hashtable<>();
+
+    public static void refreshIngredients(){
+        mUserIngredientsRead.clear();
+    }
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {

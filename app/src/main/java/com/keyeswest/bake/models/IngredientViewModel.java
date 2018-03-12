@@ -108,4 +108,6 @@ public class IngredientViewModel {
     }
 
     public Ingredient getIngredient(){return mIngredient;}
+
+
 }

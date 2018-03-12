@@ -1,6 +1,10 @@
 package com.keyeswest.bake.fragments;
 
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
@@ -10,6 +14,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +23,8 @@ import android.widget.Button;
 
 import com.keyeswest.bake.R;
 
+import com.keyeswest.bake.Widget.BakeAppWidget;
+import com.keyeswest.bake.Widget.RecipeWidgetService;
 import com.keyeswest.bake.adapters.IngredientAdapter;
 import com.keyeswest.bake.models.Ingredient;
 import com.keyeswest.bake.models.Recipe;
@@ -133,6 +140,15 @@ public class IngredientListFragment extends Fragment {
                 mRecipePrefsIngredientsFilename, mIngredients);
         new Thread(prefWriter).start();
 
+        RecipeWidgetService.refreshIngredients();
+
+        Context context = getContext();
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+
+        int[] ids = appWidgetManager
+                .getAppWidgetIds(new ComponentName(context, BakeAppWidget.class));
+
+        appWidgetManager.notifyAppWidgetViewDataChanged(ids,R.id.recipe_list);
         super.onPause();
     }
 

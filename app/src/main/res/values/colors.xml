@@ -6,7 +6,7 @@
     <color name="colorAccent">#f1deb3</color>
     <color name="colorMute">#d7ccc8</color>
     <color name="colorSecondary">#ffb300</color>
-    <color name="colorOutOfItem">#ff0000</color>
-    <color name="colorItemInStock">#8A000000</color>
+    <color name="colorOutOfItem">#8A000000</color>
+    <color name="colorItemInStock">#1B5E20</color>
 
 </resources>

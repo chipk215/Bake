@@ -148,9 +148,12 @@ public class BakeAppWidget extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
+        Log.d(TAG, "onUpdate invoked");
+
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
 
+            // Maintain a hash table for each widget to hold a future selected recipe
             if (! sSelectedRecipe.containsKey(appWidgetId)){
                 sSelectedRecipe.put(appWidgetId, new SelectedRecipe() );
             }
@@ -208,7 +211,7 @@ public class BakeAppWidget extends AppWidgetProvider {
             return;
         }
 
-        Log.d(TAG, "Handling intent other than recipe selection or widget button");
+        Log.d(TAG, "Handling APPWIDGET_UPDATE");
 
     }
 

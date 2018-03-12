@@ -76,12 +76,17 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
                     if (mIngredientViewModel.getCheckedState()){
                         mIngredientCheckbox.setChecked(false);
                         mIngredientViewModel.setCheckedState(false);
+                        mIngredientCheckbox.setTextColor(mIngredientCheckbox.getContext()
+                                .getResources().getColor(R.color.colorOutOfItem));
 
                     }else{
                         mIngredientCheckbox.setChecked(true);
                         mIngredientViewModel.setCheckedState(true);
-
+                        mIngredientCheckbox.setTextColor(mIngredientCheckbox.getContext()
+                                .getResources().getColor(R.color.colorItemInStock));
                     }
+
+
 
                     mListener.onIngredientClick();
 
@@ -95,6 +100,15 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
             mBinding.setIngredient(mIngredientViewModel);
             mBinding.executePendingBindings();
+
+            if (ingredient.getCheckedState()){
+                mIngredientCheckbox.setTextColor(mIngredientCheckbox.getContext()
+                        .getResources().getColor(R.color.colorItemInStock));
+            }else
+            {
+                mIngredientCheckbox.setTextColor(mIngredientCheckbox.getContext()
+                        .getResources().getColor(R.color.colorOutOfItem));
+            }
         }
 
     }
