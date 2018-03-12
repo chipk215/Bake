@@ -133,14 +133,17 @@ public class StepsListFragment extends Fragment {
         itemDecorator.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.custom_list_divider));
         mStepsRecyclerView.addItemDecoration(itemDecorator);
 
+        setupStepsAdapter();
+
         ReadCheckboxStates<Step> task = new ReadCheckboxStates<>(getContext(),
                 mRecipe.getSharedPreferencesStepsFileName(), new ReadCheckboxStates.ResultsCallback<Step>(){
 
             @Override
             public void CheckboxStates(List<Step> updatedList) {
                 mSteps = updatedList;
+                mStepAdapter.notifyDataSetChanged();
                 setupResetButton();
-                setupStepsAdapter();
+
             }
         });
 
@@ -161,27 +164,33 @@ public class StepsListFragment extends Fragment {
         return view;
     }
 
+
+
     private void setupStepsAdapter(){
-        mStepAdapter = new StepAdapter(mSteps, new StepAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Step step) {
-
-                Log.d(TAG, "Step Selected" + Integer.toString(step.getId()));
-
-                mHostActivityCallback.onStepSelected(step);
-
-            }
-        }, new StepAdapter.OnCheckboxClicked() {
-            @Override
-            public void checkboxClicked() {
-                setupResetButton();
-            }
-        });
 
         if (isAdded()){
+
+            mStepAdapter = new StepAdapter(mSteps, new StepAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Step step) {
+
+                    Log.d(TAG, "Step Selected" + Integer.toString(step.getId()));
+
+                    mHostActivityCallback.onStepSelected(step);
+
+                }
+            }, new StepAdapter.OnCheckboxClicked() {
+                @Override
+                public void checkboxClicked() {
+                    setupResetButton();
+                }
+            });
+
             mStepsRecyclerView.setAdapter(mStepAdapter);
 
         }
+
+
     }
 
 

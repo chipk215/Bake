@@ -21,6 +21,7 @@ import com.keyeswest.bake.models.Recipe;
 import com.keyeswest.bake.models.RecipeFactory;
 import com.keyeswest.bake.tasks.RecipeJsonDeserializer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -42,6 +43,8 @@ public class MasterListFragment extends Fragment {
     private RecipeAdapter mRecipeAdapter;
 
     private Unbinder mUnbinder;
+
+    private List<Recipe> mRecipes = new ArrayList<>();
 
 
     @BindView(R.id.recipe_recycler_view)  RecyclerView mRecipeRecyclerView;
@@ -82,33 +85,39 @@ public class MasterListFragment extends Fragment {
         int columns = getResources().getInteger(R.integer.recipe_grid_columns);
         mRecipeRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),columns));
 
+        setupRecipeAdapter();
+
         RecipeFactory.readRecipes(getContext(),new RecipeResultsCallback() {
             @Override
             public void recipeResult(List<Recipe> recipeList) {
-
-
-                setupRecipeAdapter(recipeList);
+                mRecipes = recipeList;
+                setupRecipeAdapter();
 
             }
         });
+
+
 
         return rootView;
     }
 
 
-    private void setupRecipeAdapter(List<Recipe> recipeList){
-        mRecipeAdapter = new RecipeAdapter(recipeList, new RecipeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Recipe recipe) {
+    private void setupRecipeAdapter(){
 
-                mHostCallback.onRecipeSelected(recipe);
-
-            }
-        });
         if (isAdded()){
-            mRecipeRecyclerView.setAdapter(mRecipeAdapter);
 
+            mRecipeAdapter = new RecipeAdapter(mRecipes, new RecipeAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Recipe recipe) {
+
+                    mHostCallback.onRecipeSelected(recipe);
+
+                }
+            });
+
+            mRecipeRecyclerView.setAdapter(mRecipeAdapter);
         }
+
     }
 
     @Override

@@ -86,13 +86,15 @@ public class IngredientListFragment extends Fragment {
         itemDecorator.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.custom_list_divider));
         mIngredientRecyclerView.addItemDecoration(itemDecorator);
 
+        setupIngredientAdapter();
+
         ReadCheckboxStates<Ingredient> readIngredientStateTask = new ReadCheckboxStates<>(getContext(),
                 mRecipePrefsIngredientsFilename, new ReadCheckboxStates.ResultsCallback<Ingredient>(){
             @Override
             public void CheckboxStates(List<Ingredient> updatedList) {
-                mIngredients = updatedList;
+
                 setupResetButton();
-                setupIngredientAdapter();
+                updateIngredients(updatedList);
             }
         });
 
@@ -111,6 +113,8 @@ public class IngredientListFragment extends Fragment {
                 mResetButton.setEnabled(false);
             }
         });
+
+
 
         return rootView;
     }
@@ -142,19 +146,28 @@ public class IngredientListFragment extends Fragment {
         super.onPause();
     }
 
+
+
+    private void updateIngredients(List<Ingredient> ingredients){
+
+        mIngredients = ingredients;
+        mIngredientAdapter.notifyDataSetChanged();
+
+    }
     private void setupIngredientAdapter(){
 
-        mIngredientAdapter = new IngredientAdapter(mIngredients, new IngredientAdapter.OnIngredientClickListener() {
-            @Override
-            public void onIngredientClick() {
-                setupResetButton();
-            }
-        });
-
         if (isAdded()){
+            mIngredientAdapter = new IngredientAdapter(mIngredients, new IngredientAdapter.OnIngredientClickListener() {
+                @Override
+                public void onIngredientClick() {
+                    setupResetButton();
+                }
+            });
+
             mIngredientRecyclerView.setAdapter(mIngredientAdapter);
 
         }
+
     }
 
     private void setupResetButton(){
