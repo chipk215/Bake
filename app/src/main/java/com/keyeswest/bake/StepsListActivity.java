@@ -7,17 +7,18 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.View;
 
 import com.keyeswest.bake.fragments.StepDetailFragment;
 import com.keyeswest.bake.fragments.StepsListFragment;
 import com.keyeswest.bake.models.Recipe;
 import com.keyeswest.bake.models.Step;
-import com.keyeswest.bake.utilities.SaveCheckStateToSharedPreferences;
-import com.keyeswest.bake.utilities.StepListUtilities;
 
-import java.util.ArrayList;
+import com.keyeswest.bake.utilities.StepListUtilities;
+import com.keyeswest.bake.utilities.WriteSharedPreferences;
+
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -167,8 +168,11 @@ public class StepsListActivity extends AppCompatActivity implements
            // Update shared preferences with changes to the checkbox states
            mRecipe.setSteps(StepDetailActivity.getUpdatedSteps(data));
 
-           // This is a synchronous write on the UI thread... revisit
-           SaveCheckStateToSharedPreferences.saveSteps(this, mRecipe);
+
+           // Update the shared preferences file on a worker thread
+           WriteSharedPreferences<Step> prefWriter = new WriteSharedPreferences<>(this,
+                   mRecipe.getSharedPreferencesStepsFileName(), mRecipe.getSteps());
+           new Thread(prefWriter).start();
 
        }
     }
@@ -180,8 +184,6 @@ public class StepsListActivity extends AppCompatActivity implements
         savedInstanceState.putParcelable(RECIPE_KEY,mRecipe);
         savedInstanceState.putParcelable(STEP_KEY,mStep);
         savedInstanceState.putInt(SELECTED_KEY, mSelectedIndex);
-
-
     }
 
     @Override
@@ -192,7 +194,6 @@ public class StepsListActivity extends AppCompatActivity implements
             StepDetailFragment stepDetailFragment = StepDetailFragment.newInstance(steps.get(currentIndex + 1));
             mSelectedIndex +=1;
             replaceFragment(stepDetailFragment);
-
         }
     }
 
@@ -204,11 +205,8 @@ public class StepsListActivity extends AppCompatActivity implements
             StepDetailFragment stepDetailFragment = StepDetailFragment.newInstance(steps.get(currentIndex-1));
             mSelectedIndex -=1;
             replaceFragment(stepDetailFragment);
-
-
         }
     }
-
 
 
     private void replaceFragment(StepDetailFragment fragment){

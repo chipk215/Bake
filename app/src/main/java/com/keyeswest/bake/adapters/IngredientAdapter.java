@@ -63,7 +63,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         @BindView(R.id.checkBox) CheckBox mIngredientCheckbox;
         private final IngredientItemBinding mBinding;
 
-        public IngredientHolder(IngredientItemBinding binding){
+        IngredientHolder(IngredientItemBinding binding){
             super(binding.getRoot());
             mBinding = binding;
 
@@ -73,26 +73,35 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
                 @Override
                 public void onClick(View v) {
 
+                    // Keep tack of the checked state of the ingredients
+
                     if (mIngredientViewModel.getCheckedState()){
-                        mIngredientCheckbox.setChecked(false);
+
+                        // update the UI
                         mIngredientViewModel.setCheckedState(false);
+
+                        // changing the text color in the UI bridges the functionality with
+                        // the widget which does not support checkboxes. The color of the
+                        // ingredients is consistent between app and widget
                         mIngredientCheckbox.setTextColor(mIngredientCheckbox.getContext()
                                 .getResources().getColor(R.color.colorOutOfItem));
 
                     }else{
-                        mIngredientCheckbox.setChecked(true);
+
+                        // see notes above... handle same for checked state
+
                         mIngredientViewModel.setCheckedState(true);
                         mIngredientCheckbox.setTextColor(mIngredientCheckbox.getContext()
                                 .getResources().getColor(R.color.colorItemInStock));
                     }
 
-
-
+                    // The fragment is updated so that the state of the reset button can be updated
                     mListener.onIngredientClick();
 
                 }
             });
         }
+
 
         public void bind(final Ingredient ingredient){
             mIngredientViewModel = new
@@ -101,6 +110,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
             mBinding.setIngredient(mIngredientViewModel);
             mBinding.executePendingBindings();
 
+            // This can probably be handled using data binding. I did a quick trial and it
+            // had a bug and decided to let it go for now due to time constraints.
             if (ingredient.getCheckedState()){
                 mIngredientCheckbox.setTextColor(mIngredientCheckbox.getContext()
                         .getResources().getColor(R.color.colorItemInStock));

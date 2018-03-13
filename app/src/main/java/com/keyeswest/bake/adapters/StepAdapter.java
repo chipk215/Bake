@@ -30,16 +30,13 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
     }
 
     private final List<Step> mSteps;
-
     private final OnItemClickListener mListener;
     private final OnCheckboxClicked mCheckBoxListener;
 
     public StepAdapter( List<Step> steps, OnItemClickListener listener,
                         OnCheckboxClicked checkboxListener ){
         mSteps = steps;
-
         mListener = listener;
-
         mCheckBoxListener = checkboxListener;
     }
 
@@ -75,7 +72,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
 
         private final StepItemBinding mStepBinding;
 
-        public StepHolder(StepItemBinding binding){
+        StepHolder(StepItemBinding binding){
             super(binding.getRoot());
             mStepBinding = binding;
 
@@ -84,21 +81,18 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
             mStepCheckbox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     if (mStepViewModel.getCheckedState()){
                         mStepViewModel.setCheckedState(false);
-                        mStepCheckbox.setChecked(false);
-
                     }else{
                         mStepViewModel.setCheckedState(true);
-                        mStepCheckbox.setChecked(true);
-
                     }
 
                     mCheckBoxListener.checkboxClicked();
                 }
             });
 
-
+            // fragment updates reset button
             mStepLabel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -109,7 +103,6 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepHolder> {
 
         public void bind(final Step step){
             mStepViewModel = new StepViewModel(this.itemView.getContext(), step);
-
             mStepBinding.setStep(mStepViewModel);
             mStepBinding.executePendingBindings();
         }

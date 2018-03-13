@@ -5,6 +5,10 @@ import android.content.Context;
 
 import com.keyeswest.bake.tasks.RecipeJsonDeserializer;
 
+
+/**
+ * Encapsulates the gson deserialization, makes it easy to change the source of the data.
+ */
 public class RecipeFactory {
 
     private RecipeFactory(){};

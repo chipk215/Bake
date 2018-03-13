@@ -4,6 +4,7 @@ package com.keyeswest.bake.fragments;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+
+/**
+ * Displays the details about a recipe.
+ */
 public class RecipeDetailFragment extends Fragment {
+    @SuppressWarnings("unused")
     private static final String TAG = "RecipeDetailFragment";
     private static final String SAVE_RECIPE_KEY = "save_recipe";
 
@@ -51,9 +57,8 @@ public class RecipeDetailFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
-
 
         FragmentRecipeDetailBinding binding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_recipe_detail, container, false);
@@ -61,7 +66,6 @@ public class RecipeDetailFragment extends Fragment {
         View rootView = binding.getRoot();
         mUnbinder = ButterKnife.bind(this, rootView);
         binding.setRecipe(new RecipeViewModel(getContext(),mRecipe));
-
 
         mMakeItButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +78,6 @@ public class RecipeDetailFragment extends Fragment {
 
         return rootView;
 
-
     }
 
     @Override
@@ -82,6 +85,5 @@ public class RecipeDetailFragment extends Fragment {
         super.onDestroyView();
         mUnbinder.unbind();
     }
-
 
 }

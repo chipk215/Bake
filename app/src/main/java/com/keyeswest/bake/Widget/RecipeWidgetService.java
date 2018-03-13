@@ -90,10 +90,9 @@ public class RecipeWidgetService extends RemoteViewsService {
         public void onCreate() {
             Log.d(TAG, "Entering onCreate in RecipeRemotesViewFactory");
 
-            // This is a synchronous read on the invoking thread. The time to process the json
-            // file is approximately 500 mSec.  The problem with using a background thread is that
-            // the onCreate method will exit before the list sizes are known creating a race
-            // condition with the subsequent invocation of getCount.
+            // This is a synchronous read on the invoking thread. The problem with using a
+            // background thread is that the onCreate method will exit before the list sizes
+            //  are known creating a race condition with the subsequent invocation of getCount.
             //
             // Perhaps a background task could be used and in completion handler invoke
             // onDataSetChanged? - TODO research this
@@ -113,14 +112,9 @@ public class RecipeWidgetService extends RemoteViewsService {
         }
 
 
-
         @Override
         public void onDataSetChanged() {
             Log.d(TAG, "onDataSetChanged");
-
-            //TODO with test
-            // reset the mUserIngredientsRead to all false and force a re-read of recipe ingredients
-
         }
 
         @Override
@@ -174,7 +168,6 @@ public class RecipeWidgetService extends RemoteViewsService {
             }else{
 
                 // The list is displaying ingredient items
-
 
                 IngredientViewModel viewModel = new IngredientViewModel(mContext, mIngredients.get(position));
 

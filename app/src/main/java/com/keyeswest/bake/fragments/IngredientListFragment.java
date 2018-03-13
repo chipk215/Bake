@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.os.Bundle;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -35,9 +36,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-
+/**
+ * Handles the displaying of the ingredients list
+ */
 public class IngredientListFragment extends Fragment {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "IngredientListFragment";
     private static final String RECIPE_KEY = "recipeKey";
 
@@ -72,12 +76,7 @@ public class IngredientListFragment extends Fragment {
     }
 
     @Override
-    public void onResume(){
-        super.onResume();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
 
         final View rootView = inflater.inflate(R.layout.fragment_ingredient_list,
@@ -101,6 +100,7 @@ public class IngredientListFragment extends Fragment {
             }
         });
 
+        //noinspection unchecked
         readIngredientStateTask.execute(mIngredients);
 
 
@@ -117,8 +117,6 @@ public class IngredientListFragment extends Fragment {
             }
         });
 
-
-
         return rootView;
     }
 
@@ -129,17 +127,31 @@ public class IngredientListFragment extends Fragment {
         mUnbinder.unbind();
     }
 
+
+    /**
+     * Rather than update the shared preferences file every time the user checks or unchecks an
+     * ingredient, the shared preferences file is updated when the user navigates away from the
+     * view.
+     *
+     * This is seemed like a good idea but does have one consequence to the widget implementation,
+     * the widget isn't updated with refreshed ingredient check state unless the user makes
+     * a checkbox change and then leaves the fragment.
+     *
+     * In the future I may not pre-optimize until the the performance of the app requires
+     * optimization and just update shared preferences on every state change.
+     */
     @Override
     public void onPause(){
-
 
         // Update the shared preferences file on a worker thread
         WriteSharedPreferences<Ingredient> prefWriter = new WriteSharedPreferences<>(getContext(),
                 mRecipePrefsIngredientsFilename, mIngredients);
         new Thread(prefWriter).start();
 
+        //Update the widget
         RecipeWidgetService.refreshIngredients();
 
+        // Force an update to the widget provider
         Context context = getContext();
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 
@@ -151,16 +163,14 @@ public class IngredientListFragment extends Fragment {
     }
 
 
-    private void updateIngredients(List<Ingredient> ingredients){
 
+    private void updateIngredients(List<Ingredient> ingredients){
         mIngredients = ingredients;
         mIngredientAdapter.notifyDataSetChanged();
-
     }
 
 
     private void setupIngredientAdapter(){
-
         if (isAdded()){
             mIngredientAdapter = new IngredientAdapter(mIngredients, new IngredientAdapter.OnIngredientClickListener() {
                 @Override
@@ -185,6 +195,5 @@ public class IngredientListFragment extends Fragment {
         }
         mResetButton.setEnabled(setEnabled);
     }
-
 
 }

@@ -23,9 +23,7 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
 
     private static final String TAG = "MainActivity";
     private static final String KEY_SAVE_RECIPE = "save_recipe";
-
     private boolean mTwoPane;
-
     private Recipe mRecipe;
 
     @Nullable
@@ -44,21 +42,13 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
         }
 
         mTwoPane = (mTwoPaneDivider != null);
-
     }
 
-
-    @Override
-    protected void onStop(){
-
-        super.onStop();
-    }
 
 
     @Override
     public void onRecipeSelected(Recipe recipe) {
         mRecipe =recipe;
-
 
         if (mTwoPane){
 
@@ -70,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
                     IngredientListFragment.newInstance(mRecipe);
             if (fragmentManager.findFragmentById(R.id.detail_container) == null){
                 // fragments have not been loaded
-
 
                 fragmentManager.beginTransaction()
                         .add(R.id.detail_container,recipeFragment)

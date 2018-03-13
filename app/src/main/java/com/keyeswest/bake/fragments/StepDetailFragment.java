@@ -33,6 +33,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+/**
+ * Detail instructions for recipe including video when available.
+ */
 public class StepDetailFragment  extends Fragment {
 
     private static final String SAVE_STEP_KEY = "saveStepKey";
@@ -124,7 +127,6 @@ public class StepDetailFragment  extends Fragment {
         // requires the step ids to start at 0 and increase by 1
         mPreviousButton.setEnabled(mStep.getId() != 0);
 
-        //this is hacky ...revisit
         mNextButton.setEnabled((mStep.getId()+1) < mStep.getNumberOfStepsInRecipe());
 
         mPreviousButton.setOnClickListener(new View.OnClickListener() {
@@ -155,7 +157,6 @@ public class StepDetailFragment  extends Fragment {
         }
 
         setupVideoPlayerView();
-
 
         return view;
     }

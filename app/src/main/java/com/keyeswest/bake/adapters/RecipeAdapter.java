@@ -1,7 +1,5 @@
 package com.keyeswest.bake.adapters;
 
-
-
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 
@@ -62,11 +60,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
      class RecipeHolder extends RecyclerView.ViewHolder{
         private final RecipeCardBinding binding;
 
-        public RecipeHolder(RecipeCardBinding binding) {
+        RecipeHolder(RecipeCardBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-
-
         }
 
         public void bind(final Recipe recipe, final OnItemClickListener listener){

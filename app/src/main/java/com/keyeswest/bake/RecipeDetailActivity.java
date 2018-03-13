@@ -15,7 +15,6 @@ import com.keyeswest.bake.fragments.IngredientListFragment;
 import com.keyeswest.bake.fragments.RecipeDetailFragment;
 import com.keyeswest.bake.models.Recipe;
 
-import butterknife.BindView;
 
 
 /**
@@ -64,9 +63,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-
         scrollToTopOfView();
-
     }
 
     @Override

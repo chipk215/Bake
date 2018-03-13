@@ -9,6 +9,11 @@ import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
+
+/**
+ * Reads shared preference file data for both ingredients and steps.
+ * @param <T> either Ingredient or Step
+ */
 public class ReadCheckboxStates<T extends IsCheckable> extends
         AsyncTask<List<T>, Void, List<T>> {
 
@@ -32,7 +37,6 @@ public class ReadCheckboxStates<T extends IsCheckable> extends
         if ((lists == null) || (lists[0] == null)) {
             return null;
         }
-
 
         for (T i : lists[0]){
             String hashValue = i.getUniqueId();

@@ -28,10 +28,12 @@ import butterknife.Unbinder;
 
 import static com.keyeswest.bake.tasks.RecipeJsonDeserializer.*;
 
+/**
+ * Handles the displaying of recipes.
+ */
 public class MasterListFragment extends Fragment {
 
     private static final String TAG = "MasterListFragment";
-
 
     private OnRecipeSelected mHostCallback;
     public interface OnRecipeSelected{
@@ -39,9 +41,7 @@ public class MasterListFragment extends Fragment {
     }
 
     private RecipeAdapter mRecipeAdapter;
-
     private Unbinder mUnbinder;
-
     private List<Recipe> mRecipes = new ArrayList<>();
 
 
@@ -53,6 +53,8 @@ public class MasterListFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        //Attribution: from Udacity course work, clever!
 
         // This makes sure that the host activity has implemented the callback interface
         // If not, it throws an exception
@@ -113,7 +115,6 @@ public class MasterListFragment extends Fragment {
                 public void onItemClick(Recipe recipe) {
 
                     mHostCallback.onRecipeSelected(recipe);
-
                 }
             });
 

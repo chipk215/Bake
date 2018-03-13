@@ -159,7 +159,6 @@ public class StepsListFragment extends Fragment {
     }
 
 
-
     private void setupStepsAdapter(){
 
         if (isAdded()){

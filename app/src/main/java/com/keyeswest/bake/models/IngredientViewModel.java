@@ -13,6 +13,7 @@ import static java.lang.Math.abs;
 public class IngredientViewModel {
 
     // public access for testing
+    //note: these strings are not used in the UI, they help parse the quantity data in the json file
     public final static String CUP = "CUP";
     public final static String GRAM = "G";
     public final static String TABLE_SPOON = "TBLSP";
@@ -44,6 +45,8 @@ public class IngredientViewModel {
         return decimalFormat.format(mIngredient.getQuantity());
     }
 
+
+    // returns localized string data
     public String getMeasure(){
 
         switch (mIngredient.getMeasure()){
@@ -101,7 +104,6 @@ public class IngredientViewModel {
     public boolean getCheckedState(){
         return mIngredient.getCheckedState();
     }
-
 
     public String getUniqueId() {
         return mIngredient.getUniqueId();
