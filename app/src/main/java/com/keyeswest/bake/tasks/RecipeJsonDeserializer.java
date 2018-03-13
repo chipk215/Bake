@@ -58,9 +58,6 @@ public class RecipeJsonDeserializer extends AsyncTask<Void, Void, List<Recipe>> 
                 }
             }
 
-
-            // write the recipe data to shared preferences
-           // RecipeWriter.writeToSharedPreferences(mContext, recipes);
         }
 
         return recipes;
