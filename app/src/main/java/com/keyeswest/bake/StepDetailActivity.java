@@ -42,25 +42,30 @@ public class StepDetailActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Log.d(TAG, "onCreateInvoked");
         super.onCreate(savedInstanceState);
         // Layout file activity_step_detail.xml
         setContentView(R.layout.activity_step_detail);
 
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        StepDetailFragment stepDetailFragment;
+
         if (savedInstanceState != null){
             mSteps = savedInstanceState.getParcelableArrayList(STEPS_KEY);
             mSelectedIndex = savedInstanceState.getInt(SELECTED_INDEX_KEY);
+
         }else {
             Bundle bundle = getIntent().getParcelableExtra(EXTRA_STEP_BUNDLE);
             mSteps = bundle.getParcelableArrayList(STEPS_KEY);
             mSelectedIndex = bundle.getInt(SELECTED_INDEX_KEY);
+
+            stepDetailFragment = StepDetailFragment.newInstance(mSteps.get(mSelectedIndex));
+
+            fragmentManager.beginTransaction()
+                    .add(R.id.step_detail_container, stepDetailFragment)
+                    .commit();
         }
-
-        StepDetailFragment stepDetailFragment = StepDetailFragment.newInstance(mSteps.get(mSelectedIndex));
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(R.id.step_detail_container, stepDetailFragment)
-                .commit();
 
 
     }

@@ -3,12 +3,15 @@ package com.keyeswest.bake.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Guideline;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +41,12 @@ import butterknife.Unbinder;
  */
 public class StepDetailFragment  extends Fragment {
 
+    private static final String TAG="StepDetailFragment";
+
     private static final String SAVE_STEP_KEY = "saveStepKey";
+
+    private static final String CURRENT_WINDOW_TAG = "CURRENT_WINDOW_TAG";
+    private static final String PLAY_BACK_TAG = "PLAY_BACK_TAG";
 
     private static final float HIDE_VIDEO_PLAYER_PERCENT = 0.1f;
 
@@ -156,7 +164,17 @@ public class StepDetailFragment  extends Fragment {
             });
         }
 
+
+        if (savedInstanceState != null){
+            mCurrentWindow = savedInstanceState.getInt(CURRENT_WINDOW_TAG, 0);
+            mPlaybackPosition = savedInstanceState.getLong(PLAY_BACK_TAG, 0);
+            Log.d(TAG, "Restoring mCurrentWindow= " + mCurrentWindow);
+            Log.d(TAG, "Restoring mPlaybackPosition= " + mPlaybackPosition);
+
+        }
+
         setupVideoPlayerView();
+
 
         return view;
     }
@@ -171,6 +189,7 @@ public class StepDetailFragment  extends Fragment {
         super.onStart();
 
         if (Util.SDK_INT > 23) {
+            Log.d(TAG,"onStart invoking initializePlayer()");
             initializePlayer();
         }
     }
@@ -181,6 +200,7 @@ public class StepDetailFragment  extends Fragment {
         super.onResume();
       //  hideSystemUi();
         if ((Util.SDK_INT <= 23 || mPlayer == null)) {
+            Log.d(TAG,"onResume invoking initializePlayer()");
             initializePlayer();
         }
     }
@@ -190,6 +210,7 @@ public class StepDetailFragment  extends Fragment {
     public void onPause() {
         super.onPause();
         if (Util.SDK_INT <= 23) {
+            Log.d(TAG,"onPause invoking releasePlayer()");
             releasePlayer();
         }
     }
@@ -198,6 +219,7 @@ public class StepDetailFragment  extends Fragment {
     public void onStop() {
         super.onStop();
         if (Util.SDK_INT > 23) {
+            Log.d(TAG,"onStop invoking releasePlayer()");
             releasePlayer();
         }
     }
@@ -206,6 +228,22 @@ public class StepDetailFragment  extends Fragment {
     public void onDestroyView(){
         super.onDestroyView();
         mUnbinder.unbind();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState){
+        if (mPlayer != null) {
+            mCurrentWindow =mPlayer.getCurrentWindowIndex();
+            mPlaybackPosition = mPlayer.getCurrentPosition();
+        }
+
+        Log.d(TAG, "mCurrentWindow= " + mCurrentWindow);
+        Log.d(TAG, "mPlaybackPosition= " + mPlaybackPosition);
+        outState.putInt(CURRENT_WINDOW_TAG, mCurrentWindow);
+        outState.putLong(PLAY_BACK_TAG, mPlaybackPosition);
+
+        super.onSaveInstanceState(outState);
+
     }
 
 
@@ -255,6 +293,7 @@ public class StepDetailFragment  extends Fragment {
             mPlaybackPosition = mPlayer.getCurrentPosition();
             mCurrentWindow = mPlayer.getCurrentWindowIndex();
             mPlayWhenReady = mPlayer.getPlayWhenReady();
+            mPlayer.stop();
             mPlayer.release();
             mPlayer = null;
         }
