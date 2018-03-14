@@ -21,7 +21,7 @@
                     android:padding="@dimen/recipe_card_padding"
                     card_view:cardBackgroundColor="@color/colorAccent"
                     card_view:cardCornerRadius="@dimen/cardview_default_radius"
-                    card_view:contentPadding="8dp">
+                    card_view:contentPadding="@dimen/activity_margin_half">
 
 
                         <TextView
@@ -29,8 +29,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|top"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginStart="@dimen/activity_margin_half"
+                            android:layout_marginTop="@dimen/activity_margin_half"
                             android:elevation="@dimen/recipe_card_text_elevation"
                             android:text="@{recipe.getName()}"
                             android:textColor="@android:color/background_light"
@@ -43,8 +43,8 @@
                             android:id="@+id/recipe_image_view"
                             android:layout_width="match_parent"
                             android:layout_height="135dp"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="@dimen/activity_margin_half"
+                            android:layout_marginTop="@dimen/activity_margin_half"
                             android:adjustViewBounds="true"
                             android:src="@{recipe.getDrawableRecipeImage()}"
                             android:contentDescription="@string/thumbnail"

@@ -20,7 +20,7 @@
         style="@style/AppWidgetLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:layout_margin="@dimen/activity_margin_quarter"
         android:layout_toEndOf="@id/list_label_tv"
         android:textStyle="italic"
         tools:text="Name" />
@@ -34,7 +34,7 @@
         android:textColor="#ffffff"
         android:textStyle="bold"
         android:text="@string/empty_list_view"
-        android:textSize="20sp" />
+        android:textSize="@dimen/empty_list_text_size" />
 
     <ListView
         android:id="@+id/item_list"
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/recipe_btn"
         android:layout_gravity="center"
-        android:layout_margin="4dp"
+        android:layout_margin="@dimen/activity_margin_quarter"
         android:loopViews="true" />
 
     <Button

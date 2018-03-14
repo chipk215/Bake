@@ -16,7 +16,7 @@
             android:id="@+id/detail_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="@dimen/activity_margin_half">
 
         </FrameLayout>
 
@@ -25,8 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/detail_container"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="@dimen/activity_margin_half"
+            android:layout_marginTop="@dimen/activity_margin_half"
 
             >
 
